@@ -1,0 +1,381 @@
+/* 全局样式重置 */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f0f0f0;
+  color: #333;
+  line-height: 1.6;
+  overflow: hidden;
+}
+
+/* 桌面应用容器 */
+.desktop-app-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background-color: #f8f9fa;
+  border: 1px solid #d0d0d0;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+}
+
+
+
+/* 工具栏 - 简洁风格 */
+.app-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #f8f9fa;
+  padding: 6px 20px;
+  border-bottom: 1px solid #dee2e6;
+  height: 36px;
+  flex-shrink: 0;
+}
+
+.toolbar-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.toolbar-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.toolbar-button {
+  font-size: 12px !important;
+  font-weight: 500 !important;
+  padding: 4px 10px !important;
+  border-radius: 3px !important;
+  height: 24px !important;
+}
+
+.ant-btn.toolbar-button:hover {
+  background: #e3f2fd !important;
+  border-color: #90caf9 !important;
+  color: #1976d2 !important;
+}
+
+.toolbar-separator {
+  width: 1px;
+  height: 24px;
+  background-color: #dee2e6;
+  margin: 0 8px;
+}
+
+/* Ant Design 选项卡菜单栏 - 工业风格 */
+.ant-tabs-container {
+  flex-shrink: 0;
+}
+
+.industrial-tabs {
+  background: #f8f9fa !important;
+  border-bottom: 1px solid #dee2e6 !important;
+}
+
+.industrial-tabs .ant-tabs-nav {
+  padding: 0 20px !important;
+  height: 36px !important;
+  margin: 0 !important;
+}
+
+.industrial-tabs .ant-tabs-tab {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  padding: 6px 16px !important;
+  height: 36px !important;
+  margin: 0 !important;
+  font-size: 12px !important;
+  font-weight: 500 !important;
+  color: #495057 !important;
+  border: 1px solid transparent !important;
+  border-bottom: 1px solid #dee2e6 !important;
+  transition: all 0.2s ease !important;
+}
+
+.industrial-tabs .ant-tabs-tab:hover {
+  background: #e3f2fd !important;
+  border-color: #90caf9 !important;
+  color: #1976d2 !important;
+}
+
+.industrial-tabs .ant-tabs-tab-active {
+  background: #ffffff !important;
+  border-color: #dee2e6 !important;
+  border-bottom: 2px solid #1976d2 !important;
+  color: #1976d2 !important;
+  font-weight: 600 !important;
+}
+
+.tab-content {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.tab-icon {
+  font-size: 14px;
+}
+
+.tab-label {
+  white-space: nowrap;
+}
+
+/* 主内容区域 */
+.main-content {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+  background-color: #f8f9fa;
+}
+
+/* 页面内容样式 - 简洁风格 */
+.page-content {
+  background: white;
+  border: 1px solid #dee2e6;
+  border-radius: 4px;
+  padding: 20px;
+  min-height: 600px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.page-content h1 {
+  font-size: 16px;
+  font-weight: 600;
+  color: #212529;
+  margin-bottom: 16px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #dee2e6;
+}
+
+.page-content p {
+  color: #6c757d;
+  font-size: 14px;
+}
+
+/* 状态栏 - 简洁风格 */
+.app-statusbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #e9ecef;
+  padding: 4px 20px;
+  border-top: 1px solid #dee2e6;
+  height: 28px;
+  flex-shrink: 0;
+  font-size: 11px;
+  color: #495057;
+}
+
+.statusbar-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.statusbar-center {
+  flex: 1;
+  text-align: center;
+}
+
+.statusbar-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* 滚动条样式 - 工业风 */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+  border: 1px solid #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .desktop-app-container {
+    height: 100vh;
+    border: none;
+  }
+
+  .app-titlebar {
+    height: 44px;
+    padding: 6px 12px;
+  }
+
+  .app-title {
+    font-size: 12px;
+  }
+
+  .app-toolbar {
+    height: 36px;
+    padding: 4px 8px;
+  }
+
+  .toolbar-button {
+    padding: 3px 8px;
+    font-size: 11px;
+  }
+
+  .sidebar {
+    width: 180px;
+  }
+
+  .sidebar.collapsed {
+    width: 50px;
+  }
+
+  .nav-item {
+    padding: 8px 12px;
+    font-size: 11px;
+  }
+
+  .main-content {
+    padding: 12px;
+  }
+
+  .page-content {
+    padding: 16px;
+    min-height: 400px;
+  }
+
+  .page-content h1 {
+    font-size: 16px;
+    margin-bottom: 16px;
+  }
+
+  .app-statusbar {
+    height: 24px;
+    padding: 3px 8px;
+    font-size: 10px;
+  }
+}
+
+/* 工业风按钮样式 */
+.btn {
+  display: inline-block;
+  padding: 8px 16px;
+  border: 1px solid #ced4da;
+  border-radius: 3px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+  text-align: center;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.btn-primary {
+  background: linear-gradient(180deg, #007bff 0%, #0069d9 100%);
+  color: white;
+  border-color: #0062cc;
+}
+
+.btn-primary:hover {
+  background: linear-gradient(180deg, #0069d9 0%, #007bff 100%);
+  border-color: #005cbf;
+  box-shadow: 0 2px 4px rgba(0, 123, 255, 0.3);
+}
+
+.btn-secondary {
+  background: linear-gradient(180deg, #6c757d 0%, #5a6268 100%);
+  color: white;
+  border-color: #545b62;
+}
+
+.btn-secondary:hover {
+  background: linear-gradient(180deg, #5a6268 0%, #6c757d 100%);
+  border-color: #4e555b;
+}
+
+/* 工业风表单样式 */
+.form-group {
+  margin-bottom: 16px;
+}
+
+.form-group label {
+  display: block;
+  font-size: 12px;
+  font-weight: 500;
+  color: #495057;
+  margin-bottom: 6px;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #ced4da;
+  border-radius: 3px;
+  font-size: 13px;
+  color: #495057;
+  background-color: white;
+  transition: border-color 0.2s ease;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+}
+
+/* 工业风表格样式 */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  border: 1px solid #dee2e6;
+  border-radius: 3px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+table th,
+table td {
+  padding: 10px 12px;
+  text-align: left;
+  border-bottom: 1px solid #dee2e6;
+  font-size: 12px;
+}
+
+table th {
+  background: linear-gradient(180deg, #f8f9fa 0%, #e9ecef 100%);
+  font-weight: 600;
+  color: #495057;
+  border-bottom: 2px solid #dee2e6;
+}
+
+table tr:hover {
+  background-color: #f8f9fa;
+}
+
+table tr:nth-child(even) {
+  background-color: #f8f9fa;
+}
+

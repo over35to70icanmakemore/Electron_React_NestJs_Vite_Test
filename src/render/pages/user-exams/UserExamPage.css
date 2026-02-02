@@ -1,0 +1,410 @@
+.user-exam-page {
+  min-height: 100vh;
+  background-color: #f8f9fa;
+}
+
+.exam-content-container {
+  padding: 20px;
+}
+
+.page-header-industrial {
+  margin-bottom: 32px;
+  text-align: center;
+}
+
+.page-title {
+  margin-bottom: 8px !important;
+  color: #212529 !important;
+  font-weight: 600 !important;
+}
+
+.page-subtitle {
+  font-size: 14px !important;
+  color: #6c757d !important;
+}
+
+.exam-content {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.exam-section-industrial {
+  margin-bottom: 24px;
+}
+
+.section-header-industrial {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #dee2e6;
+}
+
+.section-title {
+  margin: 0 !important;
+  font-size: 16px !important;
+  font-weight: 600 !important;
+  color: #212529 !important;
+}
+
+.section-icon {
+  margin-right: 8px !important;
+  color: #007bff !important;
+}
+
+.section-count {
+  font-size: 12px !important;
+  color: #6c757d !important;
+  background-color: #f8f9fa !important;
+  padding: 4px 12px !important;
+  border-radius: 12px !important;
+}
+
+.industrial-card {
+  border-radius: 6px !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05) !important;
+}
+
+.industrial-table {
+  font-size: 12px !important;
+}
+
+.industrial-table .ant-table-thead > tr > th {
+  background: linear-gradient(180deg, #f8f9fa 0%, #e9ecef 100%) !important;
+  font-weight: 600 !important;
+  color: #495057 !important;
+  border-bottom: 2px solid #dee2e6 !important;
+}
+
+.industrial-table .ant-table-tbody > tr:hover {
+  background-color: #f8f9fa !important;
+}
+
+/* 历史考试记录 */
+.exam-list {
+  overflow-x: auto;
+}
+
+.exam-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: white;
+}
+
+.exam-table th,
+.exam-table td {
+  padding: 12px 16px;
+  text-align: left;
+  border-bottom: 1px solid #dee2e6;
+  font-size: 14px;
+}
+
+.exam-table th {
+  background: linear-gradient(180deg, #f8f9fa 0%, #e9ecef 100%);
+  font-weight: 600;
+  color: #495057;
+  border-bottom: 2px solid #dee2e6;
+  white-space: nowrap;
+}
+
+.exam-table tr:hover {
+  background-color: #f8f9fa;
+}
+
+.exam-name {
+  font-weight: 500;
+  color: #212529;
+}
+
+.exam-subject {
+  color: #495057;
+}
+
+.exam-date {
+  white-space: nowrap;
+  color: #6c757d;
+}
+
+.exam-duration {
+  white-space: nowrap;
+  color: #6c757d;
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.status-badge.completed {
+  background-color: #28a745;
+  color: white;
+}
+
+.status-badge.upcoming {
+  background-color: #17a2b8;
+  color: white;
+}
+
+.status-badge.missed {
+  background-color: #dc3545;
+  color: white;
+}
+
+.exam-score {
+  font-weight: 500;
+  color: #212529;
+}
+
+/* 课程选择 */
+.course-grid-industrial {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 16px;
+}
+
+.course-card-industrial {
+  transition: all 0.3s ease !important;
+  cursor: pointer !important;
+  border-radius: 6px !important;
+}
+
+.course-card-industrial:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1) !important;
+  transform: translateY(-2px) !important;
+  border-color: #007bff !important;
+}
+
+.course-card-industrial.selected {
+  border-color: #28a745 !important;
+  box-shadow: 0 0 0 2px rgba(40, 167, 69, 0.25) !important;
+  background-color: #f8fff9 !important;
+}
+
+.course-header-industrial {
+  padding: 12px 16px !important;
+  border-bottom: 1px solid #f0f0f0 !important;
+}
+
+.course-title-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 100%;
+}
+
+.course-title {
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  color: #212529 !important;
+  flex: 1;
+}
+
+.course-body-industrial {
+  padding: 16px !important;
+}
+
+.course-description {
+  font-size: 13px !important;
+  color: #6c757d !important;
+  margin-bottom: 12px !important;
+  line-height: 1.5 !important;
+  display: block !important;
+}
+
+.course-info-industrial {
+  margin-top: 12px;
+}
+
+.info-item-industrial {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: #6c757d;
+}
+
+.info-icon {
+  font-size: 14px !important;
+  color: #007bff !important;
+}
+
+.course-footer-industrial {
+  padding: 12px 16px !important;
+  border-top: 1px solid #f0f0f0 !important;
+  background-color: #fafafa !important;
+}
+
+.course-select-btn-industrial {
+  font-size: 12px !important;
+  height: 32px !important;
+  border-radius: 4px !important;
+}
+
+/* 预约考试 */
+.exam-grid-industrial {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+}
+
+.exam-card-industrial {
+  transition: all 0.3s ease !important;
+  border-radius: 6px !important;
+}
+
+.exam-card-industrial:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1) !important;
+  transform: translateY(-2px) !important;
+  border-color: #007bff !important;
+}
+
+.exam-card-header-industrial {
+  padding: 12px 16px !important;
+  border-bottom: 1px solid #f0f0f0 !important;
+}
+
+.exam-card-title-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 100%;
+}
+
+.exam-card-title {
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  color: #212529 !important;
+  flex: 1;
+  line-height: 1.4 !important;
+}
+
+.exam-card-body-industrial {
+  padding: 16px !important;
+}
+
+.detail-item-industrial {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: #6c757d;
+}
+
+.detail-icon {
+  font-size: 14px !important;
+  color: #007bff !important;
+}
+
+.exam-card-footer-industrial {
+  padding: 12px 16px !important;
+  border-top: 1px solid #f0f0f0 !important;
+  background-color: #fafafa !important;
+}
+
+.reserve-btn-industrial {
+  font-size: 12px !important;
+  height: 32px !important;
+  border-radius: 4px !important;
+}
+
+/* 标签样式 */
+.subject-tag {
+  font-size: 11px !important;
+  border-radius: 10px !important;
+}
+
+.course-subject-tag {
+  font-size: 10px !important;
+  border-radius: 10px !important;
+}
+
+.exam-subject-tag {
+  font-size: 10px !important;
+  border-radius: 10px !important;
+}
+
+/* 无数据状态 */
+.no-data {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+  color: #6c757d;
+  font-size: 14px;
+  background-color: #f8f9fa;
+  border-radius: 4px;
+  border: 1px dashed #dee2e6;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .user-exam-page {
+    padding: 10px;
+  }
+
+  .page-header h1 {
+    font-size: 24px;
+  }
+
+  .exam-section {
+    padding: 16px;
+  }
+
+  .section-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .exam-table {
+    font-size: 12px;
+  }
+
+  .exam-table th,
+  .exam-table td {
+    padding: 8px 12px;
+  }
+
+  .course-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .exam-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .course-card {
+    padding: 16px;
+  }
+
+  .exam-card {
+    padding: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .page-header h1 {
+    font-size: 20px;
+  }
+
+  .page-header p {
+    font-size: 14px;
+  }
+
+  .section-header h2 {
+    font-size: 16px;
+  }
+
+  .course-header h3 {
+    font-size: 14px;
+  }
+
+  .exam-card-header h3 {
+    font-size: 14px;
+  }
+}
