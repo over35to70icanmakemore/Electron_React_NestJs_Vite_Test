@@ -16,4 +16,10 @@ export default {
   clearUserInfo: () => {
     localStorage.removeItem('user')
   },
+  // 考试相关的 IPC 方法
+  getAllExams: () => ipcRenderer.invoke('getAllExams'),
+  getExamById: (id: string) => ipcRenderer.invoke('getExamById', id),
+  createExam: (examData: any) => ipcRenderer.invoke('createExam', examData),
+  updateExam: (id: string, examData: any) => ipcRenderer.invoke('updateExam', id, examData),
+  deleteExam: (id: string) => ipcRenderer.invoke('deleteExam', id),
 }

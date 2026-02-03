@@ -131,7 +131,7 @@ const UserExamPage: React.FC = () => {
           missed: { text: '已错过', type: 'error' }
         }
         const { text, type } = statusMap[status as keyof typeof statusMap] || { text: status, type: 'default' }
-        return <Badge status={type} text={text} />
+        return <Badge status={type as "warning" | "error" | "default" | "success" | "processing"} text={text} />
       }
     },
     {
@@ -211,3 +211,4 @@ const UserExamPage: React.FC = () => {
 }
 
 export default UserExamPage
+

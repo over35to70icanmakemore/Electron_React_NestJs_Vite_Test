@@ -45,19 +45,11 @@ function setupMenu() {
       ]
     },
     {
-      label: '考试管理',
-      submenu: [
-        { label: '考试列表', accelerator: 'CmdOrCtrl+1' },
-        { label: '考生管理', accelerator: 'CmdOrCtrl+2' },
-        { label: '试题库', accelerator: 'CmdOrCtrl+3' },
-        { label: '成绩分析', accelerator: 'CmdOrCtrl+4' }
-      ]
-    },
-    {
       label: '设置',
       submenu: [
         { label: '系统设置', accelerator: 'CmdOrCtrl+,' },
         { label: '考试设置' },
+        { label: '设置1' },
         { type: 'separator' as const },
         { label: '用户管理' }
       ]
@@ -71,7 +63,6 @@ function setupMenu() {
           dialog.showMessageBox({
             title: '关于',
             message: `本应用基于 Electron + React + NestJS 构建\n版本: ${app.getVersion()}`,
-            buttons: ['确定']
           })
         }}
       ]

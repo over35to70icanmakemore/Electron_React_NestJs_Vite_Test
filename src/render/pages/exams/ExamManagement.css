@@ -21,13 +21,14 @@
 
 /* 按钮样式 */
 .btn {
-  padding: 0.5rem 1rem;
+  padding: 0.35rem 0.75rem;
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  font-size: 0.9rem;
+  font-size: 0.8rem;
   font-weight: 500;
   transition: all 0.3s ease;
+  white-space: nowrap;
 }
 
 .btn-primary {
@@ -42,7 +43,7 @@
 .btn-view {
   background-color: #52c41a;
   color: white;
-  margin-right: 0.5rem;
+  margin-right: 0.25rem;
 }
 
 .btn-view:hover {
@@ -52,7 +53,7 @@
 .btn-edit {
   background-color: #1890ff;
   color: white;
-  margin-right: 0.5rem;
+  margin-right: 0.25rem;
 }
 
 .btn-edit:hover {
@@ -67,6 +68,8 @@
 .btn-delete:hover {
   background-color: #ff7875;
 }
+
+
 
 .btn-cancel {
   background-color: #f0f0f0;
@@ -254,11 +257,12 @@
 .form-group textarea,
 .form-group select {
   width: 100%;
-  padding: 0.75rem 1rem;
+  padding: 0.875rem 1.25rem;
   border: 1px solid #d9d9d9;
-  border-radius: 4px;
+  border-radius: 6px;
   font-size: 0.9rem;
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+  background-color: #ffffff;
 }
 
 .form-group input:focus,
@@ -267,6 +271,54 @@
   outline: none;
   border-color: #1890ff;
   box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
+  background-color: #ffffff;
+}
+
+.form-group input:hover,
+.form-group textarea:hover,
+.form-group select:hover {
+  border-color: #1890ff;
+}
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+  color: #999999;
+}
+
+/* 下拉框样式增强 */
+select {
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1024 1024'%3E%3Cpath fill='%23999999' d='M143.6 495.6L479.2 734.9c12.9 12.9 34 12.9 46.9 0l335.6-239.3c12.9-12.9 12.9-34 0-46.9s-34-12.9-46.9 0L512 654.2 190.5 449.3c-12.9-12.9-34-12.9-46.9 0s-12.9 34 0 46.3z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 16px;
+  padding-right: 3rem;
+}
+
+select::-ms-expand {
+  display: none;
+}
+
+/* 日期时间选择器样式 */
+input[type="date"],
+input[type="datetime-local"] {
+  padding: 0.75rem 1.25rem;
+}
+
+/* 数字输入框样式 */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  height: auto;
+  opacity: 1;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+input[type="number"]:hover::-webkit-inner-spin-button,
+input[type="number"]:hover::-webkit-outer-spin-button {
+  opacity: 1;
 }
 
 .form-group textarea {

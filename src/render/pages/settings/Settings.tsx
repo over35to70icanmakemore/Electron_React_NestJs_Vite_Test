@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
-import './Settings.css'
+import { Card, Checkbox, Input, Select, Button, Typography, Space, Row, Col } from 'antd'
+import { SaveOutlined } from '@ant-design/icons'
 
 const Settings: React.FC = () => {
   // 考试设置状态
@@ -22,22 +23,22 @@ const Settings: React.FC = () => {
   })
 
   // 处理考试设置变化
-  const handleExamSettingChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    const { name, value, type, checked } = e.target
+  const handleExamSettingChange = (e: any) => {
+    const { name, value, type, checked } = e.target;
     setExamSettings(prev => ({
       ...prev,
       [name]: type === 'checkbox' ? checked : Number(value)
-    }))
-  }
+    }));
+  };
 
   // 处理系统设置变化
-  const handleSystemSettingChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    const { name, value, type, checked } = e.target
+  const handleSystemSettingChange = (e: any) => {
+    const { name, value, type, checked } = e.target;
     setSystemSettings(prev => ({
       ...prev,
       [name]: type === 'checkbox' ? checked : value
-    }))
-  }
+    }));
+  };
 
   // 保存设置
   const handleSaveSettings = () => {
@@ -48,174 +49,189 @@ const Settings: React.FC = () => {
     alert('设置已保存')
   }
 
+  const { Title, Text, Paragraph } = Typography
+
   return (
-    <div className="settings-container">
-      <div className="page-header">
-        <h1>系统设置</h1>
+    <div style={{ padding: '20px' }}>
+      {/* 页面头部 */}
+      <div style={{ marginBottom: '24px' }}>
+        <Title level={3}>系统设置</Title>
+        <Text>配置考试系统的各项参数</Text>
       </div>
 
-      <div className="settings-content">
-        {/* 考试设置 */}
-        <div className="setting-section">
-          <h2>考试设置</h2>
-          <div className="setting-form">
-            <div className="form-group">
-              <label>
-                <input
-                  type="checkbox"
-                  name="autoSubmit"
-                  checked={examSettings.autoSubmit}
-                  onChange={handleExamSettingChange}
-                />
-                自动提交
-              </label>
-              <span className="form-help">考试时间结束后自动提交试卷</span>
-            </div>
+      {/* 考试设置 */}
+      <Card 
+        title="考试设置" 
+        style={{ marginBottom: '24px' }}
+        bordered={true}
+      >
+        <Space direction="vertical" style={{ width: '100%' }} size="large">
+          <div>
+            <Checkbox 
+              name="autoSubmit"
+              checked={examSettings.autoSubmit}
+              onChange={handleExamSettingChange}
+            >
+              自动提交
+            </Checkbox>
+            <Paragraph style={{ marginLeft: '24px', marginTop: '4px' }} type="secondary">
+              考试时间结束后自动提交试卷
+            </Paragraph>
+          </div>
 
-            <div className="form-group">
-              <label>
-                <input
-                  type="checkbox"
-                  name="showTimer"
-                  checked={examSettings.showTimer}
-                  onChange={handleExamSettingChange}
-                />
-                显示倒计时
-              </label>
-              <span className="form-help">在考试页面显示剩余时间</span>
-            </div>
+          <div>
+            <Checkbox 
+              name="showTimer"
+              checked={examSettings.showTimer}
+              onChange={handleExamSettingChange}
+            >
+              显示倒计时
+            </Checkbox>
+            <Paragraph style={{ marginLeft: '24px', marginTop: '4px' }} type="secondary">
+              在考试页面显示剩余时间
+            </Paragraph>
+          </div>
 
-            <div className="form-group">
-              <label>
-                <input
-                  type="checkbox"
-                  name="randomQuestions"
-                  checked={examSettings.randomQuestions}
-                  onChange={handleExamSettingChange}
-                />
-                随机出题
-              </label>
-              <span className="form-help">每次考试随机生成试题顺序</span>
-            </div>
+          <div>
+            <Checkbox 
+              name="randomQuestions"
+              checked={examSettings.randomQuestions}
+              onChange={handleExamSettingChange}
+            >
+              随机出题
+            </Checkbox>
+            <Paragraph style={{ marginLeft: '24px', marginTop: '4px' }} type="secondary">
+              每次考试随机生成试题顺序
+            </Paragraph>
+          </div>
 
-            <div className="form-group">
-              <label htmlFor="passScore">及格分数：</label>
-              <input
+          <Row gutter={[16, 16]}>
+            <Col span={8}>
+              <Text strong>及格分数：</Text>
+              <Input 
                 type="number"
-                id="passScore"
                 name="passScore"
-                min="0"
-                max="100"
+                min={0}
+                max={100}
                 value={examSettings.passScore}
                 onChange={handleExamSettingChange}
+                style={{ marginTop: '8px' }}
               />
-            </div>
+            </Col>
 
-            <div className="form-group">
-              <label htmlFor="examDuration">考试时长（分钟）：</label>
-              <input
+            <Col span={8}>
+              <Text strong>考试时长（分钟）：</Text>
+              <Input 
                 type="number"
-                id="examDuration"
                 name="examDuration"
-                min="1"
-                max="300"
+                min={1}
+                max={300}
                 value={examSettings.examDuration}
                 onChange={handleExamSettingChange}
+                style={{ marginTop: '8px' }}
               />
-            </div>
+            </Col>
 
-            <div className="form-group">
-              <label htmlFor="maxAttempts">最大尝试次数：</label>
-              <input
+            <Col span={8}>
+              <Text strong>最大尝试次数：</Text>
+              <Input 
                 type="number"
-                id="maxAttempts"
                 name="maxAttempts"
-                min="1"
-                max="10"
+                min={1}
+                max={10}
                 value={examSettings.maxAttempts}
                 onChange={handleExamSettingChange}
+                style={{ marginTop: '8px' }}
               />
-            </div>
-          </div>
-        </div>
+            </Col>
+          </Row>
+        </Space>
+      </Card>
 
-        {/* 系统设置 */}
-        <div className="setting-section">
-          <h2>系统设置</h2>
-          <div className="setting-form">
-            <div className="form-group">
-              <label htmlFor="language">语言：</label>
-              <select
-                id="language"
-                name="language"
+      {/* 系统设置 */}
+      <Card 
+        title="系统设置" 
+        style={{ marginBottom: '24px' }}
+        bordered={true}
+      >
+        <Space direction="vertical" style={{ width: '100%' }} size="large">
+          <Row gutter={[16, 16]}>
+            <Col span={8}>
+              <Text strong>语言：</Text>
+              <Select 
                 value={systemSettings.language}
-                onChange={handleSystemSettingChange}
+                onChange={(value) => handleSystemSettingChange({ target: { name: 'language', value } })}
+                style={{ width: '100%', marginTop: '8px' }}
               >
-                <option value="zh-CN">中文</option>
-                <option value="en-US">English</option>
-              </select>
-            </div>
+                <Select.Option value="zh-CN">中文</Select.Option>
+                <Select.Option value="en-US">English</Select.Option>
+              </Select>
+            </Col>
 
-            <div className="form-group">
-              <label htmlFor="theme">主题：</label>
-              <select
-                id="theme"
-                name="theme"
+            <Col span={8}>
+              <Text strong>主题：</Text>
+              <Select 
                 value={systemSettings.theme}
-                onChange={handleSystemSettingChange}
+                onChange={(value) => handleSystemSettingChange({ target: { name: 'theme', value } })}
+                style={{ width: '100%', marginTop: '8px' }}
               >
-                <option value="light">浅色</option>
-                <option value="dark">深色</option>
-              </select>
-            </div>
+                <Select.Option value="light">浅色</Select.Option>
+                <Select.Option value="dark">深色</Select.Option>
+              </Select>
+            </Col>
+          </Row>
 
-            <div className="form-group">
-              <label>
-                <input
-                  type="checkbox"
-                  name="autoSave"
-                  checked={systemSettings.autoSave}
-                  onChange={handleSystemSettingChange}
-                />
-                自动保存
-              </label>
-              <span className="form-help">自动保存表单数据</span>
-            </div>
-
-            <div className="form-group">
-              <label htmlFor="backupInterval">备份间隔（小时）：</label>
-              <input
-                type="number"
-                id="backupInterval"
-                name="backupInterval"
-                min="1"
-                max="168"
-                value={systemSettings.backupInterval}
-                onChange={handleSystemSettingChange}
-              />
-            </div>
-
-            <div className="form-group">
-              <label>
-                <input
-                  type="checkbox"
-                  name="notificationEnabled"
-                  checked={systemSettings.notificationEnabled}
-                  onChange={handleSystemSettingChange}
-                />
-                启用通知
-              </label>
-              <span className="form-help">接收系统通知</span>
-            </div>
+          <div>
+            <Checkbox 
+              name="autoSave"
+              checked={systemSettings.autoSave}
+              onChange={handleSystemSettingChange}
+            >
+              自动保存
+            </Checkbox>
+            <Paragraph style={{ marginLeft: '24px', marginTop: '4px' }} type="secondary">
+              自动保存表单数据
+            </Paragraph>
           </div>
-        </div>
 
-        {/* 保存按钮 */}
-        <div className="settings-actions">
-          <button className="save-button" onClick={handleSaveSettings}>
-            保存设置
-          </button>
-        </div>
+          <div>
+            <Text strong>备份间隔（小时）：</Text>
+            <Input 
+              type="number"
+              name="backupInterval"
+              min={1}
+              max={168}
+              value={systemSettings.backupInterval}
+              onChange={handleSystemSettingChange}
+              style={{ marginTop: '8px', width: '200px' }}
+            />
+          </div>
+
+          <div>
+            <Checkbox 
+              name="notificationEnabled"
+              checked={systemSettings.notificationEnabled}
+              onChange={handleSystemSettingChange}
+            >
+              启用通知
+            </Checkbox>
+            <Paragraph style={{ marginLeft: '24px', marginTop: '4px' }} type="secondary">
+              接收系统通知
+            </Paragraph>
+          </div>
+        </Space>
+      </Card>
+
+      {/* 保存按钮 */}
+      <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+        <Button 
+          type="primary" 
+          onClick={handleSaveSettings}
+          icon={<SaveOutlined />}
+          size="large"
+        >
+          保存设置
+        </Button>
       </div>
     </div>
   )

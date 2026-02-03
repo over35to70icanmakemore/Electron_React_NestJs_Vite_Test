@@ -38,9 +38,9 @@ export const industrialTheme: ConfigProviderProps['theme'] = {
     // 间距
     lineHeight: 1.6,
     marginXS: 4,
-    marginS: 8,
-    marginM: 16,
-    marginL: 24,
+    margin: 8,
+    marginSM: 16,
+    marginLG: 24,
     marginXL: 32,
     
     // 圆角
@@ -50,7 +50,7 @@ export const industrialTheme: ConfigProviderProps['theme'] = {
     
     // 阴影
     boxShadow: '0 2px 4px rgba(0, 0, 0, 0.05)',
-    boxShadowHover: '0 4px 8px rgba(0, 0, 0, 0.1)',
+    // boxShadowHover 已移除，该属性不在 AliasToken 类型中
     
     // 表格
     colorFillAlter: '#f8f9fa',
@@ -73,7 +73,7 @@ export const industrialTheme: ConfigProviderProps['theme'] = {
     Table: {
       headerBg: 'linear-gradient(180deg, #f8f9fa 0%, #e9ecef 100%)',
       headerColor: '#495057',
-      headerFontWeight: 600,
+      headerSplitColor: 'transparent',
       rowHoverBg: '#f8f9fa',
       fontSize: 12,
     },
@@ -86,7 +86,7 @@ export const industrialTheme: ConfigProviderProps['theme'] = {
     
     // 表单组件样式
     Form: {
-      labelFontWeight: 500,
+      // labelFontWeight 不是 Form 组件的合法属性，已移除
       labelColor: '#333',
     },
     
@@ -105,8 +105,8 @@ export const industrialTheme: ConfigProviderProps['theme'] = {
     // 选项卡组件样式
     Tabs: {
       fontSize: 12,
-      headerBg: '#f0f2f5',
-      activeColor: '#007bff',
+      // headerBg 不是 Tabs 组件的合法属性，已移除
+      colorPrimary: '#007bff',
     },
   },
 }

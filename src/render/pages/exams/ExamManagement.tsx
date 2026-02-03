@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import ExamList from './ExamList'
 import ExamForm from './ExamForm'
 import './ExamManagement.css'
@@ -21,47 +21,6 @@ interface Exam {
 const ExamManagement: React.FC = () => {
   const [isFormOpen, setIsFormOpen] = useState(false)
   const [editingExam, setEditingExam] = useState<Exam | undefined>()
-  const [exams, setExams] = useState<Exam[]>([
-    {
-      id: '1',
-      title: '2026年春季学期数学期末考试',
-      description: '高等数学上册内容，包括极限、导数、积分等知识点',
-      duration: 120,
-      start_time: '2026-06-15T09:00:00',
-      end_time: '2026-06-15T11:00:00',
-      status: 'published',
-      pass_score: 60,
-      created_by: 'admin',
-      created_at: '2026-06-01T10:00:00',
-      updated_at: '2026-06-10T15:00:00'
-    },
-    {
-      id: '2',
-      title: '2026年春季学期英语期中考试',
-      description: '大学英语四级水平测试，包括听力、阅读、写作等部分',
-      duration: 90,
-      start_time: '2026-04-20T14:00:00',
-      end_time: '2026-04-20T15:30:00',
-      status: 'ended',
-      pass_score: 60,
-      created_by: 'admin',
-      created_at: '2026-04-01T09:00:00',
-      updated_at: '2026-04-15T10:00:00'
-    },
-    {
-      id: '3',
-      title: '2026年春季学期计算机基础考试',
-      description: '计算机基础知识测试，包括操作系统、网络、办公软件等内容',
-      duration: 100,
-      start_time: '2026-06-20T10:00:00',
-      end_time: '2026-06-20T11:40:00',
-      status: 'draft',
-      pass_score: 60,
-      created_by: 'admin',
-      created_at: '2026-06-12T08:00:00',
-      updated_at: '2026-06-12T08:00:00'
-    }
-  ])
 
   // 打开创建考试表单
   const handleCreateExam = () => {
@@ -76,9 +35,21 @@ const ExamManagement: React.FC = () => {
   }
 
   // 删除考试
-  const handleDeleteExam = (examId: string) => {
+  const handleDeleteExam = async (examId: string) => {
     if (window.confirm('确定要删除这个考试吗？')) {
-      setExams(prevExams => prevExams.filter(exam => exam.id !== examId))
+      try {
+        const result = await window.electron.deleteExam(examId)
+        if (result) {
+          // 刷新考试列表
+          const examListComponent = document.querySelector('.exam-list-container')
+          if (examListComponent) {
+            // 触发 ExamList 组件的重新渲染
+            examListComponent.dispatchEvent(new Event('refresh'))
+          }
+        }
+      } catch (error) {
+        console.error('删除考试失败:', error)
+      }
     }
   }
 
@@ -89,32 +60,24 @@ const ExamManagement: React.FC = () => {
   }
 
   // 提交考试表单
-  const handleSubmitExam = (examData: any) => {
-    if (editingExam) {
-      // 更新现有考试
-      setExams(prevExams =>
-        prevExams.map(exam =>
-          exam.id === editingExam.id
-            ? {
-                ...exam,
-                ...examData,
-                updated_at: new Date().toISOString()
-              }
-            : exam
-        )
-      )
-    } else {
-      // 创建新考试
-      const newExam: Exam = {
-        id: Math.random().toString(36).substr(2, 9),
-        ...examData,
-        created_by: 'admin',
-        created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString()
+  const handleSubmitExam = async (examData: any) => {
+    try {
+      if (editingExam) {
+        // 更新现有考试
+        await window.electron.updateExam(editingExam.id, examData)
+      } else {
+        // 创建新考试
+        await window.electron.createExam(examData)
       }
-      setExams(prevExams => [...prevExams, newExam])
+      setIsFormOpen(false)
+      // 刷新考试列表
+      const examListComponent = document.querySelector('.exam-list-container')
+      if (examListComponent) {
+        examListComponent.dispatchEvent(new Event('refresh'))
+      }
+    } catch (error) {
+      console.error('保存考试失败:', error)
     }
-    setIsFormOpen(false)
   }
 
   // 取消表单

@@ -4,34 +4,39 @@ import { Module } from '@nestjs/common'
 import { app, BrowserWindow } from 'electron'
 import { AppController } from './app.controller'
 import { AppService } from './app.service'
+import { ExamModule } from './exams/exam.module'
 
 @Module({
-  imports: [ElectronModule.registerAsync({
-    useFactory: async () => {
-      const isDev = !app.isPackaged
-      const win = new BrowserWindow({
-        width: 1280,
-        height: 1024,
-        autoHideMenuBar: false,
-        webPreferences: {
-          contextIsolation: true,
-          preload: join(__dirname, '../preload/index.js'),
-        },
-      })
+  imports: [
+    ElectronModule.registerAsync({
+      useFactory: async () => {
+        const isDev = !app.isPackaged
+        const win = new BrowserWindow({
+          width: 1280,
+          height: 1024,
+          autoHideMenuBar: false,
+          title: 'electron开发模板',
+          webPreferences: {
+            contextIsolation: true,
+            preload: join(__dirname, '../preload/index.js'),
+          },
+        })
 
-      win.on('closed', () => {
-        win.destroy()
-      })
+        win.on('closed', () => {
+          win.destroy()
+        })
 
-      const URL = isDev
-        ? process.env.DS_RENDERER_URL
-        : `file://${join(app.getAppPath(), 'dist/render/index.html')}`
+        const URL = isDev
+          ? process.env.DS_RENDERER_URL
+          : `file://${join(app.getAppPath(), 'dist/render/index.html')}`
 
-      win.loadURL(URL)
+        win.loadURL(URL)
 
-      return { win }
-    },
-  })],
+        return { win }
+      },
+    }),
+    ExamModule
+  ],
   controllers: [AppController],
   providers: [AppService],
 })

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { BrowserRouter as Router, Routes, Route, Navigate, useLocation, useNavigate } from 'react-router-dom'
 import { Tabs, Button, Tooltip, Layout, ConfigProvider } from 'antd'
+import { CalendarOutlined, FileTextOutlined, UserOutlined, FileOutlined, BarChartOutlined, SettingOutlined, TeamOutlined } from '@ant-design/icons'
 import { industrialTheme } from './theme'
 import './App.css'
 
@@ -28,43 +29,43 @@ const AppContent = () => {
     {
       id: 'user-exams',
       label: '我的考试',
-      icon: '📅',
+      icon: <CalendarOutlined />,
       path: '/user-exams'
     },
     {
       id: 'exams',
       label: '考试管理',
-      icon: '📋',
+      icon: <FileTextOutlined />,
       path: '/exams'
     },
     {
       id: 'students',
       label: '考生管理',
-      icon: '👥',
+      icon: <TeamOutlined />,
       path: '/students'
     },
     {
       id: 'questions',
       label: '试题库',
-      icon: '📝',
+      icon: <FileOutlined />,
       path: '/questions'
     },
     {
       id: 'scores',
       label: '成绩分析',
-      icon: '📊',
+      icon: <BarChartOutlined />,
       path: '/scores'
     },
     {
       id: 'users',
       label: '用户管理',
-      icon: '👤',
+      icon: <UserOutlined />,
       path: '/users'
     },
     {
       id: 'settings',
       label: '系统设置',
-      icon: '⚙️',
+      icon: <SettingOutlined />,
       path: '/settings'
     }
   ]

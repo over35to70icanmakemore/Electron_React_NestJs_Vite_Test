@@ -12,6 +12,7 @@ import {
   Legend,
 } from 'chart.js'
 import { Line, Bar, Pie } from 'react-chartjs-2'
+import { Card, Select, Typography, Row, Col, Table, Tag, Space, Statistic } from 'antd'
 import './ScoreAnalysis.css'
 
 // 注册 Chart.js 组件
@@ -137,7 +138,13 @@ const ScoreAnalysis: React.FC = () => {
           data: examScores.map(score => score.score),
           borderColor: 'rgb(53, 162, 235)',
           backgroundColor: 'rgba(53, 162, 235, 0.5)',
-          tension: 0.1,
+          tension: 0.3,
+          pointBackgroundColor: 'rgb(53, 162, 235)',
+          pointBorderColor: '#fff',
+          pointHoverBackgroundColor: '#fff',
+          pointHoverBorderColor: 'rgb(53, 162, 235)',
+          pointRadius: 5,
+          pointHoverRadius: 7,
         },
         {
           label: '及格线',
@@ -145,6 +152,7 @@ const ScoreAnalysis: React.FC = () => {
           borderColor: 'rgb(255, 99, 132)',
           borderDash: [5, 5],
           fill: false,
+          pointRadius: 0,
         },
       ],
     }
@@ -166,6 +174,7 @@ const ScoreAnalysis: React.FC = () => {
             'rgb(255, 99, 132)',
           ],
           borderWidth: 1,
+          hoverOffset: 10,
         },
       ],
     }
@@ -193,129 +202,239 @@ const ScoreAnalysis: React.FC = () => {
         {
           label: '学生人数',
           data: Object.values(scoreRanges),
-          backgroundColor: 'rgba(153, 102, 255, 0.8)',
-          borderColor: 'rgb(153, 102, 255)',
+          backgroundColor: [
+            'rgba(255, 99, 132, 0.8)',
+            'rgba(255, 159, 64, 0.8)',
+            'rgba(255, 205, 86, 0.8)',
+            'rgba(75, 192, 192, 0.8)',
+            'rgba(54, 162, 235, 0.8)',
+          ],
+          borderColor: [
+            'rgb(255, 99, 132)',
+            'rgb(255, 159, 64)',
+            'rgb(255, 205, 86)',
+            'rgb(75, 192, 192)',
+            'rgb(54, 162, 235)',
+          ],
           borderWidth: 1,
+          borderRadius: 4,
         },
       ],
     }
 
-    return { lineData, pieData, barData }
+    // 图表配置选项
+    const chartOptions = {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          position: 'top' as const,
+        },
+        tooltip: {
+          backgroundColor: 'rgba(0, 0, 0, 0.8)',
+          padding: 12,
+          cornerRadius: 4,
+          titleFont: {
+            size: 14,
+          },
+          bodyFont: {
+            size: 13,
+          },
+        },
+      },
+      scales: {
+        y: {
+          beginAtZero: true,
+          grid: {
+            color: 'rgba(0, 0, 0, 0.05)',
+          },
+        },
+        x: {
+          grid: {
+            display: false,
+          },
+        },
+      },
+    }
+
+    return { lineData, pieData, barData, chartOptions }
   }
 
-  const { lineData, pieData, barData } = prepareChartData()
+  const { lineData, pieData, barData, chartOptions } = prepareChartData()
+
+  // 表格列配置
+  const columns = [
+    {
+      title: '学号',
+      dataIndex: 'student_id',
+      key: 'student_id',
+    },
+    {
+      title: '姓名',
+      dataIndex: 'student_name',
+      key: 'student_name',
+    },
+    {
+      title: '成绩',
+      dataIndex: 'score',
+      key: 'score',
+      render: (score: number) => (
+        <span style={{ fontWeight: 500 }}>{score}</span>
+      ),
+    },
+    {
+      title: '状态',
+      dataIndex: 'status',
+      key: 'status',
+      render: (status: string) => (
+        <Tag color={status === 'passed' ? 'success' : 'error'}>
+          {status === 'passed' ? '及格' : '不及格'}
+        </Tag>
+      ),
+    },
+    {
+      title: '考试日期',
+      dataIndex: 'exam_date',
+      key: 'exam_date',
+      render: (date: string) => new Date(date).toLocaleDateString(),
+    },
+  ]
 
   return (
-    <div className="score-analysis-container">
-      <div className="page-header">
-        <h1>成绩分析</h1>
-        <div className="exam-selector">
-          <label htmlFor="exam-select">选择考试：</label>
-          <select
-            id="exam-select"
+    <div style={{ padding: '20px' }}>
+      {/* 页面头部 */}
+      <div style={{ marginBottom: '24px' }}>
+        <Typography.Title level={3}>成绩分析</Typography.Title>
+        <Space direction="horizontal">
+          <Typography.Text strong>选择考试：</Typography.Text>
+          <Select
             value={selectedExam}
-            onChange={(e) => setSelectedExam(e.target.value)}
-          >
-            {mockScoreData.exams.map(exam => (
-              <option key={exam.id} value={exam.id}>
-                {exam.name}
-              </option>
-            ))}
-          </select>
-        </div>
+            onChange={(value) => setSelectedExam(value)}
+            style={{ width: 300 }}
+            options={mockScoreData.exams.map(exam => ({
+              value: exam.id,
+              label: exam.name
+            }))}
+          />
+        </Space>
       </div>
 
       {/* 成绩统计卡片 */}
-      <div className="statistics-cards">
-        <div className="stat-card">
-          <h3>平均分</h3>
-          <p className="stat-value">{statistics.averageScore}</p>
-        </div>
-        <div className="stat-card">
-          <h3>及格率</h3>
-          <p className="stat-value">{statistics.passRate}%</p>
-        </div>
-        <div className="stat-card">
-          <h3>最高分</h3>
-          <p className="stat-value">{statistics.highestScore}</p>
-        </div>
-        <div className="stat-card">
-          <h3>最低分</h3>
-          <p className="stat-value">{statistics.lowestScore}</p>
-        </div>
-        <div className="stat-card">
-          <h3>参考人数</h3>
-          <p className="stat-value">{statistics.totalStudents}</p>
-        </div>
-      </div>
+      <Row gutter={[16, 16]} style={{ marginBottom: '24px' }}>
+        <Col xs={24} sm={12} md={8} lg={4}>
+          <Card bordered={true}>
+            <Statistic title="平均分" value={statistics.averageScore} precision={2} />
+          </Card>
+        </Col>
+        <Col xs={24} sm={12} md={8} lg={4}>
+          <Card bordered={true}>
+            <Statistic title="及格率" value={statistics.passRate} precision={2} suffix="%" />
+          </Card>
+        </Col>
+        <Col xs={24} sm={12} md={8} lg={4}>
+          <Card bordered={true}>
+            <Statistic title="最高分" value={statistics.highestScore} />
+          </Card>
+        </Col>
+        <Col xs={24} sm={12} md={8} lg={4}>
+          <Card bordered={true}>
+            <Statistic title="最低分" value={statistics.lowestScore} />
+          </Card>
+        </Col>
+        <Col xs={24} sm={12} md={8} lg={4}>
+          <Card bordered={true}>
+            <Statistic title="参考人数" value={statistics.totalStudents} />
+          </Card>
+        </Col>
+      </Row>
 
       {/* 图表区域 */}
-      <div className="charts-container">
+      <Row gutter={[16, 16]} style={{ marginBottom: '24px' }}>
         {/* 学生成绩折线图 */}
-        <div className="chart-card">
-          <h3>学生成绩</h3>
-          {examScores.length > 0 ? (
-            <Line data={lineData} />
-          ) : (
-            <div className="no-data">暂无成绩数据</div>
-          )}
-        </div>
+        <Col xs={24} md={12}>
+          <Card title="学生成绩" bordered={true}>
+            <div style={{ height: 300 }}>
+              {examScores.length > 0 ? (
+                <Line data={lineData} options={chartOptions} />
+              ) : (
+                <div style={{ 
+                  display: 'flex', 
+                  justifyContent: 'center', 
+                  alignItems: 'center', 
+                  height: '100%',
+                  color: '#666'
+                }}>
+                  暂无成绩数据
+                </div>
+              )}
+            </div>
+          </Card>
+        </Col>
 
         {/* 及格/不及格分布饼图 */}
-        <div className="chart-card">
-          <h3>及格情况</h3>
-          {examScores.length > 0 ? (
-            <Pie data={pieData} />
-          ) : (
-            <div className="no-data">暂无成绩数据</div>
-          )}
-        </div>
+        <Col xs={24} md={12}>
+          <Card title="及格情况" bordered={true}>
+            <div style={{ height: 300 }}>
+              {examScores.length > 0 ? (
+                <Pie data={pieData} options={chartOptions} />
+              ) : (
+                <div style={{ 
+                  display: 'flex', 
+                  justifyContent: 'center', 
+                  alignItems: 'center', 
+                  height: '100%',
+                  color: '#666'
+                }}>
+                  暂无成绩数据
+                </div>
+              )}
+            </div>
+          </Card>
+        </Col>
 
         {/* 成绩分布柱状图 */}
-        <div className="chart-card full-width">
-          <h3>成绩分布</h3>
-          {examScores.length > 0 ? (
-            <Bar data={barData} />
-          ) : (
-            <div className="no-data">暂无成绩数据</div>
-          )}
-        </div>
-      </div>
+        <Col xs={24}>
+          <Card title="成绩分布" bordered={true}>
+            <div style={{ height: 300 }}>
+              {examScores.length > 0 ? (
+                <Bar data={barData} options={chartOptions} />
+              ) : (
+                <div style={{ 
+                  display: 'flex', 
+                  justifyContent: 'center', 
+                  alignItems: 'center', 
+                  height: '100%',
+                  color: '#666'
+                }}>
+                  暂无成绩数据
+                </div>
+              )}
+            </div>
+          </Card>
+        </Col>
+      </Row>
 
       {/* 成绩列表 */}
-      <div className="score-list-container">
-        <h3>成绩明细</h3>
+      <Card title="成绩明细" bordered={true}>
         {examScores.length > 0 ? (
-          <table className="score-table">
-            <thead>
-              <tr>
-                <th>学号</th>
-                <th>姓名</th>
-                <th>成绩</th>
-                <th>状态</th>
-                <th>考试日期</th>
-              </tr>
-            </thead>
-            <tbody>
-              {examScores.map(score => (
-                <tr key={`${score.exam_id}-${score.student_id}`}>
-                  <td>{score.student_id}</td>
-                  <td>{score.student_name}</td>
-                  <td>{score.score}</td>
-                  <td>
-                    <span className={`status-badge ${score.status}`}>
-                      {score.status === 'passed' ? '及格' : '不及格'}
-                    </span>
-                  </td>
-                  <td>{new Date(score.exam_date).toLocaleDateString()}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+          <Table 
+            columns={columns} 
+            dataSource={examScores} 
+            rowKey={(record: any) => `${record.exam_id}-${record.student_id}`} 
+            pagination={{ pageSize: 10 }}
+          />
         ) : (
-          <div className="no-data">暂无成绩数据</div>
+          <div style={{ 
+            display: 'flex', 
+            justifyContent: 'center', 
+            alignItems: 'center', 
+            height: 200,
+            color: '#666'
+          }}>
+            暂无成绩数据
+          </div>
         )}
-      </div>
+      </Card>
     </div>
   )
 }
