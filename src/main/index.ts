@@ -103,7 +103,6 @@ async function electronAppInit() {
 function clearUserInfo() {
   // 注意：由于本地存储在渲染进程中，主进程无法直接访问
   // 这里通过重启应用来确保清除所有状态
-  console.log('Clearing user info and restarting app...')
   app.relaunch()
   app.quit()
 }

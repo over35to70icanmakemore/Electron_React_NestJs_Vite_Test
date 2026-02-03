@@ -4,6 +4,7 @@ import { IpcHandle, Window } from '@doubleshot/nest-electron'
 import { Controller } from '@nestjs/common'
 import { Payload } from '@nestjs/microservices'
 import { of } from 'rxjs'
+import { dialog } from 'electron'
 import { AppService } from './app.service'
 
 @Controller()
@@ -18,5 +19,10 @@ export class AppController {
     const { webContents } = this.mainWin
     webContents.send('reply-msg', 'this is msg from webContents.send')
     return of(`The main process received your message: ${msg} at time: ${this.appService.getTime()}`)
+  }
+
+  @IpcHandle('showMessageBox')
+  public async showMessageBox(@Payload() options: any) {
+    return dialog.showMessageBox(this.mainWin, options)
   }
 }

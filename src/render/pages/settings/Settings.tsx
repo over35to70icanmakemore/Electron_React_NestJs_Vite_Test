@@ -43,10 +43,10 @@ const Settings: React.FC = () => {
   // 保存设置
   const handleSaveSettings = () => {
     // 这里可以添加保存设置的逻辑
-    console.log('保存考试设置:', examSettings)
-    console.log('保存系统设置:', systemSettings)
+    console.warn('保存考试设置:', examSettings)
+    console.warn('保存系统设置:', systemSettings)
     // 模拟保存成功
-    alert('设置已保存')
+    console.warn('设置已保存')
   }
 
   const { Title, Text, Paragraph } = Typography

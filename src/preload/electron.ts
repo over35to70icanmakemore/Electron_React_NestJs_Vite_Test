@@ -22,4 +22,6 @@ export default {
   createExam: (examData: any) => ipcRenderer.invoke('createExam', examData),
   updateExam: (id: string, examData: any) => ipcRenderer.invoke('updateExam', id, examData),
   deleteExam: (id: string) => ipcRenderer.invoke('deleteExam', id),
+  // 对话框相关的 IPC 方法
+  showMessageBox: (options: any) => ipcRenderer.invoke('showMessageBox', options),
 }

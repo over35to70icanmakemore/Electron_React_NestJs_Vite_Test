@@ -21,7 +21,6 @@ const template = [
       { label: '重载框架', accelerator: 'CmdOrCtrl+R', click: () => {
           // 重载应用并确保进入登录页面
           // 先重新启动应用，再退出当前实例
-          console.log('Clearing user info and restarting app...')
           app.relaunch()
           app.quit()
         } },

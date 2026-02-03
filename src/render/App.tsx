@@ -13,7 +13,7 @@ import QuestionManagement from './pages/questions/QuestionManagement'
 import ScoreAnalysis from './pages/scores/ScoreAnalysis'
 import Settings from './pages/settings/Settings'
 import UserManagement from './pages/users/UserManagement'
-import UserExamPage from './pages/user-exams/UserExamPage'
+import MyExamPage from './pages/user-exams/MyExamPage'
 
 // 导入组件
 import AuthGuard from './components/AuthGuard'
@@ -154,7 +154,7 @@ const AppContent = () => {
       {/* 主内容区域 */}
       <Content className="main-content">
         {/* 根据当前路径渲染不同的组件 */}
-        {location.pathname === '/user-exams' && <UserExamPage />}
+        {location.pathname === '/user-exams' && <MyExamPage />}
         {location.pathname === '/exams' && <ExamManagement />}
         {location.pathname === '/students' && <StudentManagement />}
         {location.pathname === '/questions' && <QuestionManagement />}

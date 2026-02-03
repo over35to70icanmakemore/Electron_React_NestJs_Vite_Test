@@ -36,8 +36,16 @@ const ExamManagement: React.FC = () => {
 
   // 删除考试
   const handleDeleteExam = async (examId: string) => {
-    if (window.confirm('确定要删除这个考试吗？')) {
-      try {
+    try {
+      // 使用Electron对话框进行确认
+      const { response } = await window.electron.showMessageBox({
+        type: 'question',
+        message: '确定要删除这个考试吗？',
+        buttons: ['取消', '确定'],
+        defaultId: 0
+      })
+      
+      if (response === 1) {
         const result = await window.electron.deleteExam(examId)
         if (result) {
           // 刷新考试列表
@@ -47,16 +55,16 @@ const ExamManagement: React.FC = () => {
             examListComponent.dispatchEvent(new Event('refresh'))
           }
         }
-      } catch (error) {
-        console.error('删除考试失败:', error)
       }
+    } catch (error) {
+      console.error('删除考试失败:', error)
     }
   }
 
   // 查看考试详情
   const handleViewExam = (examId: string) => {
     // 这里可以实现查看考试详情的逻辑
-    alert(`查看考试 ID: ${examId}`)
+    console.warn(`查看考试 ID: ${examId}`)
   }
 
   // 提交考试表单
