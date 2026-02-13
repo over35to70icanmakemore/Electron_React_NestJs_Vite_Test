@@ -1,0 +1,135 @@
+.weather-container {
+  padding: 20px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.weather-header {
+  margin-bottom: 24px;
+  text-align: center;
+}
+
+.weather-header h4 {
+  margin-bottom: 4px;
+  color: #1a1a1a;
+}
+
+.search-section {
+  margin-bottom: 24px;
+  display: flex;
+  justify-content: center;
+}
+
+.current-weather {
+  border-radius: 12px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.current-weather .ant-card-body {
+  padding: 24px;
+}
+
+.weather-main {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.weather-info h2 {
+  color: white;
+  margin-bottom: 8px;
+}
+
+.temperature {
+  font-size: 64px;
+  font-weight: 300;
+  line-height: 1;
+  margin-bottom: 8px;
+}
+
+.weather-desc {
+  display: flex;
+  align-items: center;
+}
+
+.weather-details {
+  display: flex;
+  gap: 32px;
+}
+
+.detail-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.detail-item .ant-typography {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.forecast-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 16px;
+}
+
+.forecast-card {
+  border-radius: 12px;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.forecast-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
+.forecast-card .ant-card-body {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.forecast-icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.forecast-icon .anticon {
+  font-size: 32px;
+}
+
+.tips-card {
+  border-radius: 12px;
+}
+
+.tips-card h5 {
+  margin-bottom: 12px;
+}
+
+@media (max-width: 768px) {
+  .weather-container {
+    padding: 16px;
+  }
+
+  .weather-main {
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .weather-details {
+    gap: 16px;
+  }
+
+  .temperature {
+    font-size: 48px;
+  }
+
+  .forecast-list {
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  }
+}

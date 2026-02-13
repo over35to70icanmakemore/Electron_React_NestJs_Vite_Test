@@ -1,0 +1,113 @@
+.mock-exam-container {
+  padding: 20px;
+}
+
+.exam-header {
+  margin-bottom: 24px;
+  text-align: center;
+}
+
+.exam-header h4 {
+  margin-bottom: 4px;
+  color: #1a1a1a;
+}
+
+.exam-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.stat-card {
+  border-radius: 12px;
+}
+
+.stat-content {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.stat-icon {
+  font-size: 32px;
+}
+
+.stat-content h4 {
+  margin: 0;
+}
+
+.exam-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 16px;
+}
+
+.exam-card {
+  border-radius: 12px;
+  transition: all 0.3s ease;
+}
+
+.exam-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
+.exam-info {
+  margin-bottom: 16px;
+}
+
+.exam-info h5 {
+  margin-bottom: 12px;
+}
+
+.exam-details {
+  display: flex;
+  gap: 16px;
+  margin-top: 12px;
+}
+
+.exam-modal {
+  padding: 16px 0;
+}
+
+.question-progress {
+  margin-bottom: 24px;
+}
+
+.question-content {
+  margin-bottom: 24px;
+  padding: 16px;
+  background: #f5f7fa;
+  border-radius: 8px;
+}
+
+.question-content h5 {
+  margin-bottom: 16px;
+}
+
+.question-actions {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 16px;
+  border-top: 1px solid #f0f0f0;
+}
+
+@media (max-width: 768px) {
+  .mock-exam-container {
+    padding: 16px;
+  }
+
+  .exam-stats {
+    grid-template-columns: 1fr;
+  }
+
+  .exam-list {
+    grid-template-columns: 1fr;
+  }
+
+  .exam-details {
+    flex-direction: column;
+    gap: 8px;
+  }
+}

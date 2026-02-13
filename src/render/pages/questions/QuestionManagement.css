@@ -194,26 +194,52 @@
 /* 试题表格 */
 .question-table {
   width: 100%;
-  border-collapse: collapse;
+  border-collapse: separate;
+  border-spacing: 0;
   font-size: 0.9rem;
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
 }
 
 .question-table th,
 .question-table td {
-  padding: 1rem;
+  padding: 14px 18px;
   text-align: left;
-  border-bottom: 1px solid #e8e8e8;
+  border-bottom: 1px solid #f0f0f0;
 }
 
 .question-table th {
-  background-color: #fafafa;
+  background: linear-gradient(180deg, #fafbfc 0%, #f4f6f8 100%);
   font-weight: 600;
-  color: #333;
+  color: #1a1a1a;
   white-space: nowrap;
+  border-bottom: 2px solid #e1e4e8;
+  position: sticky;
+  top: 0;
+  z-index: 1;
 }
 
-.question-table tr:hover {
-  background-color: #f5f5f5;
+.question-table tbody tr {
+  transition: all 0.2s ease;
+}
+
+.question-table tbody tr:hover {
+  background-color: #f0f7ff;
+  transform: scale(1.001);
+}
+
+.question-table tbody tr:nth-child(even) {
+  background-color: #fafbfc;
+}
+
+.question-table tbody tr:nth-child(even):hover {
+  background-color: #f0f7ff;
+}
+
+.question-table td {
+  color: #4a5568;
 }
 
 /* 难度标签 */

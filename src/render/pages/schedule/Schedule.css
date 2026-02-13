@@ -1,0 +1,84 @@
+.schedule-container {
+  padding: 20px;
+}
+
+.schedule-header {
+  margin-bottom: 24px;
+  text-align: center;
+}
+
+.schedule-header h4 {
+  margin-bottom: 4px;
+  color: #1a1a1a;
+}
+
+.schedule-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+.calendar-card {
+  border-radius: 12px;
+}
+
+.calendar-card .ant-picker-calendar {
+  background: transparent;
+}
+
+.date-cell {
+  min-height: 60px;
+  padding: 4px;
+}
+
+.schedule-tag {
+  margin-bottom: 4px;
+  font-size: 12px;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.schedule-list-card {
+  border-radius: 12px;
+}
+
+.list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.list-header h5 {
+  margin: 0;
+}
+
+.schedule-list-card .ant-list-item {
+  padding: 12px 0;
+}
+
+.schedule-list-card .ant-list-item-meta-title {
+  margin-bottom: 4px;
+}
+
+@media (max-width: 1024px) {
+  .schedule-content {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .schedule-container {
+    padding: 16px;
+  }
+
+  .date-cell {
+    min-height: 40px;
+  }
+
+  .schedule-tag {
+    font-size: 10px;
+  }
+}

@@ -1,0 +1,113 @@
+.ai-knowledge-container {
+  padding: 20px;
+}
+
+.search-section {
+  margin-bottom: 24px;
+  text-align: center;
+}
+
+.search-section h4 {
+  margin-bottom: 8px;
+  color: #1a1a1a;
+}
+
+.search-input {
+  margin-top: 16px;
+  max-width: 600px;
+}
+
+.category-section {
+  margin-bottom: 24px;
+  padding: 16px;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.category-tag {
+  cursor: pointer;
+  padding: 4px 12px;
+  font-size: 14px;
+  transition: all 0.3s ease;
+}
+
+.category-tag:hover {
+  transform: scale(1.05);
+}
+
+.knowledge-list {
+  margin-bottom: 24px;
+}
+
+.knowledge-card {
+  height: 100%;
+  border-radius: 12px;
+  transition: all 0.3s ease;
+}
+
+.knowledge-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.card-header h5 {
+  margin: 0;
+  flex: 1;
+}
+
+.card-footer {
+  margin-top: 12px;
+  margin-bottom: 8px;
+}
+
+.card-meta {
+  padding-top: 8px;
+  border-top: 1px solid #f0f0f0;
+}
+
+.recommend-section {
+  margin-top: 32px;
+}
+
+.recommend-section h4 {
+  margin-bottom: 16px;
+  color: #1a1a1a;
+}
+
+.recommend-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 16px;
+}
+
+.recommend-card {
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.recommend-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+@media (max-width: 768px) {
+  .ai-knowledge-container {
+    padding: 16px;
+  }
+
+  .search-input {
+    max-width: 100%;
+  }
+
+  .recommend-list {
+    grid-template-columns: 1fr;
+  }
+}
