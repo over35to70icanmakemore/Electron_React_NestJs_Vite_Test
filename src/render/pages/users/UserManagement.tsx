@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { EditOutlined, DeleteOutlined, PlusOutlined } from '@ant-design/icons'
 import './UserManagement.css'
 
 interface User {
@@ -10,7 +11,6 @@ interface User {
 }
 
 const UserManagement: React.FC = () => {
-  // 模拟用户数据
   const [users, setUsers] = useState<User[]>([
     { id: 1, username: 'admin', role: 'admin', email: 'admin@example.com', createdAt: '2026-01-01' },
     { id: 2, username: 'teacher', role: 'teacher', email: 'teacher@example.com', createdAt: '2026-01-02' },
@@ -27,7 +27,6 @@ const UserManagement: React.FC = () => {
 
   const handleAddUser = (e: React.FormEvent) => {
     e.preventDefault()
-    // 模拟添加用户
     const user: User = {
       id: users.length + 1,
       username: newUser.username,
@@ -51,7 +50,7 @@ const UserManagement: React.FC = () => {
       <div className="page-header">
         <h1>用户管理</h1>
         <button className="add-button" onClick={() => setIsAddModalOpen(true)}>
-          添加用户
+          <PlusOutlined /> 添加用户
         </button>
       </div>
 
@@ -80,10 +79,18 @@ const UserManagement: React.FC = () => {
                 <td>{user.email}</td>
                 <td>{user.createdAt}</td>
                 <td>
-                  <button className="edit-button">编辑</button>
-                  <button className="delete-button" onClick={() => handleDeleteUser(user.id)}>
-                    删除
-                  </button>
+                  <div className="action-buttons">
+                    <button className="btn-action btn-edit" title="编辑">
+                      <EditOutlined />
+                    </button>
+                    <button 
+                      className="btn-action btn-delete" 
+                      onClick={() => handleDeleteUser(user.id)}
+                      title="删除"
+                    >
+                      <DeleteOutlined />
+                    </button>
+                  </div>
                 </td>
               </tr>
             ))}
@@ -91,7 +98,6 @@ const UserManagement: React.FC = () => {
         </table>
       </div>
 
-      {/* 添加用户模态框 */}
       {isAddModalOpen && (
         <div className="modal-overlay">
           <div className="modal-content">

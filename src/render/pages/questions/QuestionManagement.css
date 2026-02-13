@@ -270,6 +270,60 @@
 .action-buttons {
   display: flex;
   align-items: center;
+  gap: 8px;
+}
+
+.btn-action {
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  background-color: #f5f7fa;
+  color: #666;
+}
+
+.btn-action:hover {
+  transform: scale(1.1);
+}
+
+.btn-action .anticon {
+  font-size: 14px;
+}
+
+.btn-view {
+  background-color: #e6f7ff;
+  color: #1890ff;
+}
+
+.btn-view:hover {
+  background-color: #1890ff;
+  color: #ffffff;
+}
+
+.btn-edit {
+  background-color: #fff7e6;
+  color: #fa8c16;
+}
+
+.btn-edit:hover {
+  background-color: #fa8c16;
+  color: #ffffff;
+}
+
+.btn-delete {
+  background-color: #fff1f0;
+  color: #ff4d4f;
+}
+
+.btn-delete:hover {
+  background-color: #ff4d4f;
+  color: #ffffff;
 }
 
 /* 无数据提示 */

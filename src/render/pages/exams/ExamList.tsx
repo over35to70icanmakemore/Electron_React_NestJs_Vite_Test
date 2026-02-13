@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
+import { EyeOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons'
 
-// 考试数据类型定义
 interface Exam {
   id: string
   title: string
@@ -27,11 +27,9 @@ const ExamList: React.FC<ExamListProps> = ({ onEdit, onDelete, onView }) => {
   const [statusFilter, setStatusFilter] = useState('all')
   const [loading, setLoading] = useState(true)
 
-  // 从后端获取考试数据
   const fetchExams = async () => {
     try {
       setLoading(true)
-      // 使用 preload 中暴露的 IPC 方法与后端通信
       const result = await window.electron.getAllExams()
       setExams(result)
     } catch (error) {
@@ -41,11 +39,9 @@ const ExamList: React.FC<ExamListProps> = ({ onEdit, onDelete, onView }) => {
     }
   }
 
-  // 初始加载和监听刷新事件
   useEffect(() => {
     fetchExams()
 
-    // 监听刷新事件
     const examListComponent = document.querySelector('.exam-list-container')
     if (examListComponent) {
       const handleRefresh = () => {
@@ -54,14 +50,12 @@ const ExamList: React.FC<ExamListProps> = ({ onEdit, onDelete, onView }) => {
 
       examListComponent.addEventListener('refresh', handleRefresh)
 
-      // 清理监听器
       return () => {
         examListComponent.removeEventListener('refresh', handleRefresh)
       }
     }
   }, [])
 
-  // 获取考试状态的中文显示
   const getStatusText = (status: string) => {
     switch (status) {
       case 'draft': return '草稿'
@@ -71,7 +65,6 @@ const ExamList: React.FC<ExamListProps> = ({ onEdit, onDelete, onView }) => {
     }
   }
 
-  // 获取考试状态的样式类
   const getStatusClass = (status: string) => {
     switch (status) {
       case 'draft': return 'status-draft'
@@ -81,7 +74,6 @@ const ExamList: React.FC<ExamListProps> = ({ onEdit, onDelete, onView }) => {
     }
   }
 
-  // 过滤考试列表
   const filteredExams = exams.filter(exam => {
     const matchesSearch = exam.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          exam.description.toLowerCase().includes(searchTerm.toLowerCase())
@@ -91,7 +83,6 @@ const ExamList: React.FC<ExamListProps> = ({ onEdit, onDelete, onView }) => {
 
   return (
     <div className="exam-list-container">
-      {/* 搜索和筛选 */}
       <div className="exam-list-header">
         <div className="search-box">
           <input
@@ -116,7 +107,6 @@ const ExamList: React.FC<ExamListProps> = ({ onEdit, onDelete, onView }) => {
         </div>
       </div>
 
-      {/* 考试列表 */}
       <div className="exam-list">
         {loading ? (
           <div className="loading">
@@ -152,22 +142,25 @@ const ExamList: React.FC<ExamListProps> = ({ onEdit, onDelete, onView }) => {
                     <td>
                       <div className="action-buttons">
                         <button 
-                          className="btn btn-view"
+                          className="btn-action btn-view"
                           onClick={() => onView(exam.id)}
+                          title="查看"
                         >
-                          查看
+                          <EyeOutlined />
                         </button>
                         <button 
-                          className="btn btn-edit"
+                          className="btn-action btn-edit"
                           onClick={() => onEdit(exam)}
+                          title="编辑"
                         >
-                          编辑
+                          <EditOutlined />
                         </button>
                         <button 
-                          className="btn btn-delete"
+                          className="btn-action btn-delete"
                           onClick={() => onDelete(exam.id)}
+                          title="删除"
                         >
-                          删除
+                          <DeleteOutlined />
                         </button>
                       </div>
                     </td>

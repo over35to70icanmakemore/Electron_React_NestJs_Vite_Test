@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
+import { EyeOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons'
 
-// 试题数据类型定义
 interface Question {
   id: string
   type: 'single' | 'multiple' | 'truefalse' | 'essay'
@@ -12,7 +12,6 @@ interface Question {
   updated_at: string
 }
 
-// 模拟试题数据
 const mockQuestions: Question[] = [
   {
     id: '1',
@@ -68,7 +67,6 @@ const QuestionList: React.FC<QuestionListProps> = ({ onEdit, onDelete, onView })
   const [typeFilter, setTypeFilter] = useState('all')
   const [difficultyFilter, setDifficultyFilter] = useState('all')
 
-  // 获取试题类型的中文显示
   const getTypeText = (type: string) => {
     switch (type) {
       case 'single': return '单选题'
@@ -79,7 +77,6 @@ const QuestionList: React.FC<QuestionListProps> = ({ onEdit, onDelete, onView })
     }
   }
 
-  // 获取试题难度的中文显示
   const getDifficultyText = (difficulty: string) => {
     switch (difficulty) {
       case 'easy': return '简单'
@@ -89,7 +86,6 @@ const QuestionList: React.FC<QuestionListProps> = ({ onEdit, onDelete, onView })
     }
   }
 
-  // 获取试题难度的样式类
   const getDifficultyClass = (difficulty: string) => {
     switch (difficulty) {
       case 'easy': return 'difficulty-easy'
@@ -99,7 +95,6 @@ const QuestionList: React.FC<QuestionListProps> = ({ onEdit, onDelete, onView })
     }
   }
 
-  // 过滤试题列表
   const filteredQuestions = questions.filter(question => {
     const matchesSearch = question.content.toLowerCase().includes(searchTerm.toLowerCase())
     const matchesType = typeFilter === 'all' || question.type === typeFilter
@@ -109,7 +104,6 @@ const QuestionList: React.FC<QuestionListProps> = ({ onEdit, onDelete, onView })
 
   return (
     <div className="question-list-container">
-      {/* 搜索和筛选 */}
       <div className="question-list-header">
         <div className="search-box">
           <input
@@ -145,7 +139,6 @@ const QuestionList: React.FC<QuestionListProps> = ({ onEdit, onDelete, onView })
         </div>
       </div>
 
-      {/* 试题列表 */}
       <div className="question-list">
         <table className="question-table">
           <thead>
@@ -172,22 +165,25 @@ const QuestionList: React.FC<QuestionListProps> = ({ onEdit, onDelete, onView })
                   <td>
                     <div className="action-buttons">
                       <button 
-                        className="btn btn-view"
+                        className="btn-action btn-view"
                         onClick={() => onView(question.id)}
+                        title="查看"
                       >
-                        查看
+                        <EyeOutlined />
                       </button>
                       <button 
-                        className="btn btn-edit"
+                        className="btn-action btn-edit"
                         onClick={() => onEdit(question)}
+                        title="编辑"
                       >
-                        编辑
+                        <EditOutlined />
                       </button>
                       <button 
-                        className="btn btn-delete"
+                        className="btn-action btn-delete"
                         onClick={() => onDelete(question.id)}
+                        title="删除"
                       >
-                        删除
+                        <DeleteOutlined />
                       </button>
                     </div>
                   </td>

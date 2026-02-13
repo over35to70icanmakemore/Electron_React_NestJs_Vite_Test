@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
+import { EyeOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons'
 
-// 考生数据类型定义
 interface Student {
   id: string
   student_id: string
@@ -14,7 +14,6 @@ interface Student {
   updated_at: string
 }
 
-// 模拟考生数据
 const mockStudents: Student[] = [
   {
     id: '1',
@@ -65,7 +64,6 @@ const StudentList: React.FC<StudentListProps> = ({ onEdit, onDelete, onView }) =
   const [searchTerm, setSearchTerm] = useState('')
   const [classFilter, setClassFilter] = useState('all')
 
-  // 获取性别的中文显示
   const getGenderText = (gender: string) => {
     switch (gender) {
       case 'male': return '男'
@@ -74,10 +72,8 @@ const StudentList: React.FC<StudentListProps> = ({ onEdit, onDelete, onView }) =
     }
   }
 
-  // 获取所有班级选项
   const classOptions = ['all', ...Array.from(new Set(students.map(student => student.class)))]
 
-  // 过滤考生列表
   const filteredStudents = students.filter(student => {
     const matchesSearch = student.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          student.student_id.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -88,7 +84,6 @@ const StudentList: React.FC<StudentListProps> = ({ onEdit, onDelete, onView }) =
 
   return (
     <div className="student-list-container">
-      {/* 搜索和筛选 */}
       <div className="student-list-header">
         <div className="search-box">
           <input
@@ -114,7 +109,6 @@ const StudentList: React.FC<StudentListProps> = ({ onEdit, onDelete, onView }) =
         </div>
       </div>
 
-      {/* 考生列表 */}
       <div className="student-list">
         <table className="student-table">
           <thead>
@@ -143,22 +137,25 @@ const StudentList: React.FC<StudentListProps> = ({ onEdit, onDelete, onView }) =
                   <td>
                     <div className="action-buttons">
                       <button 
-                        className="btn btn-view"
+                        className="btn-action btn-view"
                         onClick={() => onView(student.id)}
+                        title="查看"
                       >
-                        查看
+                        <EyeOutlined />
                       </button>
                       <button 
-                        className="btn btn-edit"
+                        className="btn-action btn-edit"
                         onClick={() => onEdit(student)}
+                        title="编辑"
                       >
-                        编辑
+                        <EditOutlined />
                       </button>
                       <button 
-                        className="btn btn-delete"
+                        className="btn-action btn-delete"
                         onClick={() => onDelete(student.id)}
+                        title="删除"
                       >
-                        删除
+                        <DeleteOutlined />
                       </button>
                     </div>
                   </td>
