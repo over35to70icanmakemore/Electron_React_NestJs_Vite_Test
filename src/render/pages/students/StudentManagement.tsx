@@ -1,6 +1,7 @@
-import React, { useState } from 'react'
-import StudentList from './StudentList'
+import * as React from 'react'
+import { useState } from 'react'
 import StudentForm from './StudentForm'
+import StudentList from './StudentList'
 import './StudentManagement.css'
 
 // 考生数据类型定义
@@ -31,7 +32,7 @@ const StudentManagement: React.FC = () => {
       phone: '13800138001',
       class: '高一(1)班',
       created_at: '2026-01-01T00:00:00',
-      updated_at: '2026-01-01T00:00:00'
+      updated_at: '2026-01-01T00:00:00',
     },
     {
       id: '2',
@@ -43,7 +44,7 @@ const StudentManagement: React.FC = () => {
       phone: '13800138002',
       class: '高一(1)班',
       created_at: '2026-01-01T00:00:00',
-      updated_at: '2026-01-01T00:00:00'
+      updated_at: '2026-01-01T00:00:00',
     },
     {
       id: '3',
@@ -55,8 +56,8 @@ const StudentManagement: React.FC = () => {
       phone: '13800138003',
       class: '高一(2)班',
       created_at: '2026-01-01T00:00:00',
-      updated_at: '2026-01-01T00:00:00'
-    }
+      updated_at: '2026-01-01T00:00:00',
+    },
   ])
 
   // 打开添加考生表单
@@ -94,18 +95,19 @@ const StudentManagement: React.FC = () => {
             ? {
                 ...student,
                 ...studentData,
-                updated_at: new Date().toISOString()
+                updated_at: new Date().toISOString(),
               }
-            : student
-        )
+            : student,
+        ),
       )
-    } else {
+    }
+    else {
       // 创建新考生
       const newStudent: Student = {
         id: Math.random().toString(36).substr(2, 9),
         ...studentData,
         created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString()
+        updated_at: new Date().toISOString(),
       }
       setStudents(prevStudents => [...prevStudents, newStudent])
     }
@@ -127,19 +129,21 @@ const StudentManagement: React.FC = () => {
         </button>
       </div>
 
-      {isFormOpen ? (
-        <StudentForm
-          student={editingStudent}
-          onSubmit={handleSubmitStudent}
-          onCancel={handleCancelForm}
-        />
-      ) : (
-        <StudentList
-          onEdit={handleEditStudent}
-          onDelete={handleDeleteStudent}
-          onView={handleViewStudent}
-        />
-      )}
+      {isFormOpen
+        ? (
+            <StudentForm
+              student={editingStudent}
+              onSubmit={handleSubmitStudent}
+              onCancel={handleCancelForm}
+            />
+          )
+        : (
+            <StudentList
+              onEdit={handleEditStudent}
+              onDelete={handleDeleteStudent}
+              onView={handleViewStudent}
+            />
+          )}
     </div>
   )
 }

@@ -1,7 +1,7 @@
-import { Controller } from '@nestjs/common'
 import { IpcHandle } from '@doubleshot/nest-electron'
-import { TodoService } from './todo.service'
+import { Controller } from '@nestjs/common'
 import { Todo } from './todo.entity'
+import { TodoService } from './todo.service'
 
 @Controller()
 export class TodoController {

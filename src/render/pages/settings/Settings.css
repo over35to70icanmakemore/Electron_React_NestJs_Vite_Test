@@ -56,13 +56,13 @@
   cursor: pointer;
 }
 
-.form-group input[type="checkbox"] {
+.form-group input[type='checkbox'] {
   width: 16px;
   height: 16px;
   cursor: pointer;
 }
 
-.form-group input[type="number"],
+.form-group input[type='number'],
 .form-group select {
   width: 200px;
   padding: 8px 12px;
@@ -72,7 +72,7 @@
   margin-top: 5px;
 }
 
-.form-group input[type="number"]:focus,
+.form-group input[type='number']:focus,
 .form-group select:focus {
   outline: none;
   border-color: #007bff;
@@ -120,7 +120,7 @@
     padding: 15px;
   }
 
-  .form-group input[type="number"],
+  .form-group input[type='number'],
   .form-group select {
     width: 100%;
   }

@@ -1,5 +1,6 @@
-import React, { useState } from 'react'
-import { EditOutlined, DeleteOutlined, PlusOutlined } from '@ant-design/icons'
+import { DeleteOutlined, EditOutlined, PlusOutlined } from '@ant-design/icons'
+import * as React from 'react'
+import { useState } from 'react'
 import './UserManagement.css'
 
 interface User {
@@ -14,7 +15,7 @@ const UserManagement: React.FC = () => {
   const [users, setUsers] = useState<User[]>([
     { id: 1, username: 'admin', role: 'admin', email: 'admin@example.com', createdAt: '2026-01-01' },
     { id: 2, username: 'teacher', role: 'teacher', email: 'teacher@example.com', createdAt: '2026-01-02' },
-    { id: 3, username: 'user', role: 'user', email: 'user@example.com', createdAt: '2026-01-03' }
+    { id: 3, username: 'user', role: 'user', email: 'user@example.com', createdAt: '2026-01-03' },
   ])
 
   const [isAddModalOpen, setIsAddModalOpen] = useState(false)
@@ -22,7 +23,7 @@ const UserManagement: React.FC = () => {
     username: '',
     password: '',
     role: 'user',
-    email: ''
+    email: '',
   })
 
   const handleAddUser = (e: React.FormEvent) => {
@@ -32,7 +33,7 @@ const UserManagement: React.FC = () => {
       username: newUser.username,
       role: newUser.role,
       email: newUser.email,
-      createdAt: new Date().toISOString().split('T')[0]
+      createdAt: new Date().toISOString().split('T')[0],
     }
     setUsers([...users, user])
     setIsAddModalOpen(false)
@@ -50,7 +51,9 @@ const UserManagement: React.FC = () => {
       <div className="page-header">
         <h1>用户管理</h1>
         <button className="add-button" onClick={() => setIsAddModalOpen(true)}>
-          <PlusOutlined /> 添加用户
+          <PlusOutlined />
+          {' '}
+          添加用户
         </button>
       </div>
 
@@ -83,8 +86,8 @@ const UserManagement: React.FC = () => {
                     <button className="btn-action btn-edit" title="编辑">
                       <EditOutlined />
                     </button>
-                    <button 
-                      className="btn-action btn-delete" 
+                    <button
+                      className="btn-action btn-delete"
                       onClick={() => handleDeleteUser(user.id)}
                       title="删除"
                     >
@@ -114,7 +117,7 @@ const UserManagement: React.FC = () => {
                   type="text"
                   id="username"
                   value={newUser.username}
-                  onChange={(e) => setNewUser({ ...newUser, username: e.target.value })}
+                  onChange={e => setNewUser({ ...newUser, username: e.target.value })}
                   required
                 />
               </div>
@@ -124,7 +127,7 @@ const UserManagement: React.FC = () => {
                   type="password"
                   id="password"
                   value={newUser.password}
-                  onChange={(e) => setNewUser({ ...newUser, password: e.target.value })}
+                  onChange={e => setNewUser({ ...newUser, password: e.target.value })}
                   required
                 />
               </div>
@@ -133,7 +136,7 @@ const UserManagement: React.FC = () => {
                 <select
                   id="role"
                   value={newUser.role}
-                  onChange={(e) => setNewUser({ ...newUser, role: e.target.value })}
+                  onChange={e => setNewUser({ ...newUser, role: e.target.value })}
                 >
                   <option value="admin">管理员</option>
                   <option value="teacher">教师</option>
@@ -146,7 +149,7 @@ const UserManagement: React.FC = () => {
                   type="email"
                   id="email"
                   value={newUser.email}
-                  onChange={(e) => setNewUser({ ...newUser, email: e.target.value })}
+                  onChange={e => setNewUser({ ...newUser, email: e.target.value })}
                   required
                 />
               </div>

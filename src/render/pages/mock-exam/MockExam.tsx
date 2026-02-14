@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react'
-import { Card, Button, Progress, Tag, Typography, Space, Modal, Radio, message, Spin } from 'antd'
-import { ThunderboltOutlined, ClockCircleOutlined, TrophyOutlined, CheckCircleOutlined } from '@ant-design/icons'
+import { CheckCircleOutlined, ClockCircleOutlined, ThunderboltOutlined, TrophyOutlined } from '@ant-design/icons'
+import { Button, Card, message, Modal, Progress, Radio, Space, Spin, Tag, Typography } from 'antd'
+import * as React from 'react'
+import { useEffect, useState } from 'react'
 import './MockExam.css'
 
 const { Title, Text } = Typography
@@ -41,10 +42,12 @@ const MockExam: React.FC = () => {
       setLoading(true)
       const data = await window.electron.getAllMockExams()
       setExams(data)
-    } catch (error) {
+    }
+    catch (error) {
       console.error('获取模拟考试数据失败:', error)
       message.error('获取模拟考试数据失败')
-    } finally {
+    }
+    finally {
       setLoading(false)
     }
   }
@@ -53,7 +56,7 @@ const MockExam: React.FC = () => {
     const colors = {
       easy: 'green',
       medium: 'orange',
-      hard: 'red'
+      hard: 'red',
     }
     return colors[difficulty as keyof typeof colors] || 'default'
   }
@@ -62,7 +65,7 @@ const MockExam: React.FC = () => {
     const texts = {
       'not-started': '未开始',
       'in-progress': '进行中',
-      'completed': '已完成'
+      'completed': '已完成',
     }
     return texts[status as keyof typeof texts] || status
   }
@@ -74,7 +77,8 @@ const MockExam: React.FC = () => {
       setCurrentQuestion(0)
       setAnswers({})
       setIsModalVisible(true)
-    } catch (error) {
+    }
+    catch (error) {
       console.error('获取考试详情失败:', error)
       message.error('获取考试详情失败')
     }
@@ -97,14 +101,16 @@ const MockExam: React.FC = () => {
   }
 
   const handleSubmit = async () => {
-    if (!selectedExam) return
-    
+    if (!selectedExam)
+      return
+
     try {
       const result = await window.electron.submitMockExam(selectedExam.id, answers)
       message.success(`考试已提交！得分: ${result.score}`)
       setIsModalVisible(false)
       fetchExams()
-    } catch (error) {
+    }
+    catch (error) {
       console.error('提交考试失败:', error)
       message.error('提交考试失败')
     }
@@ -114,7 +120,9 @@ const MockExam: React.FC = () => {
     <div className="mock-exam-container">
       <div className="exam-header">
         <Title level={4}>
-          <ThunderboltOutlined /> 模拟练习
+          <ThunderboltOutlined />
+          {' '}
+          模拟练习
         </Title>
         <Text type="secondary">在线模拟考试练习，检验学习成果</Text>
       </div>
@@ -144,7 +152,7 @@ const MockExam: React.FC = () => {
             <div>
               <Text type="secondary">平均分</Text>
               <Title level={4}>
-                {exams.filter(e => e.score).length > 0 
+                {exams.filter(e => e.score).length > 0
                   ? Math.round(exams.filter(e => e.score).reduce((sum, e) => sum + (e.score || 0), 0) / exams.filter(e => e.score).length)
                   : 0}
               </Title>
@@ -168,11 +176,21 @@ const MockExam: React.FC = () => {
                 </Space>
                 <div className="exam-details">
                   <Text type="secondary">
-                    <ClockCircleOutlined /> {exam.duration}分钟
+                    <ClockCircleOutlined />
+                    {' '}
+                    {exam.duration}
+                    分钟
                   </Text>
-                  <Text type="secondary">共{exam.questionCount}题</Text>
+                  <Text type="secondary">
+                    共
+                    {exam.questionCount}
+                    题
+                  </Text>
                   {exam.score && (
-                    <Text type="success">得分: {exam.score}</Text>
+                    <Text type="success">
+                      得分:
+                      {exam.score}
+                    </Text>
                   )}
                 </div>
               </div>
@@ -181,8 +199,9 @@ const MockExam: React.FC = () => {
                 onClick={() => handleStartExam(exam)}
                 disabled={exam.status === 'in-progress'}
               >
-                {exam.status === 'not-started' ? '开始考试' : 
-                 exam.status === 'in-progress' ? '继续考试' : '查看结果'}
+                {exam.status === 'not-started'
+                  ? '开始考试'
+                  : exam.status === 'in-progress' ? '继续考试' : '查看结果'}
               </Button>
             </Card>
           ))}
@@ -199,24 +218,28 @@ const MockExam: React.FC = () => {
         {selectedExam?.questions && (
           <div className="exam-modal">
             <div className="question-progress">
-              <Progress 
-                percent={((currentQuestion + 1) / selectedExam.questions.length) * 100} 
+              <Progress
+                percent={((currentQuestion + 1) / selectedExam.questions.length) * 100}
                 format={() => `${currentQuestion + 1}/${selectedExam.questions!.length}`}
               />
             </div>
-            
+
             <div className="question-content">
               <Title level={5}>
-                {currentQuestion + 1}. {selectedExam.questions[currentQuestion].question}
+                {currentQuestion + 1}
+                .
+                {selectedExam.questions[currentQuestion].question}
               </Title>
               <Radio.Group
                 value={answers[selectedExam.questions[currentQuestion].id]}
-                onChange={(e) => handleAnswerChange(selectedExam.questions[currentQuestion].id, e.target.value)}
+                onChange={e => handleAnswerChange(selectedExam.questions[currentQuestion].id, e.target.value)}
               >
                 <Space direction="vertical">
                   {selectedExam.questions[currentQuestion].options.map((option, index) => (
                     <Radio key={index} value={option}>
-                      {String.fromCharCode(65 + index)}. {option}
+                      {String.fromCharCode(65 + index)}
+                      .
+                      {option}
                     </Radio>
                   ))}
                 </Space>
@@ -227,15 +250,17 @@ const MockExam: React.FC = () => {
               <Button onClick={handlePrevQuestion} disabled={currentQuestion === 0}>
                 上一题
               </Button>
-              {currentQuestion < selectedExam.questions.length - 1 ? (
-                <Button type="primary" onClick={handleNextQuestion}>
-                  下一题
-                </Button>
-              ) : (
-                <Button type="primary" onClick={handleSubmit}>
-                  提交试卷
-                </Button>
-              )}
+              {currentQuestion < selectedExam.questions.length - 1
+                ? (
+                    <Button type="primary" onClick={handleNextQuestion}>
+                      下一题
+                    </Button>
+                  )
+                : (
+                    <Button type="primary" onClick={handleSubmit}>
+                      提交试卷
+                    </Button>
+                  )}
             </div>
           </div>
         )}

@@ -1,6 +1,7 @@
-import React, { useState, useEffect, useRef } from 'react'
-import { Input, Button, Card, Avatar, Typography, Space, Tag, Spin } from 'antd'
-import { SendOutlined, RobotOutlined, UserOutlined, ReloadOutlined } from '@ant-design/icons'
+import { ReloadOutlined, RobotOutlined, SendOutlined, UserOutlined } from '@ant-design/icons'
+import { Avatar, Button, Card, Input, Space, Tag, Typography } from 'antd'
+import * as React from 'react'
+import { useEffect, useRef, useState } from 'react'
 import './AIBot.css'
 
 const { TextArea } = Input
@@ -38,9 +39,10 @@ const AIBot: React.FC = () => {
       const history = await window.electron.getChatHistory()
       setMessages(history.map((msg: any) => ({
         ...msg,
-        timestamp: new Date(msg.timestamp)
+        timestamp: new Date(msg.timestamp),
       })))
-    } catch (error) {
+    }
+    catch (error) {
       console.error('获取聊天记录失败:', error)
     }
   }
@@ -49,19 +51,21 @@ const AIBot: React.FC = () => {
     try {
       const questions = await window.electron.getQuickQuestions()
       setQuickQuestions(questions)
-    } catch (error) {
+    }
+    catch (error) {
       console.error('获取快捷问题失败:', error)
     }
   }
 
   const handleSend = async () => {
-    if (!inputValue.trim()) return
+    if (!inputValue.trim())
+      return
 
     const userMessage: Message = {
       id: Date.now().toString(),
       role: 'user',
       content: inputValue,
-      timestamp: new Date()
+      timestamp: new Date(),
     }
 
     setMessages(prev => [...prev, userMessage])
@@ -74,12 +78,14 @@ const AIBot: React.FC = () => {
         id: response.id,
         role: 'assistant',
         content: response.content,
-        timestamp: new Date(response.timestamp)
+        timestamp: new Date(response.timestamp),
       }
       setMessages(prev => [...prev, assistantMessage])
-    } catch (error) {
+    }
+    catch (error) {
       console.error('发送消息失败:', error)
-    } finally {
+    }
+    finally {
       setIsLoading(false)
     }
   }
@@ -88,7 +94,8 @@ const AIBot: React.FC = () => {
     try {
       await window.electron.clearChatHistory()
       fetchChatHistory()
-    } catch (error) {
+    }
+    catch (error) {
       console.error('清空对话失败:', error)
     }
   }
@@ -97,14 +104,16 @@ const AIBot: React.FC = () => {
     <div className="ai-bot-container">
       <div className="bot-header">
         <Title level={4}>
-          <RobotOutlined /> 智能机器人
+          <RobotOutlined />
+          {' '}
+          智能机器人
         </Title>
         <Text type="secondary">AI智能问答助手，随时为您解答疑惑</Text>
       </div>
 
       <Card className="chat-card">
         <div className="messages-container">
-          {messages.map((msg) => (
+          {messages.map(msg => (
             <div
               key={msg.id}
               className={`message-item ${msg.role === 'user' ? 'user-message' : 'assistant-message'}`}
@@ -155,7 +164,7 @@ const AIBot: React.FC = () => {
       <div className="input-area">
         <TextArea
           value={inputValue}
-          onChange={(e) => setInputValue(e.target.value)}
+          onChange={e => setInputValue(e.target.value)}
           placeholder="输入您的问题..."
           autoSize={{ minRows: 2, maxRows: 4 }}
           onPressEnter={(e) => {

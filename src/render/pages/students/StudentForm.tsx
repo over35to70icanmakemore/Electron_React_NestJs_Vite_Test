@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react'
+import * as React from 'react'
+import { useEffect, useState } from 'react'
 
 // 考生数据类型定义
 interface Student {
@@ -26,7 +27,7 @@ const StudentForm: React.FC<StudentFormProps> = ({ student, onSubmit, onCancel }
     birthdate: new Date().toISOString().slice(0, 10),
     email: '',
     phone: '',
-    class: ''
+    class: '',
   })
 
   const [errors, setErrors] = useState<Partial<Record<keyof Student, string>>>({})
@@ -42,7 +43,7 @@ const StudentForm: React.FC<StudentFormProps> = ({ student, onSubmit, onCancel }
         birthdate: student.birthdate,
         email: student.email,
         phone: student.phone,
-        class: student.class
+        class: student.class,
       })
     }
   }, [student])
@@ -52,7 +53,7 @@ const StudentForm: React.FC<StudentFormProps> = ({ student, onSubmit, onCancel }
     const { name, value } = e.target
     setFormData(prev => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }))
   }
 
@@ -76,7 +77,7 @@ const StudentForm: React.FC<StudentFormProps> = ({ student, onSubmit, onCancel }
       newErrors.birthdate = '出生日期不能为空'
     }
 
-    if (formData.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+    if (formData.email && !/^[^\s@]+@[^\s@][^\s.@]*\.[^\s@]+$/.test(formData.email)) {
       newErrors.email = '请输入有效的邮箱地址'
     }
 

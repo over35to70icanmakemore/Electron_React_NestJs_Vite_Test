@@ -3,6 +3,7 @@
 ## 核心模型
 
 ### 1. User（用户）
+
 - id: 主键
 - username: 用户名
 - password: 密码（加密存储）
@@ -13,6 +14,7 @@
 - updated_at: 更新时间
 
 ### 2. Exam（考试）
+
 - id: 主键
 - title: 考试标题
 - description: 考试描述
@@ -26,6 +28,7 @@
 - updated_at: 更新时间
 
 ### 3. Student（考生）
+
 - id: 主键
 - student_id: 学号
 - name: 姓名
@@ -38,6 +41,7 @@
 - updated_at: 更新时间
 
 ### 4. Question（试题）
+
 - id: 主键
 - type: 类型（single/multiple/truefalse/essay）
 - content: 题目内容
@@ -48,6 +52,7 @@
 - updated_at: 更新时间
 
 ### 5. QuestionOption（试题选项）
+
 - id: 主键
 - question_id: 试题ID
 - content: 选项内容
@@ -55,12 +60,14 @@
 - order: 选项顺序
 
 ### 6. ExamQuestion（考试试题关联）
+
 - id: 主键
 - exam_id: 考试ID
 - question_id: 试题ID
 - order: 试题顺序
 
 ### 7. ExamRecord（考试记录）
+
 - id: 主键
 - exam_id: 考试ID
 - student_id: 考生ID
@@ -71,6 +78,7 @@
 - created_at: 创建时间
 
 ### 8. Answer（答题记录）
+
 - id: 主键
 - exam_record_id: 考试记录ID
 - question_id: 试题ID
@@ -81,6 +89,7 @@
 ## API接口设计
 
 ### 用户管理
+
 - POST /api/auth/login - 用户登录
 - POST /api/auth/logout - 用户登出
 - GET /api/users - 获取用户列表
@@ -90,6 +99,7 @@
 - DELETE /api/users/:id - 删除用户
 
 ### 考试管理
+
 - GET /api/exams - 获取考试列表
 - POST /api/exams - 创建考试
 - GET /api/exams/:id - 获取考试详情
@@ -100,6 +110,7 @@
 - DELETE /api/exams/:id/questions/:questionId - 移除考试试题
 
 ### 考生管理
+
 - GET /api/students - 获取考生列表
 - POST /api/students - 创建考生
 - GET /api/students/:id - 获取考生详情
@@ -107,6 +118,7 @@
 - DELETE /api/students/:id - 删除考生
 
 ### 试题管理
+
 - GET /api/questions - 获取试题列表
 - POST /api/questions - 创建试题
 - GET /api/questions/:id - 获取试题详情
@@ -114,6 +126,7 @@
 - DELETE /api/questions/:id - 删除试题
 
 ### 考试记录和成绩
+
 - GET /api/exam-records - 获取考试记录列表
 - GET /api/exam-records/:id - 获取考试记录详情
 - GET /api/exam-records/:id/answers - 获取答题记录

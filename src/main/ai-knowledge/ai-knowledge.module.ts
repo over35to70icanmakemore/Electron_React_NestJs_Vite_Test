@@ -8,6 +8,6 @@ import { Knowledge } from './knowledge.entity'
   imports: [TypeOrmModule.forFeature([Knowledge])],
   controllers: [AiKnowledgeController],
   providers: [AiKnowledgeService],
-  exports: [AiKnowledgeService]
+  exports: [AiKnowledgeService],
 })
 export class AiKnowledgeModule {}

@@ -1,7 +1,7 @@
-import { Controller } from '@nestjs/common'
 import { IpcHandle } from '@doubleshot/nest-electron'
-import { ProfileService } from './profile.service'
+import { Controller } from '@nestjs/common'
 import { Profile } from './profile.entity'
+import { ProfileService } from './profile.service'
 
 @Controller()
 export class ProfileController {

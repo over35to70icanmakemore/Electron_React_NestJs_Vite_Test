@@ -3,18 +3,20 @@ import { ElectronModule } from '@doubleshot/nest-electron'
 import { Module } from '@nestjs/common'
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { app, BrowserWindow } from 'electron'
+import { AiBotModule } from './ai-bot/ai-bot.module'
+import { AiKnowledgeModule } from './ai-knowledge/ai-knowledge.module'
 import { AppController } from './app.controller'
 import { AppService } from './app.service'
+import { AuthModule } from './auth/auth.module'
+import { databaseConfig } from './config/database.config'
 import { ExamModule } from './exams/exam.module'
-import { AiKnowledgeModule } from './ai-knowledge/ai-knowledge.module'
-import { AiBotModule } from './ai-bot/ai-bot.module'
 import { MockExamModule } from './mock-exam/mock-exam.module'
+import { ProfileModule } from './profile/profile.module'
 import { QuizModule } from './quiz/quiz.module'
-import { WeatherModule } from './weather/weather.module'
 import { ScheduleModule } from './schedule/schedule.module'
 import { TodoModule } from './todo/todo.module'
-import { ProfileModule } from './profile/profile.module'
-import { databaseConfig } from './config/database.config'
+import { UserModule } from './user/user.module'
+import { WeatherModule } from './weather/weather.module'
 
 @Module({
   imports: [
@@ -46,6 +48,8 @@ import { databaseConfig } from './config/database.config'
         return { win }
       },
     }),
+    AuthModule,
+    UserModule,
     ExamModule,
     AiKnowledgeModule,
     AiBotModule,
@@ -54,7 +58,7 @@ import { databaseConfig } from './config/database.config'
     WeatherModule,
     ScheduleModule,
     TodoModule,
-    ProfileModule
+    ProfileModule,
   ],
   controllers: [AppController],
   providers: [AppService],

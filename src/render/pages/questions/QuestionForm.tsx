@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react'
+import * as React from 'react'
+import { useEffect, useState } from 'react'
 
 // 试题选项类型定义
 interface QuestionOption {
@@ -35,8 +36,8 @@ const QuestionForm: React.FC<QuestionFormProps> = ({ question, onSubmit, onCance
       { id: '1', content: '', is_correct: true, order: 1 },
       { id: '2', content: '', is_correct: false, order: 2 },
       { id: '3', content: '', is_correct: false, order: 3 },
-      { id: '4', content: '', is_correct: false, order: 4 }
-    ]
+      { id: '4', content: '', is_correct: false, order: 4 },
+    ],
   })
 
   const [errors, setErrors] = useState<Partial<Record<keyof Question, string>>>({})
@@ -54,8 +55,8 @@ const QuestionForm: React.FC<QuestionFormProps> = ({ question, onSubmit, onCance
           { id: '1', content: '', is_correct: true, order: 1 },
           { id: '2', content: '', is_correct: false, order: 2 },
           { id: '3', content: '', is_correct: false, order: 3 },
-          { id: '4', content: '', is_correct: false, order: 4 }
-        ]
+          { id: '4', content: '', is_correct: false, order: 4 },
+        ],
       })
     }
   }, [question])
@@ -66,7 +67,7 @@ const QuestionForm: React.FC<QuestionFormProps> = ({ question, onSubmit, onCance
     setFormData(prev => ({
       ...prev,
       type: newType,
-      options: newType === 'essay' ? [] : prev.options
+      options: newType === 'essay' ? [] : prev.options,
     }))
   }
 
@@ -75,7 +76,7 @@ const QuestionForm: React.FC<QuestionFormProps> = ({ question, onSubmit, onCance
     const { name, value } = e.target
     setFormData(prev => ({
       ...prev,
-      [name]: name === 'score' ? parseInt(value) : value
+      [name]: name === 'score' ? Number.parseInt(value) : value,
     }))
   }
 
@@ -84,8 +85,8 @@ const QuestionForm: React.FC<QuestionFormProps> = ({ question, onSubmit, onCance
     setFormData(prev => ({
       ...prev,
       options: prev.options?.map(option =>
-        option.id === optionId ? { ...option, [field]: value } : option
-      )
+        option.id === optionId ? { ...option, [field]: value } : option,
+      ),
     }))
   }
 
@@ -95,11 +96,11 @@ const QuestionForm: React.FC<QuestionFormProps> = ({ question, onSubmit, onCance
       id: Math.random().toString(36).substr(2, 9),
       content: '',
       is_correct: false,
-      order: (formData.options?.length || 0) + 1
+      order: (formData.options?.length || 0) + 1,
     }
     setFormData(prev => ({
       ...prev,
-      options: [...(prev.options || []), newOption]
+      options: [...(prev.options || []), newOption],
     }))
   }
 
@@ -108,7 +109,7 @@ const QuestionForm: React.FC<QuestionFormProps> = ({ question, onSubmit, onCance
     if ((formData.options?.length || 0) > 2) {
       setFormData(prev => ({
         ...prev,
-        options: prev.options?.filter(option => option.id !== optionId)
+        options: prev.options?.filter(option => option.id !== optionId),
       }))
     }
   }
@@ -235,41 +236,43 @@ const QuestionForm: React.FC<QuestionFormProps> = ({ question, onSubmit, onCance
             {formData.options?.map((option, index) => (
               <div key={option.id} className="option-item">
                 <div className="option-content">
-                  {formData.type === 'truefalse' ? (
-                    <>
-                      <input
-                        type="radio"
-                        id={`option-${option.id}`}
-                        name="truefalse-option"
-                        checked={option.is_correct}
-                        onChange={() => handleOptionChange(option.id, 'is_correct', true)}
-                      />
-                      <input
-                        type="text"
-                        value={option.content}
-                        onChange={(e) => handleOptionChange(option.id, 'content', e.target.value)}
-                        className={errors.options ? 'error' : ''}
-                        placeholder={`选项 ${index + 1}`}
-                      />
-                    </>
-                  ) : (
-                    <>
-                      <input
-                        type={formData.type === 'single' ? 'radio' : 'checkbox'}
-                        id={`option-${option.id}`}
-                        name={formData.type === 'single' ? 'single-option' : `option-${option.id}`}
-                        checked={option.is_correct}
-                        onChange={(e) => handleOptionChange(option.id, 'is_correct', e.target.checked)}
-                      />
-                      <input
-                        type="text"
-                        value={option.content}
-                        onChange={(e) => handleOptionChange(option.id, 'content', e.target.value)}
-                        className={errors.options ? 'error' : ''}
-                        placeholder={`选项 ${index + 1}`}
-                      />
-                    </>
-                  )}
+                  {formData.type === 'truefalse'
+                    ? (
+                        <>
+                          <input
+                            type="radio"
+                            id={`option-${option.id}`}
+                            name="truefalse-option"
+                            checked={option.is_correct}
+                            onChange={() => handleOptionChange(option.id, 'is_correct', true)}
+                          />
+                          <input
+                            type="text"
+                            value={option.content}
+                            onChange={e => handleOptionChange(option.id, 'content', e.target.value)}
+                            className={errors.options ? 'error' : ''}
+                            placeholder={`选项 ${index + 1}`}
+                          />
+                        </>
+                      )
+                    : (
+                        <>
+                          <input
+                            type={formData.type === 'single' ? 'radio' : 'checkbox'}
+                            id={`option-${option.id}`}
+                            name={formData.type === 'single' ? 'single-option' : `option-${option.id}`}
+                            checked={option.is_correct}
+                            onChange={e => handleOptionChange(option.id, 'is_correct', e.target.checked)}
+                          />
+                          <input
+                            type="text"
+                            value={option.content}
+                            onChange={e => handleOptionChange(option.id, 'content', e.target.value)}
+                            className={errors.options ? 'error' : ''}
+                            placeholder={`选项 ${index + 1}`}
+                          />
+                        </>
+                      )}
                 </div>
                 {formData.type !== 'truefalse' && formData.options?.length > 2 && (
                   <button

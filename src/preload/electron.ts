@@ -17,6 +17,18 @@ export default {
   },
   showMessageBox: (options: any) => ipcRenderer.invoke('showMessageBox', options),
 
+  // 认证相关
+  login: (username: string, password: string) => ipcRenderer.invoke('login', username, password),
+  logout: () => ipcRenderer.invoke('logout'),
+  getCurrentUser: () => ipcRenderer.invoke('getCurrentUser'),
+
+  // 用户管理相关
+  getAllUsers: () => ipcRenderer.invoke('getAllUsers'),
+  getUserById: (id: string) => ipcRenderer.invoke('getUserById', id),
+  createUser: (userData: any) => ipcRenderer.invoke('createUser', userData),
+  updateUser: (id: string, userData: any) => ipcRenderer.invoke('updateUser', id, userData),
+  deleteUser: (id: string) => ipcRenderer.invoke('deleteUser', id),
+
   // 考试相关
   getAllExams: () => ipcRenderer.invoke('getAllExams'),
   getExamById: (id: string) => ipcRenderer.invoke('getExamById', id),

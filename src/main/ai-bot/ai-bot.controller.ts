@@ -1,6 +1,6 @@
-import { Controller } from '@nestjs/common'
-import { IpcHandle } from '@doubleshot/nest-electron'
 import type { IpcMainEvent } from 'electron'
+import { IpcHandle } from '@doubleshot/nest-electron'
+import { Controller } from '@nestjs/common'
 import { AiBotService } from './ai-bot.service'
 
 @Controller()

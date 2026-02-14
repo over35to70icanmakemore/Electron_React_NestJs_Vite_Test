@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react'
-import { EyeOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons'
+import { DeleteOutlined, EditOutlined, EyeOutlined } from '@ant-design/icons'
+import * as React from 'react'
+import { useEffect, useState } from 'react'
 
 interface Exam {
   id: string
@@ -32,9 +33,11 @@ const ExamList: React.FC<ExamListProps> = ({ onEdit, onDelete, onView }) => {
       setLoading(true)
       const result = await window.electron.getAllExams()
       setExams(result)
-    } catch (error) {
+    }
+    catch (error) {
       console.error('获取考试数据失败:', error)
-    } finally {
+    }
+    finally {
       setLoading(false)
     }
   }
@@ -74,9 +77,9 @@ const ExamList: React.FC<ExamListProps> = ({ onEdit, onDelete, onView }) => {
     }
   }
 
-  const filteredExams = exams.filter(exam => {
-    const matchesSearch = exam.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         exam.description.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredExams = exams.filter((exam) => {
+    const matchesSearch = exam.title.toLowerCase().includes(searchTerm.toLowerCase())
+      || exam.description.toLowerCase().includes(searchTerm.toLowerCase())
     const matchesStatus = statusFilter === 'all' || exam.status === statusFilter
     return matchesSearch && matchesStatus
   })
@@ -89,14 +92,14 @@ const ExamList: React.FC<ExamListProps> = ({ onEdit, onDelete, onView }) => {
             type="text"
             placeholder="搜索考试..."
             value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
+            onChange={e => setSearchTerm(e.target.value)}
             className="search-input"
           />
         </div>
         <div className="filter-box">
           <select
             value={statusFilter}
-            onChange={(e) => setStatusFilter(e.target.value)}
+            onChange={e => setStatusFilter(e.target.value)}
             className="status-filter"
           >
             <option value="all">全部状态</option>
@@ -108,74 +111,81 @@ const ExamList: React.FC<ExamListProps> = ({ onEdit, onDelete, onView }) => {
       </div>
 
       <div className="exam-list">
-        {loading ? (
-          <div className="loading">
-            加载中...
-          </div>
-        ) : (
-          <table className="exam-table">
-            <thead>
-              <tr>
-                <th>考试名称</th>
-                <th>描述</th>
-                <th>时长(分钟)</th>
-                <th>开始时间</th>
-                <th>状态</th>
-                <th>及格分数</th>
-                <th>操作</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filteredExams.length > 0 ? (
-                filteredExams.map(exam => (
-                  <tr key={exam.id}>
-                    <td>{exam.title}</td>
-                    <td>{exam.description.substring(0, 50)}...</td>
-                    <td>{exam.duration}</td>
-                    <td>{new Date(exam.start_time).toLocaleString()}</td>
-                    <td>
-                      <span className={`status-badge ${getStatusClass(exam.status)}`}>
-                        {getStatusText(exam.status)}
-                      </span>
-                    </td>
-                    <td>{exam.pass_score}</td>
-                    <td>
-                      <div className="action-buttons">
-                        <button 
-                          className="btn-action btn-view"
-                          onClick={() => onView(exam.id)}
-                          title="查看"
-                        >
-                          <EyeOutlined />
-                        </button>
-                        <button 
-                          className="btn-action btn-edit"
-                          onClick={() => onEdit(exam)}
-                          title="编辑"
-                        >
-                          <EditOutlined />
-                        </button>
-                        <button 
-                          className="btn-action btn-delete"
-                          onClick={() => onDelete(exam.id)}
-                          title="删除"
-                        >
-                          <DeleteOutlined />
-                        </button>
-                      </div>
-                    </td>
+        {loading
+          ? (
+              <div className="loading">
+                加载中...
+              </div>
+            )
+          : (
+              <table className="exam-table">
+                <thead>
+                  <tr>
+                    <th>考试名称</th>
+                    <th>描述</th>
+                    <th>时长(分钟)</th>
+                    <th>开始时间</th>
+                    <th>状态</th>
+                    <th>及格分数</th>
+                    <th>操作</th>
                   </tr>
-                ))
-              ) : (
-                <tr>
-                  <td colSpan={7} className="no-data">
-                    暂无考试数据
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
-        )}
+                </thead>
+                <tbody>
+                  {filteredExams.length > 0
+                    ? (
+                        filteredExams.map(exam => (
+                          <tr key={exam.id}>
+                            <td>{exam.title}</td>
+                            <td>
+                              {exam.description.substring(0, 50)}
+                              ...
+                            </td>
+                            <td>{exam.duration}</td>
+                            <td>{new Date(exam.start_time).toLocaleString()}</td>
+                            <td>
+                              <span className={`status-badge ${getStatusClass(exam.status)}`}>
+                                {getStatusText(exam.status)}
+                              </span>
+                            </td>
+                            <td>{exam.pass_score}</td>
+                            <td>
+                              <div className="action-buttons">
+                                <button
+                                  className="btn-action btn-view"
+                                  onClick={() => onView(exam.id)}
+                                  title="查看"
+                                >
+                                  <EyeOutlined />
+                                </button>
+                                <button
+                                  className="btn-action btn-edit"
+                                  onClick={() => onEdit(exam)}
+                                  title="编辑"
+                                >
+                                  <EditOutlined />
+                                </button>
+                                <button
+                                  className="btn-action btn-delete"
+                                  onClick={() => onDelete(exam.id)}
+                                  title="删除"
+                                >
+                                  <DeleteOutlined />
+                                </button>
+                              </div>
+                            </td>
+                          </tr>
+                        ))
+                      )
+                    : (
+                        <tr>
+                          <td colSpan={7} className="no-data">
+                            暂无考试数据
+                          </td>
+                        </tr>
+                      )}
+                </tbody>
+              </table>
+            )}
       </div>
     </div>
   )

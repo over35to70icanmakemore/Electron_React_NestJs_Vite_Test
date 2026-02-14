@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react'
+import * as React from 'react'
+import { useEffect, useState } from 'react'
 
 // 考试数据类型定义
 interface Exam {
@@ -26,7 +27,7 @@ const ExamForm: React.FC<ExamFormProps> = ({ exam, onSubmit, onCancel }) => {
     start_time: new Date().toISOString().slice(0, 16),
     end_time: new Date(Date.now() + 60 * 60 * 1000).toISOString().slice(0, 16),
     status: 'draft',
-    pass_score: 60
+    pass_score: 60,
   })
 
   const [errors, setErrors] = useState<Partial<Record<keyof Exam, string>>>({})
@@ -42,7 +43,7 @@ const ExamForm: React.FC<ExamFormProps> = ({ exam, onSubmit, onCancel }) => {
         start_time: exam.start_time.slice(0, 16),
         end_time: exam.end_time.slice(0, 16),
         status: exam.status,
-        pass_score: exam.pass_score
+        pass_score: exam.pass_score,
       })
     }
   }, [exam])
@@ -52,7 +53,7 @@ const ExamForm: React.FC<ExamFormProps> = ({ exam, onSubmit, onCancel }) => {
     const { name, value } = e.target
     setFormData(prev => ({
       ...prev,
-      [name]: name === 'duration' || name === 'pass_score' ? parseInt(value) : value
+      [name]: name === 'duration' || name === 'pass_score' ? Number.parseInt(value) : value,
     }))
   }
 

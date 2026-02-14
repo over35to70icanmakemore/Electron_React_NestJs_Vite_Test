@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react'
-import { Card, List, Checkbox, Button, Input, Tag, Typography, Space, Modal, Form, DatePicker, Select, message, Progress } from 'antd'
-import { CheckSquareOutlined, PlusOutlined, DeleteOutlined } from '@ant-design/icons'
+import { CheckSquareOutlined, DeleteOutlined, PlusOutlined } from '@ant-design/icons'
+import { Button, Card, Checkbox, DatePicker, Form, Input, List, message, Modal, Progress, Select, Space, Tag, Typography } from 'antd'
+import * as React from 'react'
+import { useEffect, useState } from 'react'
 import './TodoList.css'
 
 const { Title, Text } = Typography
@@ -33,10 +34,12 @@ const TodoList: React.FC = () => {
       setLoading(true)
       const data = await window.electron.getAllTodos()
       setTodos(data)
-    } catch (error) {
+    }
+    catch (error) {
       console.error('获取待办数据失败:', error)
       message.error('获取待办数据失败')
-    } finally {
+    }
+    finally {
       setLoading(false)
     }
   }
@@ -45,7 +48,8 @@ const TodoList: React.FC = () => {
     try {
       const data = await window.electron.getTodoStatistics()
       setStatistics(data)
-    } catch (error) {
+    }
+    catch (error) {
       console.error('获取统计数据失败:', error)
     }
   }
@@ -54,7 +58,7 @@ const TodoList: React.FC = () => {
     const colors = {
       high: 'red',
       medium: 'orange',
-      low: 'green'
+      low: 'green',
     }
     return colors[priority as keyof typeof colors] || 'default'
   }
@@ -63,7 +67,7 @@ const TodoList: React.FC = () => {
     const texts = {
       high: '高',
       medium: '中',
-      low: '低'
+      low: '低',
     }
     return texts[priority as keyof typeof texts] || priority
   }
@@ -73,7 +77,8 @@ const TodoList: React.FC = () => {
       await window.electron.toggleTodo(id)
       fetchTodos()
       fetchStatistics()
-    } catch (error) {
+    }
+    catch (error) {
       console.error('切换待办状态失败:', error)
       message.error('切换待办状态失败')
     }
@@ -85,7 +90,8 @@ const TodoList: React.FC = () => {
       fetchTodos()
       fetchStatistics()
       message.success('待办已删除')
-    } catch (error) {
+    }
+    catch (error) {
       console.error('删除待办失败:', error)
       message.error('删除待办失败')
     }
@@ -102,7 +108,7 @@ const TodoList: React.FC = () => {
         title: values.title,
         priority: values.priority,
         dueDate: values.dueDate ? values.dueDate.format('YYYY-MM-DD') : '',
-        category: values.category || '其他'
+        category: values.category || '其他',
       }
       await window.electron.createTodo(newTodo)
       setIsModalVisible(false)
@@ -110,15 +116,18 @@ const TodoList: React.FC = () => {
       fetchTodos()
       fetchStatistics()
       message.success('待办添加成功')
-    } catch (error) {
+    }
+    catch (error) {
       console.error('添加待办失败:', error)
       message.error('添加待办失败')
     }
   }
 
-  const filteredTodos = todos.filter(todo => {
-    if (filter === 'active') return !todo.completed
-    if (filter === 'completed') return todo.completed
+  const filteredTodos = todos.filter((todo) => {
+    if (filter === 'active')
+      return !todo.completed
+    if (filter === 'completed')
+      return todo.completed
     return true
   })
 
@@ -128,7 +137,9 @@ const TodoList: React.FC = () => {
     <div className="todo-container">
       <div className="todo-header">
         <Title level={4}>
-          <CheckSquareOutlined /> 我的待办
+          <CheckSquareOutlined />
+          {' '}
+          我的待办
         </Title>
         <Text type="secondary">管理待办事项清单，提高工作效率</Text>
       </div>
@@ -205,28 +216,32 @@ const TodoList: React.FC = () => {
                   danger
                   icon={<DeleteOutlined />}
                   onClick={() => handleDelete(item.id)}
-                />
+                />,
               ]}
             >
               <List.Item.Meta
-                avatar={
+                avatar={(
                   <Checkbox
                     checked={item.completed}
                     onChange={() => handleToggle(item.id)}
                   />
-                }
-                title={
+                )}
+                title={(
                   <Space>
                     <Text delete={item.completed}>{item.title}</Text>
                     <Tag color={getPriorityColor(item.priority)}>
-                      {getPriorityText(item.priority)}优先级
+                      {getPriorityText(item.priority)}
+                      优先级
                     </Tag>
                     <Tag>{item.category}</Tag>
                   </Space>
-                }
+                )}
                 description={
                   item.dueDate && (
-                    <Text type="secondary">截止日期: {item.dueDate}</Text>
+                    <Text type="secondary">
+                      截止日期:
+                      {item.dueDate}
+                    </Text>
                   )
                 }
               />

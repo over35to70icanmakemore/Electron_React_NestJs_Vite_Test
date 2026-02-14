@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react'
-import ExamList from './ExamList'
+import * as React from 'react'
+import { useState } from 'react'
 import ExamForm from './ExamForm'
+import ExamList from './ExamList'
 import './ExamManagement.css'
 
 // 考试数据类型定义
@@ -42,9 +43,9 @@ const ExamManagement: React.FC = () => {
         type: 'question',
         message: '确定要删除这个考试吗？',
         buttons: ['取消', '确定'],
-        defaultId: 0
+        defaultId: 0,
       })
-      
+
       if (response === 1) {
         const result = await window.electron.deleteExam(examId)
         if (result) {
@@ -56,7 +57,8 @@ const ExamManagement: React.FC = () => {
           }
         }
       }
-    } catch (error) {
+    }
+    catch (error) {
       console.error('删除考试失败:', error)
     }
   }
@@ -73,7 +75,8 @@ const ExamManagement: React.FC = () => {
       if (editingExam) {
         // 更新现有考试
         await window.electron.updateExam(editingExam.id, examData)
-      } else {
+      }
+      else {
         // 创建新考试
         await window.electron.createExam(examData)
       }
@@ -83,7 +86,8 @@ const ExamManagement: React.FC = () => {
       if (examListComponent) {
         examListComponent.dispatchEvent(new Event('refresh'))
       }
-    } catch (error) {
+    }
+    catch (error) {
       console.error('保存考试失败:', error)
     }
   }
@@ -103,19 +107,21 @@ const ExamManagement: React.FC = () => {
         </button>
       </div>
 
-      {isFormOpen ? (
-        <ExamForm
-          exam={editingExam}
-          onSubmit={handleSubmitExam}
-          onCancel={handleCancelForm}
-        />
-      ) : (
-        <ExamList
-          onEdit={handleEditExam}
-          onDelete={handleDeleteExam}
-          onView={handleViewExam}
-        />
-      )}
+      {isFormOpen
+        ? (
+            <ExamForm
+              exam={editingExam}
+              onSubmit={handleSubmitExam}
+              onCancel={handleCancelForm}
+            />
+          )
+        : (
+            <ExamList
+              onEdit={handleEditExam}
+              onDelete={handleDeleteExam}
+              onView={handleViewExam}
+            />
+          )}
     </div>
   )
 }

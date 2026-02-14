@@ -22,7 +22,7 @@ export class TodoService implements OnModuleInit {
     { id: '1', title: '完成数学作业', completed: false, priority: 'high', due_date: this.formatDate(this.today), category: '学习' },
     { id: '2', title: '复习英语单词', completed: true, priority: 'medium', due_date: this.formatDate(new Date(this.today.getTime() - 86400000)), category: '学习' },
     { id: '3', title: '准备项目报告', completed: false, priority: 'high', due_date: this.formatDate(new Date(this.today.getTime() + 86400000)), category: '工作' },
-    { id: '4', title: '阅读技术文档', completed: false, priority: 'low', due_date: this.formatDate(new Date(this.today.getTime() + 2 * 86400000)), category: '学习' }
+    { id: '4', title: '阅读技术文档', completed: false, priority: 'low', due_date: this.formatDate(new Date(this.today.getTime() + 2 * 86400000)), category: '学习' },
   ]
 
   constructor(
@@ -36,7 +36,8 @@ export class TodoService implements OnModuleInit {
       if (count === 0) {
         await this.seedTodos()
       }
-    } catch {
+    }
+    catch {
       this.useDatabase = false
     }
   }
@@ -46,7 +47,7 @@ export class TodoService implements OnModuleInit {
       { title: '完成数学作业', completed: false, priority: 'high', due_date: this.formatDate(this.today), category: '学习' },
       { title: '复习英语单词', completed: true, priority: 'medium', due_date: this.formatDate(new Date(this.today.getTime() - 86400000)), category: '学习' },
       { title: '准备项目报告', completed: false, priority: 'high', due_date: this.formatDate(new Date(this.today.getTime() + 86400000)), category: '工作' },
-      { title: '阅读技术文档', completed: false, priority: 'low', due_date: this.formatDate(new Date(this.today.getTime() + 2 * 86400000)), category: '学习' }
+      { title: '阅读技术文档', completed: false, priority: 'low', due_date: this.formatDate(new Date(this.today.getTime() + 2 * 86400000)), category: '学习' },
     ]
 
     for (const data of todoData) {
@@ -56,37 +57,48 @@ export class TodoService implements OnModuleInit {
   }
 
   async getAllTodos(): Promise<TodoItem[]> {
-    if (!this.useDatabase) return this.mockTodoData
+    if (!this.useDatabase)
+      return this.mockTodoData
     try {
       return await this.todoRepository.find()
-    } catch {
+    }
+    catch {
       return this.mockTodoData
     }
   }
 
   async getTodoById(id: string): Promise<TodoItem | null> {
-    if (!this.useDatabase) return this.mockTodoData.find(item => item.id === id) || null
+    if (!this.useDatabase)
+      return this.mockTodoData.find(item => item.id === id) || null
     try {
       return await this.todoRepository.findOne({ where: { id } })
-    } catch {
+    }
+    catch {
       return this.mockTodoData.find(item => item.id === id) || null
     }
   }
 
   async getTodosByFilter(filter: 'all' | 'active' | 'completed'): Promise<TodoItem[]> {
     if (!this.useDatabase) {
-      if (filter === 'all') return this.mockTodoData
-      if (filter === 'active') return this.mockTodoData.filter(item => !item.completed)
+      if (filter === 'all')
+        return this.mockTodoData
+      if (filter === 'active')
+        return this.mockTodoData.filter(item => !item.completed)
       return this.mockTodoData.filter(item => item.completed)
     }
 
     try {
-      if (filter === 'all') return await this.todoRepository.find()
-      if (filter === 'active') return await this.todoRepository.find({ where: { completed: false } })
+      if (filter === 'all')
+        return await this.todoRepository.find()
+      if (filter === 'active')
+        return await this.todoRepository.find({ where: { completed: false } })
       return await this.todoRepository.find({ where: { completed: true } })
-    } catch {
-      if (filter === 'all') return this.mockTodoData
-      if (filter === 'active') return this.mockTodoData.filter(item => !item.completed)
+    }
+    catch {
+      if (filter === 'all')
+        return this.mockTodoData
+      if (filter === 'active')
+        return this.mockTodoData.filter(item => !item.completed)
       return this.mockTodoData.filter(item => item.completed)
     }
   }
@@ -98,7 +110,7 @@ export class TodoService implements OnModuleInit {
       completed: false,
       priority: todoData.priority || 'medium',
       due_date: todoData.due_date || '',
-      category: todoData.category || ''
+      category: todoData.category || '',
     }
 
     if (!this.useDatabase) {
@@ -109,7 +121,8 @@ export class TodoService implements OnModuleInit {
     try {
       const todo = this.todoRepository.create(todoData)
       return await this.todoRepository.save(todo)
-    } catch {
+    }
+    catch {
       this.mockTodoData.push(newTodo)
       return newTodo
     }
@@ -118,7 +131,8 @@ export class TodoService implements OnModuleInit {
   async updateTodo(id: string, todoData: Partial<TodoItem>): Promise<TodoItem | null> {
     if (!this.useDatabase) {
       const index = this.mockTodoData.findIndex(item => item.id === id)
-      if (index === -1) return null
+      if (index === -1)
+        return null
       this.mockTodoData[index] = { ...this.mockTodoData[index], ...todoData }
       return this.mockTodoData[index]
     }
@@ -126,9 +140,11 @@ export class TodoService implements OnModuleInit {
     try {
       await this.todoRepository.update(id, todoData)
       return await this.todoRepository.findOne({ where: { id } })
-    } catch {
+    }
+    catch {
       const index = this.mockTodoData.findIndex(item => item.id === id)
-      if (index === -1) return null
+      if (index === -1)
+        return null
       this.mockTodoData[index] = { ...this.mockTodoData[index], ...todoData }
       return this.mockTodoData[index]
     }
@@ -137,19 +153,23 @@ export class TodoService implements OnModuleInit {
   async toggleTodo(id: string): Promise<TodoItem | null> {
     if (!this.useDatabase) {
       const todo = this.mockTodoData.find(item => item.id === id)
-      if (!todo) return null
+      if (!todo)
+        return null
       todo.completed = !todo.completed
       return todo
     }
 
     try {
       const todo = await this.todoRepository.findOne({ where: { id } })
-      if (!todo) return null
+      if (!todo)
+        return null
       todo.completed = !todo.completed
       return await this.todoRepository.save(todo)
-    } catch {
+    }
+    catch {
       const todo = this.mockTodoData.find(item => item.id === id)
-      if (!todo) return null
+      if (!todo)
+        return null
       todo.completed = !todo.completed
       return todo
     }
@@ -158,7 +178,8 @@ export class TodoService implements OnModuleInit {
   async deleteTodo(id: string): Promise<boolean> {
     if (!this.useDatabase) {
       const index = this.mockTodoData.findIndex(item => item.id === id)
-      if (index === -1) return false
+      if (index === -1)
+        return false
       this.mockTodoData.splice(index, 1)
       return true
     }
@@ -166,15 +187,17 @@ export class TodoService implements OnModuleInit {
     try {
       const result = await this.todoRepository.delete(id)
       return result.affected > 0
-    } catch {
+    }
+    catch {
       const index = this.mockTodoData.findIndex(item => item.id === id)
-      if (index === -1) return false
+      if (index === -1)
+        return false
       this.mockTodoData.splice(index, 1)
       return true
     }
   }
 
-  async getStatistics(): Promise<{ total: number; completed: number; active: number }> {
+  async getStatistics(): Promise<{ total: number, completed: number, active: number }> {
     if (!this.useDatabase) {
       const total = this.mockTodoData.length
       const completed = this.mockTodoData.filter(item => item.completed).length
@@ -185,7 +208,8 @@ export class TodoService implements OnModuleInit {
       const total = await this.todoRepository.count()
       const completed = await this.todoRepository.count({ where: { completed: true } })
       return { total, completed, active: total - completed }
-    } catch {
+    }
+    catch {
       const total = this.mockTodoData.length
       const completed = this.mockTodoData.filter(item => item.completed).length
       return { total, completed, active: total - completed }

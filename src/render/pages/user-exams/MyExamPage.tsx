@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react'
-import { Table, Card, Button, Badge, Tag, Typography } from 'antd'
+import { Badge, Button, Card, Table, Tag, Typography } from 'antd'
+import * as React from 'react'
+import { useEffect, useState } from 'react'
 
 interface Exam {
   id: string
@@ -34,7 +35,7 @@ const MyExamPage: React.FC = () => {
         duration: 120,
         examDate: '2026-06-15',
         status: 'completed',
-        score: 85
+        score: 85,
       },
       {
         id: '2',
@@ -43,8 +44,8 @@ const MyExamPage: React.FC = () => {
         duration: 90,
         examDate: '2026-04-20',
         status: 'completed',
-        score: 92
-      }
+        score: 92,
+      },
     ])
 
     setCourses([
@@ -52,20 +53,20 @@ const MyExamPage: React.FC = () => {
         id: '1',
         name: '高等数学',
         subject: '数学',
-        description: '高等数学基础课程'
+        description: '高等数学基础课程',
       },
       {
         id: '2',
         name: '大学英语',
         subject: '英语',
-        description: '大学英语综合课程'
+        description: '大学英语综合课程',
       },
       {
         id: '3',
         name: '计算机基础',
         subject: '计算机',
-        description: '计算机基础知识和操作技能'
-      }
+        description: '计算机基础知识和操作技能',
+      },
     ])
 
     setAvailableExams([
@@ -75,16 +76,17 @@ const MyExamPage: React.FC = () => {
         subject: '计算机',
         duration: 100,
         examDate: '2026-07-01',
-        status: 'upcoming'
-      }
+        status: 'upcoming',
+      },
     ])
   }, [])
 
   const handleCourseSelect = (courseId: string) => {
-    setSelectedCourses(prev => {
+    setSelectedCourses((prev) => {
       if (prev.includes(courseId)) {
         return prev.filter(id => id !== courseId)
-      } else {
+      }
+      else {
         return [...prev, courseId]
       }
     })
@@ -100,25 +102,25 @@ const MyExamPage: React.FC = () => {
     {
       title: '考试名称',
       dataIndex: 'name',
-      key: 'name'
+      key: 'name',
     },
     {
       title: '科目',
       dataIndex: 'subject',
       key: 'subject',
-      render: (subject: string) => <Tag>{subject}</Tag>
+      render: (subject: string) => <Tag>{subject}</Tag>,
     },
     {
       title: '考试日期',
       dataIndex: 'examDate',
       key: 'examDate',
-      render: (date: string) => new Date(date).toLocaleDateString()
+      render: (date: string) => new Date(date).toLocaleDateString(),
     },
     {
       title: '时长',
       dataIndex: 'duration',
       key: 'duration',
-      render: (duration: number) => `${duration}分钟`
+      render: (duration: number) => `${duration}分钟`,
     },
     {
       title: '状态',
@@ -128,18 +130,18 @@ const MyExamPage: React.FC = () => {
         const statusMap = {
           completed: { text: '已完成', type: 'success' },
           upcoming: { text: '即将到来', type: 'processing' },
-          missed: { text: '已错过', type: 'error' }
+          missed: { text: '已错过', type: 'error' },
         }
         const { text, type } = statusMap[status as keyof typeof statusMap] || { text: status, type: 'default' }
-        return <Badge status={type as "warning" | "error" | "default" | "success" | "processing"} text={text} />
-      }
+        return <Badge status={type as 'warning' | 'error' | 'default' | 'success' | 'processing'} text={text} />
+      },
     },
     {
       title: '成绩',
       dataIndex: 'score',
       key: 'score',
-      render: (score: number | undefined) => score ? `${score}分` : '-'
-    }
+      render: (score: number | undefined) => score ? `${score}分` : '-',
+    },
   ]
 
   return (
@@ -171,7 +173,7 @@ const MyExamPage: React.FC = () => {
                 <Tag>{course.subject}</Tag>
               </div>
               <Text>{course.description}</Text>
-              <Button 
+              <Button
                 type={selectedCourses.includes(course.id) ? 'primary' : 'default'}
                 onClick={() => handleCourseSelect(course.id)}
                 style={{ marginTop: '10px', width: '100%' }}
@@ -193,9 +195,16 @@ const MyExamPage: React.FC = () => {
                 <Text strong>{exam.name}</Text>
                 <Tag>{exam.subject}</Tag>
               </div>
-              <Text>考试日期: {new Date(exam.examDate).toLocaleDateString()}</Text>
-              <Text>考试时长: {exam.duration}分钟</Text>
-              <Button 
+              <Text>
+                考试日期:
+                {new Date(exam.examDate).toLocaleDateString()}
+              </Text>
+              <Text>
+                考试时长:
+                {exam.duration}
+                分钟
+              </Text>
+              <Button
                 type="primary"
                 onClick={() => handleExamReservation(exam.id)}
                 style={{ marginTop: '10px', width: '100%' }}

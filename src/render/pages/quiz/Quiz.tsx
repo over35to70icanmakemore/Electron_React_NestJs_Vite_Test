@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react'
-import { Card, Button, Progress, Tag, Typography, Space, Result, Statistic, message, Spin } from 'antd'
-import { QuestionCircleOutlined, TrophyOutlined, HeartOutlined, FireOutlined } from '@ant-design/icons'
+import { FireOutlined, HeartOutlined, QuestionCircleOutlined, TrophyOutlined } from '@ant-design/icons'
+import { Button, Card, message, Progress, Result, Space, Spin, Statistic, Tag, Typography } from 'antd'
+import * as React from 'react'
+import { useEffect, useState } from 'react'
 import './Quiz.css'
 
 const { Title, Text } = Typography
@@ -32,16 +33,19 @@ const Quiz: React.FC = () => {
       setLoading(true)
       const data = await window.electron.getQuizQuestions(5)
       setQuestions(data)
-    } catch (error) {
+    }
+    catch (error) {
       console.error('获取问答题目失败:', error)
       message.error('获取问答题目失败')
-    } finally {
+    }
+    finally {
       setLoading(false)
     }
   }
 
   const handleAnswer = async (answerIndex: number) => {
-    if (isAnswered) return
+    if (isAnswered)
+      return
 
     setSelectedAnswer(answerIndex)
     setIsAnswered(true)
@@ -52,7 +56,8 @@ const Quiz: React.FC = () => {
         setScore(prev => prev + 20)
         setCorrectCount(prev => prev + 1)
       }
-    } catch (error) {
+    }
+    catch (error) {
       console.error('提交答案失败:', error)
     }
   }
@@ -62,7 +67,8 @@ const Quiz: React.FC = () => {
       setCurrentQuestion(prev => prev + 1)
       setSelectedAnswer(null)
       setIsAnswered(false)
-    } else {
+    }
+    else {
       setShowResult(true)
     }
   }
@@ -78,7 +84,8 @@ const Quiz: React.FC = () => {
   }
 
   const getOptionClass = (index: number) => {
-    if (!isAnswered) return 'quiz-option'
+    if (!isAnswered)
+      return 'quiz-option'
     if (index === questions[currentQuestion].correctAnswer) {
       return 'quiz-option correct'
     }
@@ -99,15 +106,15 @@ const Quiz: React.FC = () => {
             <div key="stats" className="result-stats">
               <Statistic title="最终得分" value={score} suffix="分" />
               <Statistic title="正确题数" value={correctCount} suffix={`/ ${questions.length}`} />
-              <Statistic 
-                title="正确率" 
-                value={(correctCount / questions.length * 100).toFixed(0)} 
-                suffix="%" 
+              <Statistic
+                title="正确率"
+                value={(correctCount / questions.length * 100).toFixed(0)}
+                suffix="%"
               />
             </div>,
             <Button type="primary" size="large" onClick={handleRestart} key="restart">
               再来一次
-            </Button>
+            </Button>,
           ]}
         />
       </div>
@@ -118,7 +125,9 @@ const Quiz: React.FC = () => {
     <div className="quiz-container">
       <div className="quiz-header">
         <Title level={4}>
-          <QuestionCircleOutlined /> 趣味问答
+          <QuestionCircleOutlined />
+          {' '}
+          趣味问答
         </Title>
         <Text type="secondary">趣味知识问答挑战，测试你的知识储备</Text>
       </div>
@@ -130,21 +139,35 @@ const Quiz: React.FC = () => {
               <Space size="large">
                 <div className="stat-item">
                   <FireOutlined style={{ color: '#ff4d4f' }} />
-                  <Text>第 {currentQuestion + 1} / {questions.length} 题</Text>
+                  <Text>
+                    第
+                    {currentQuestion + 1}
+                    {' '}
+                    /
+                    {questions.length}
+                    {' '}
+                    题
+                  </Text>
                 </div>
                 <div className="stat-item">
                   <TrophyOutlined style={{ color: '#faad14' }} />
-                  <Text>得分: {score}</Text>
+                  <Text>
+                    得分:
+                    {score}
+                  </Text>
                 </div>
                 <div className="stat-item">
                   <HeartOutlined style={{ color: '#eb2f96' }} />
-                  <Text>正确: {correctCount}</Text>
+                  <Text>
+                    正确:
+                    {correctCount}
+                  </Text>
                 </div>
               </Space>
             </div>
 
-            <Progress 
-              percent={((currentQuestion + 1) / questions.length) * 100} 
+            <Progress
+              percent={((currentQuestion + 1) / questions.length) * 100}
               showInfo={false}
               strokeColor="#1890ff"
             />

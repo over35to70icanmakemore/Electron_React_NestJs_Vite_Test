@@ -1,7 +1,7 @@
 import type { MicroserviceOptions } from '@nestjs/microservices'
 import { ElectronIpcTransport } from '@doubleshot/nest-electron'
 import { NestFactory } from '@nestjs/core'
-import { app, Menu, dialog } from 'electron'
+import { app, dialog, Menu } from 'electron'
 import { AppModule } from './app.module'
 
 process.env.ELECTRON_DISABLE_SECURITY_WARNINGS = 'true'
@@ -11,14 +11,16 @@ function setupMenu() {
   const isMac = process.platform === 'darwin'
 
   const template = [
-    ...(isMac ? [{
-      label: app.name,
-      submenu: [
-        { role: 'about' as const },
-        { type: 'separator' as const },
-        { role: 'quit' as const }
-      ]
-    }] : []),
+    ...(isMac
+      ? [{
+          label: app.name,
+          submenu: [
+            { role: 'about' as const },
+            { type: 'separator' as const },
+            { role: 'quit' as const },
+          ],
+        }]
+      : []),
     {
       label: '文件',
       submenu: [
@@ -28,8 +30,8 @@ function setupMenu() {
         { type: 'separator' as const },
         { label: '重载框架', accelerator: 'CmdOrCtrl+R', click: clearUserInfo },
         { type: 'separator' as const },
-        isMac ? { role: 'close' as const } : { role: 'quit' as const }
-      ]
+        isMac ? { role: 'close' as const } : { role: 'quit' as const },
+      ],
     },
     {
       label: '编辑',
@@ -41,8 +43,8 @@ function setupMenu() {
         { role: 'copy' as const },
         { role: 'paste' as const },
         { type: 'separator' as const },
-        { role: 'selectAll' as const }
-      ]
+        { role: 'selectAll' as const },
+      ],
     },
     {
       label: '设置',
@@ -51,8 +53,8 @@ function setupMenu() {
         { label: '考试设置' },
         { label: '设置1' },
         { type: 'separator' as const },
-        { label: '用户管理' }
-      ]
+        { label: '用户管理' },
+      ],
     },
     {
       label: '帮助',
@@ -64,9 +66,9 @@ function setupMenu() {
             title: '关于',
             message: `本应用基于 Electron + React + NestJS 构建\n版本: ${app.getVersion()}`,
           })
-        }}
-      ]
-    }
+        } },
+      ],
+    },
   ]
 
   const menu = Menu.buildFromTemplate(template)

@@ -1,18 +1,19 @@
-import React, { useState, useEffect } from 'react'
+import { Card, Col, Row, Select, Space, Statistic, Table, Tag, Typography } from 'antd'
 import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  BarElement,
   ArcElement,
+  BarElement,
+  CategoryScale,
+  Chart as ChartJS,
+  Legend,
+  LinearScale,
+  LineElement,
+  PointElement,
   Title,
   Tooltip,
-  Legend,
 } from 'chart.js'
-import { Line, Bar, Pie } from 'react-chartjs-2'
-import { Card, Select, Typography, Row, Col, Table, Tag, Space, Statistic } from 'antd'
+import * as React from 'react'
+import { useEffect, useState } from 'react'
+import { Bar, Line, Pie } from 'react-chartjs-2'
 import './ScoreAnalysis.css'
 
 // 注册 Chart.js 组件
@@ -25,7 +26,7 @@ ChartJS.register(
   ArcElement,
   Title,
   Tooltip,
-  Legend
+  Legend,
 )
 
 // 模拟成绩数据
@@ -33,7 +34,7 @@ const mockScoreData = {
   exams: [
     { id: '1', name: '2026年春季学期数学期末考试', passScore: 60 },
     { id: '2', name: '2026年春季学期英语期中考试', passScore: 60 },
-    { id: '3', name: '2026年春季学期计算机基础考试', passScore: 60 }
+    { id: '3', name: '2026年春季学期计算机基础考试', passScore: 60 },
   ],
   scores: [
     {
@@ -43,7 +44,7 @@ const mockScoreData = {
       student_name: '张三',
       score: 85,
       status: 'passed',
-      exam_date: '2026-06-15'
+      exam_date: '2026-06-15',
     },
     {
       exam_id: '1',
@@ -52,7 +53,7 @@ const mockScoreData = {
       student_name: '李四',
       score: 72,
       status: 'passed',
-      exam_date: '2026-06-15'
+      exam_date: '2026-06-15',
     },
     {
       exam_id: '1',
@@ -61,7 +62,7 @@ const mockScoreData = {
       student_name: '王五',
       score: 58,
       status: 'failed',
-      exam_date: '2026-06-15'
+      exam_date: '2026-06-15',
     },
     {
       exam_id: '2',
@@ -70,7 +71,7 @@ const mockScoreData = {
       student_name: '张三',
       score: 92,
       status: 'passed',
-      exam_date: '2026-04-20'
+      exam_date: '2026-04-20',
     },
     {
       exam_id: '2',
@@ -79,7 +80,7 @@ const mockScoreData = {
       student_name: '李四',
       score: 88,
       status: 'passed',
-      exam_date: '2026-04-20'
+      exam_date: '2026-04-20',
     },
     {
       exam_id: '2',
@@ -88,9 +89,9 @@ const mockScoreData = {
       student_name: '王五',
       score: 76,
       status: 'passed',
-      exam_date: '2026-04-20'
-    }
-  ]
+      exam_date: '2026-04-20',
+    },
+  ],
 }
 
 const ScoreAnalysis: React.FC = () => {
@@ -101,7 +102,7 @@ const ScoreAnalysis: React.FC = () => {
     passRate: 0,
     highestScore: 0,
     lowestScore: 0,
-    totalStudents: 0
+    totalStudents: 0,
   })
 
   // 当选择的考试变化时，更新成绩数据和统计信息
@@ -118,11 +119,11 @@ const ScoreAnalysis: React.FC = () => {
       const lowestScore = Math.min(...scores.map(score => score.score))
 
       setStatistics({
-        averageScore: parseFloat(averageScore.toFixed(2)),
-        passRate: parseFloat(passRate.toFixed(2)),
+        averageScore: Number.parseFloat(averageScore.toFixed(2)),
+        passRate: Number.parseFloat(passRate.toFixed(2)),
         highestScore,
         lowestScore,
-        totalStudents: scores.length
+        totalStudents: scores.length,
       })
     }
   }, [selectedExam])
@@ -148,7 +149,7 @@ const ScoreAnalysis: React.FC = () => {
         },
         {
           label: '及格线',
-          data: Array(examScores.length).fill(mockScoreData.exams.find(e => e.id === selectedExam)?.passScore || 60),
+          data: Array.from({ length: examScores.length }).fill(mockScoreData.exams.find(e => e.id === selectedExam)?.passScore || 60),
           borderColor: 'rgb(255, 99, 132)',
           borderDash: [5, 5],
           fill: false,
@@ -188,11 +189,15 @@ const ScoreAnalysis: React.FC = () => {
       '90-100': 0,
     }
 
-    examScores.forEach(score => {
-      if (score.score < 60) scoreRanges['0-59']++
-      else if (score.score < 70) scoreRanges['60-69']++
-      else if (score.score < 80) scoreRanges['70-79']++
-      else if (score.score < 90) scoreRanges['80-89']++
+    examScores.forEach((score) => {
+      if (score.score < 60)
+        scoreRanges['0-59']++
+      else if (score.score < 70)
+        scoreRanges['60-69']++
+      else if (score.score < 80)
+        scoreRanges['70-79']++
+      else if (score.score < 90)
+        scoreRanges['80-89']++
       else scoreRanges['90-100']++
     })
 
@@ -309,11 +314,11 @@ const ScoreAnalysis: React.FC = () => {
           <Typography.Text strong>选择考试：</Typography.Text>
           <Select
             value={selectedExam}
-            onChange={(value) => setSelectedExam(value)}
+            onChange={value => setSelectedExam(value)}
             style={{ width: 300 }}
             options={mockScoreData.exams.map(exam => ({
               value: exam.id,
-              label: exam.name
+              label: exam.name,
             }))}
           />
         </Space>
@@ -354,19 +359,22 @@ const ScoreAnalysis: React.FC = () => {
         <Col xs={24} md={12}>
           <Card title="学生成绩" bordered={true}>
             <div style={{ height: 300 }}>
-              {examScores.length > 0 ? (
-                <Line data={lineData} options={chartOptions} />
-              ) : (
-                <div style={{ 
-                  display: 'flex', 
-                  justifyContent: 'center', 
-                  alignItems: 'center', 
-                  height: '100%',
-                  color: '#666'
-                }}>
-                  暂无成绩数据
-                </div>
-              )}
+              {examScores.length > 0
+                ? (
+                    <Line data={lineData} options={chartOptions} />
+                  )
+                : (
+                    <div style={{
+                      display: 'flex',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      height: '100%',
+                      color: '#666',
+                    }}
+                    >
+                      暂无成绩数据
+                    </div>
+                  )}
             </div>
           </Card>
         </Col>
@@ -375,19 +383,22 @@ const ScoreAnalysis: React.FC = () => {
         <Col xs={24} md={12}>
           <Card title="及格情况" bordered={true}>
             <div style={{ height: 300 }}>
-              {examScores.length > 0 ? (
-                <Pie data={pieData} options={chartOptions} />
-              ) : (
-                <div style={{ 
-                  display: 'flex', 
-                  justifyContent: 'center', 
-                  alignItems: 'center', 
-                  height: '100%',
-                  color: '#666'
-                }}>
-                  暂无成绩数据
-                </div>
-              )}
+              {examScores.length > 0
+                ? (
+                    <Pie data={pieData} options={chartOptions} />
+                  )
+                : (
+                    <div style={{
+                      display: 'flex',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      height: '100%',
+                      color: '#666',
+                    }}
+                    >
+                      暂无成绩数据
+                    </div>
+                  )}
             </div>
           </Card>
         </Col>
@@ -396,19 +407,22 @@ const ScoreAnalysis: React.FC = () => {
         <Col xs={24}>
           <Card title="成绩分布" bordered={true}>
             <div style={{ height: 300 }}>
-              {examScores.length > 0 ? (
-                <Bar data={barData} options={chartOptions} />
-              ) : (
-                <div style={{ 
-                  display: 'flex', 
-                  justifyContent: 'center', 
-                  alignItems: 'center', 
-                  height: '100%',
-                  color: '#666'
-                }}>
-                  暂无成绩数据
-                </div>
-              )}
+              {examScores.length > 0
+                ? (
+                    <Bar data={barData} options={chartOptions} />
+                  )
+                : (
+                    <div style={{
+                      display: 'flex',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      height: '100%',
+                      color: '#666',
+                    }}
+                    >
+                      暂无成绩数据
+                    </div>
+                  )}
             </div>
           </Card>
         </Col>
@@ -416,24 +430,27 @@ const ScoreAnalysis: React.FC = () => {
 
       {/* 成绩列表 */}
       <Card title="成绩明细" bordered={true}>
-        {examScores.length > 0 ? (
-          <Table 
-            columns={columns} 
-            dataSource={examScores} 
-            rowKey={(record: any) => `${record.exam_id}-${record.student_id}`} 
-            pagination={{ pageSize: 10 }}
-          />
-        ) : (
-          <div style={{ 
-            display: 'flex', 
-            justifyContent: 'center', 
-            alignItems: 'center', 
-            height: 200,
-            color: '#666'
-          }}>
-            暂无成绩数据
-          </div>
-        )}
+        {examScores.length > 0
+          ? (
+              <Table
+                columns={columns}
+                dataSource={examScores}
+                rowKey={(record: any) => `${record.exam_id}-${record.student_id}`}
+                pagination={{ pageSize: 10 }}
+              />
+            )
+          : (
+              <div style={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                height: 200,
+                color: '#666',
+              }}
+              >
+                暂无成绩数据
+              </div>
+            )}
       </Card>
     </div>
   )

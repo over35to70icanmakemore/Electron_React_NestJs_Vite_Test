@@ -8,6 +8,6 @@ import { ChatMessage } from './chat-message.entity'
   imports: [TypeOrmModule.forFeature([ChatMessage])],
   controllers: [AiBotController],
   providers: [AiBotService],
-  exports: [AiBotService]
+  exports: [AiBotService],
 })
 export class AiBotModule {}

@@ -39,8 +39,8 @@ export class MockExamService {
         questions: [
           { id: 1, question: 'Python中，以下哪个是正确的变量命名？', options: ['1variable', '_variable', 'var-iable', 'class'], correctAnswer: 1 },
           { id: 2, question: '以下哪个不是Python的数据类型？', options: ['list', 'tuple', 'array', 'dict'], correctAnswer: 2 },
-          { id: 3, question: 'Python中，如何定义一个空列表？', options: ['list()', '[]', '{}', '()'], correctAnswer: 1 }
-        ]
+          { id: 3, question: 'Python中，如何定义一个空列表？', options: ['list()', '[]', '{}', '()'], correctAnswer: 1 },
+        ],
       },
       {
         title: '高等数学期中模拟',
@@ -52,8 +52,8 @@ export class MockExamService {
         score: 85,
         questions: [
           { id: 1, question: '求函数f(x)=x²的导数？', options: ['x', '2x', 'x²', '2'], correctAnswer: 1 },
-          { id: 2, question: '∫x dx = ?', options: ['x²/2 + C', 'x + C', 'x² + C', '1/x + C'], correctAnswer: 0 }
-        ]
+          { id: 2, question: '∫x dx = ?', options: ['x²/2 + C', 'x + C', 'x² + C', '1/x + C'], correctAnswer: 0 },
+        ],
       },
       {
         title: '英语四级模拟考试',
@@ -63,8 +63,8 @@ export class MockExamService {
         difficulty: 'medium' as const,
         status: 'in-progress' as const,
         questions: [
-          { id: 1, question: 'The book _____ on the table belongs to me.', options: ['lying', 'laying', 'lied', 'lay'], correctAnswer: 0 }
-        ]
+          { id: 1, question: 'The book _____ on the table belongs to me.', options: ['lying', 'laying', 'lied', 'lay'], correctAnswer: 0 },
+        ],
       },
       {
         title: '数据结构综合测试',
@@ -74,15 +74,15 @@ export class MockExamService {
         difficulty: 'hard' as const,
         status: 'not-started' as const,
         questions: [
-          { id: 1, question: '栈的特点是？', options: ['先进先出', '先进后出', '随机访问', '双向访问'], correctAnswer: 1 }
-        ]
-      }
+          { id: 1, question: '栈的特点是？', options: ['先进先出', '先进后出', '随机访问', '双向访问'], correctAnswer: 1 },
+        ],
+      },
     ]
 
     examData.forEach((exam, index) => {
       this.mockExams.push({
         id: `mock-exam-${index + 1}`,
-        ...exam
+        ...exam,
       })
     })
   }
@@ -95,12 +95,13 @@ export class MockExamService {
     return this.mockExams.find(exam => exam.id === id)
   }
 
-  submitExam(id: string, answers: Record<number, string>): { score: number; correctCount: number } {
+  submitExam(id: string, answers: Record<number, string>): { score: number, correctCount: number } {
     const exam = this.mockExams.find(e => e.id === id)
-    if (!exam) return { score: 0, correctCount: 0 }
+    if (!exam)
+      return { score: 0, correctCount: 0 }
 
     let correctCount = 0
-    exam.questions.forEach(q => {
+    exam.questions.forEach((q) => {
       if (answers[q.id] === q.options[q.correctAnswer]) {
         correctCount++
       }

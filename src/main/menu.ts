@@ -1,16 +1,18 @@
-import { app, Menu, dialog } from 'electron'
+import { app, dialog, Menu } from 'electron'
 
 const isMac = process.platform === 'darwin'
 
 const template = [
-  ...(isMac ? [{
-    label: app.name,
-    submenu: [
-      { role: 'about' as const },
-      { type: 'separator' as const },
-      { role: 'quit' as const }
-    ]
-  }] : []),
+  ...(isMac
+    ? [{
+        label: app.name,
+        submenu: [
+          { role: 'about' as const },
+          { type: 'separator' as const },
+          { role: 'quit' as const },
+        ],
+      }]
+    : []),
   {
     label: '文件',
     submenu: [
@@ -19,14 +21,14 @@ const template = [
       { label: '保存', accelerator: 'CmdOrCtrl+S' },
       { type: 'separator' as const },
       { label: '重载框架', accelerator: 'CmdOrCtrl+R', click: () => {
-          // 重载应用并确保进入登录页面
-          // 先重新启动应用，再退出当前实例
-          app.relaunch()
-          app.quit()
-        } },
+        // 重载应用并确保进入登录页面
+        // 先重新启动应用，再退出当前实例
+        app.relaunch()
+        app.quit()
+      } },
       { type: 'separator' as const },
-      isMac ? { role: 'close' as const } : { role: 'quit' as const }
-    ]
+      isMac ? { role: 'close' as const } : { role: 'quit' as const },
+    ],
   },
   {
     label: '编辑',
@@ -38,8 +40,8 @@ const template = [
       { role: 'copy' as const },
       { role: 'paste' as const },
       { type: 'separator' as const },
-      { role: 'selectAll' as const }
-    ]
+      { role: 'selectAll' as const },
+    ],
   },
   {
     label: '设置',
@@ -48,8 +50,8 @@ const template = [
       { label: '考试设置' },
       { label: '设置1' },
       { type: 'separator' as const },
-      { label: '用户管理' }
-    ]
+      { label: '用户管理' },
+    ],
   },
   {
     label: '帮助',
@@ -60,11 +62,11 @@ const template = [
         dialog.showMessageBox({
           title: '关于',
           message: `本应用基于 Electron + React + NestJS 构建\n版本: ${app.getVersion()}`,
-          buttons: ['确定']
+          buttons: ['确定'],
         })
-      }}
-    ]
-  }
+      } },
+    ],
+  },
 ]
 
 const menu = Menu.buildFromTemplate(template)

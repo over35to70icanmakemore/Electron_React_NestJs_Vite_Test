@@ -1,5 +1,6 @@
-import React, { useState } from 'react'
-import { EyeOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons'
+import { DeleteOutlined, EditOutlined, EyeOutlined } from '@ant-design/icons'
+import * as React from 'react'
+import { useState } from 'react'
 
 interface Question {
   id: string
@@ -21,7 +22,7 @@ const mockQuestions: Question[] = [
     difficulty: 'easy',
     created_by: 'admin',
     created_at: '2026-01-01T00:00:00',
-    updated_at: '2026-01-01T00:00:00'
+    updated_at: '2026-01-01T00:00:00',
   },
   {
     id: '2',
@@ -31,7 +32,7 @@ const mockQuestions: Question[] = [
     difficulty: 'medium',
     created_by: 'admin',
     created_at: '2026-01-02T00:00:00',
-    updated_at: '2026-01-02T00:00:00'
+    updated_at: '2026-01-02T00:00:00',
   },
   {
     id: '3',
@@ -41,7 +42,7 @@ const mockQuestions: Question[] = [
     difficulty: 'easy',
     created_by: 'admin',
     created_at: '2026-01-03T00:00:00',
-    updated_at: '2026-01-03T00:00:00'
+    updated_at: '2026-01-03T00:00:00',
   },
   {
     id: '4',
@@ -51,8 +52,8 @@ const mockQuestions: Question[] = [
     difficulty: 'hard',
     created_by: 'admin',
     created_at: '2026-01-04T00:00:00',
-    updated_at: '2026-01-04T00:00:00'
-  }
+    updated_at: '2026-01-04T00:00:00',
+  },
 ]
 
 interface QuestionListProps {
@@ -95,7 +96,7 @@ const QuestionList: React.FC<QuestionListProps> = ({ onEdit, onDelete, onView })
     }
   }
 
-  const filteredQuestions = questions.filter(question => {
+  const filteredQuestions = questions.filter((question) => {
     const matchesSearch = question.content.toLowerCase().includes(searchTerm.toLowerCase())
     const matchesType = typeFilter === 'all' || question.type === typeFilter
     const matchesDifficulty = difficultyFilter === 'all' || question.difficulty === difficultyFilter
@@ -110,14 +111,14 @@ const QuestionList: React.FC<QuestionListProps> = ({ onEdit, onDelete, onView })
             type="text"
             placeholder="搜索试题..."
             value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
+            onChange={e => setSearchTerm(e.target.value)}
             className="search-input"
           />
         </div>
         <div className="filter-boxes">
           <select
             value={typeFilter}
-            onChange={(e) => setTypeFilter(e.target.value)}
+            onChange={e => setTypeFilter(e.target.value)}
             className="type-filter"
           >
             <option value="all">全部类型</option>
@@ -128,7 +129,7 @@ const QuestionList: React.FC<QuestionListProps> = ({ onEdit, onDelete, onView })
           </select>
           <select
             value={difficultyFilter}
-            onChange={(e) => setDifficultyFilter(e.target.value)}
+            onChange={e => setDifficultyFilter(e.target.value)}
             className="difficulty-filter"
           >
             <option value="all">全部难度</option>
@@ -151,51 +152,56 @@ const QuestionList: React.FC<QuestionListProps> = ({ onEdit, onDelete, onView })
             </tr>
           </thead>
           <tbody>
-            {filteredQuestions.length > 0 ? (
-              filteredQuestions.map(question => (
-                <tr key={question.id}>
-                  <td>{question.content.substring(0, 100)}...</td>
-                  <td>{getTypeText(question.type)}</td>
-                  <td>{question.score}</td>
-                  <td>
-                    <span className={`difficulty-badge ${getDifficultyClass(question.difficulty)}`}>
-                      {getDifficultyText(question.difficulty)}
-                    </span>
-                  </td>
-                  <td>
-                    <div className="action-buttons">
-                      <button 
-                        className="btn-action btn-view"
-                        onClick={() => onView(question.id)}
-                        title="查看"
-                      >
-                        <EyeOutlined />
-                      </button>
-                      <button 
-                        className="btn-action btn-edit"
-                        onClick={() => onEdit(question)}
-                        title="编辑"
-                      >
-                        <EditOutlined />
-                      </button>
-                      <button 
-                        className="btn-action btn-delete"
-                        onClick={() => onDelete(question.id)}
-                        title="删除"
-                      >
-                        <DeleteOutlined />
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              ))
-            ) : (
-              <tr>
-                <td colSpan={5} className="no-data">
-                  暂无试题数据
-                </td>
-              </tr>
-            )}
+            {filteredQuestions.length > 0
+              ? (
+                  filteredQuestions.map(question => (
+                    <tr key={question.id}>
+                      <td>
+                        {question.content.substring(0, 100)}
+                        ...
+                      </td>
+                      <td>{getTypeText(question.type)}</td>
+                      <td>{question.score}</td>
+                      <td>
+                        <span className={`difficulty-badge ${getDifficultyClass(question.difficulty)}`}>
+                          {getDifficultyText(question.difficulty)}
+                        </span>
+                      </td>
+                      <td>
+                        <div className="action-buttons">
+                          <button
+                            className="btn-action btn-view"
+                            onClick={() => onView(question.id)}
+                            title="查看"
+                          >
+                            <EyeOutlined />
+                          </button>
+                          <button
+                            className="btn-action btn-edit"
+                            onClick={() => onEdit(question)}
+                            title="编辑"
+                          >
+                            <EditOutlined />
+                          </button>
+                          <button
+                            className="btn-action btn-delete"
+                            onClick={() => onDelete(question.id)}
+                            title="删除"
+                          >
+                            <DeleteOutlined />
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))
+                )
+              : (
+                  <tr>
+                    <td colSpan={5} className="no-data">
+                      暂无试题数据
+                    </td>
+                  </tr>
+                )}
           </tbody>
         </table>
       </div>

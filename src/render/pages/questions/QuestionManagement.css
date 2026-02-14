@@ -69,8 +69,6 @@
   background-color: #ff7875;
 }
 
-
-
 .btn-cancel {
   background-color: #f0f0f0;
   color: #333;
@@ -430,18 +428,18 @@ select::-ms-expand {
 }
 
 /* 数字输入框样式 */
-input[type="number"]::-webkit-inner-spin-button,
-input[type="number"]::-webkit-outer-spin-button {
+input[type='number']::-webkit-inner-spin-button,
+input[type='number']::-webkit-outer-spin-button {
   height: auto;
   opacity: 1;
 }
 
-input[type="number"] {
+input[type='number'] {
   -moz-appearance: textfield;
 }
 
-input[type="number"]:hover::-webkit-inner-spin-button,
-input[type="number"]:hover::-webkit-outer-spin-button {
+input[type='number']:hover::-webkit-inner-spin-button,
+input[type='number']:hover::-webkit-outer-spin-button {
   opacity: 1;
 }
 
@@ -462,13 +460,13 @@ input[type="number"]:hover::-webkit-outer-spin-button {
   gap: 1rem;
 }
 
-.option-content input[type="radio"],
-.option-content input[type="checkbox"] {
+.option-content input[type='radio'],
+.option-content input[type='checkbox'] {
   width: auto;
   margin-right: 0.5rem;
 }
 
-.option-content input[type="text"] {
+.option-content input[type='text'] {
   flex: 1;
   padding: 0.875rem 1.25rem;
   border: 1px solid #d9d9d9;
@@ -478,17 +476,17 @@ input[type="number"]:hover::-webkit-outer-spin-button {
   background-color: #ffffff;
 }
 
-.option-content input[type="text"]:focus {
+.option-content input[type='text']:focus {
   outline: none;
   border-color: #1890ff;
   box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
 }
 
-.option-content input[type="text"]:hover {
+.option-content input[type='text']:hover {
   border-color: #1890ff;
 }
 
-.option-content input[type="text"]::placeholder {
+.option-content input[type='text']::placeholder {
   color: #999999;
 }
 
@@ -496,7 +494,7 @@ input[type="number"]:hover::-webkit-outer-spin-button {
 .form-group input.error,
 .form-group select.error,
 .form-group textarea.error,
-.option-content input[type="text"].error {
+.option-content input[type='text'].error {
   border-color: #ff4d4f;
   border-radius: 6px;
 }

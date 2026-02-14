@@ -29,7 +29,8 @@ export class AiKnowledgeService implements OnModuleInit {
       if (count === 0) {
         await this.seedKnowledge()
       }
-    } catch {
+    }
+    catch {
       this.useDatabase = false
     }
   }
@@ -60,33 +61,41 @@ export class AiKnowledgeService implements OnModuleInit {
   }
 
   async getAllKnowledge(): Promise<KnowledgeItem[]> {
-    if (!this.useDatabase) return this.getMockData()
+    if (!this.useDatabase)
+      return this.getMockData()
     try {
       return await this.knowledgeRepository.find()
-    } catch {
+    }
+    catch {
       return this.getMockData()
     }
   }
 
   async getKnowledgeById(id: string): Promise<KnowledgeItem | null> {
-    if (!this.useDatabase) return this.getMockData().find(item => item.id === id) || null
+    if (!this.useDatabase)
+      return this.getMockData().find(item => item.id === id) || null
     try {
       return await this.knowledgeRepository.findOne({ where: { id } })
-    } catch {
+    }
+    catch {
       return this.getMockData().find(item => item.id === id) || null
     }
   }
 
   async getKnowledgeByCategory(category: string): Promise<KnowledgeItem[]> {
     if (!this.useDatabase) {
-      if (category === 'all') return this.getMockData()
+      if (category === 'all')
+        return this.getMockData()
       return this.getMockData().filter(item => item.category === category)
     }
     try {
-      if (category === 'all') return await this.knowledgeRepository.find()
+      if (category === 'all')
+        return await this.knowledgeRepository.find()
       return await this.knowledgeRepository.find({ where: { category } })
-    } catch {
-      if (category === 'all') return this.getMockData()
+    }
+    catch {
+      if (category === 'all')
+        return this.getMockData()
       return this.getMockData().filter(item => item.category === category)
     }
   }
@@ -94,9 +103,9 @@ export class AiKnowledgeService implements OnModuleInit {
   async searchKnowledge(query: string): Promise<KnowledgeItem[]> {
     if (!this.useDatabase) {
       const lowerQuery = query.toLowerCase()
-      return this.getMockData().filter(item => 
-        item.title.toLowerCase().includes(lowerQuery) || 
-        item.summary.toLowerCase().includes(lowerQuery)
+      return this.getMockData().filter(item =>
+        item.title.toLowerCase().includes(lowerQuery)
+        || item.summary.toLowerCase().includes(lowerQuery),
       )
     }
     try {
@@ -105,11 +114,12 @@ export class AiKnowledgeService implements OnModuleInit {
         .where('knowledge.title LIKE :query', { query: `%${query}%` })
         .orWhere('knowledge.summary LIKE :query', { query: `%${query}%` })
         .getMany()
-    } catch {
+    }
+    catch {
       const lowerQuery = query.toLowerCase()
-      return this.getMockData().filter(item => 
-        item.title.toLowerCase().includes(lowerQuery) || 
-        item.summary.toLowerCase().includes(lowerQuery)
+      return this.getMockData().filter(item =>
+        item.title.toLowerCase().includes(lowerQuery)
+        || item.summary.toLowerCase().includes(lowerQuery),
       )
     }
   }

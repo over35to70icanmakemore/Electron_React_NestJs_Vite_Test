@@ -1,7 +1,7 @@
-import { Controller } from '@nestjs/common'
 import { IpcHandle } from '@doubleshot/nest-electron'
-import { ScheduleService } from './schedule.service'
+import { Controller } from '@nestjs/common'
 import { Schedule } from './schedule.entity'
+import { ScheduleService } from './schedule.service'
 
 @Controller()
 export class ScheduleController {

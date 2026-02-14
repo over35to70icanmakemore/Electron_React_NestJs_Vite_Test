@@ -31,7 +31,7 @@ export class ProfileService implements OnModuleInit {
     major: '计算机科学与技术',
     grade: '大三',
     bio: '热爱学习，追求卓越。对编程和技术充满热情，希望成为一名优秀的软件工程师。',
-    achievements: ['学习之星', '编程达人', '优秀学生', '竞赛获奖者']
+    achievements: ['学习之星', '编程达人', '优秀学生', '竞赛获奖者'],
   }
 
   constructor(
@@ -45,7 +45,8 @@ export class ProfileService implements OnModuleInit {
       if (count === 0) {
         await this.seedProfile()
       }
-    } catch {
+    }
+    catch {
       this.useDatabase = false
     }
   }
@@ -60,16 +61,18 @@ export class ProfileService implements OnModuleInit {
       major: '计算机科学与技术',
       grade: '大三',
       bio: '热爱学习，追求卓越。对编程和技术充满热情，希望成为一名优秀的软件工程师。',
-      achievements: ['学习之星', '编程达人', '优秀学生', '竞赛获奖者']
+      achievements: ['学习之星', '编程达人', '优秀学生', '竞赛获奖者'],
     })
     await this.profileRepository.save(profile)
   }
 
   async getProfile(): Promise<ProfileData | null> {
-    if (!this.useDatabase) return this.mockProfileData
+    if (!this.useDatabase)
+      return this.mockProfileData
     try {
       return await this.profileRepository.findOne({ where: {} })
-    } catch {
+    }
+    catch {
       return this.mockProfileData
     }
   }
@@ -82,10 +85,12 @@ export class ProfileService implements OnModuleInit {
 
     try {
       const profile = await this.profileRepository.findOne({ where: {} })
-      if (!profile) return null
+      if (!profile)
+        return null
       Object.assign(profile, profileData)
       return await this.profileRepository.save(profile)
-    } catch {
+    }
+    catch {
       this.mockProfileData = { ...this.mockProfileData, ...profileData }
       return this.mockProfileData
     }
@@ -103,17 +108,18 @@ export class ProfileService implements OnModuleInit {
         profile.avatar = avatar
         await this.profileRepository.save(profile)
       }
-    } catch {
+    }
+    catch {
       this.mockProfileData.avatar = avatar
     }
   }
 
-  getStatistics(): { completedExams: number; averageScore: number; studyHours: number; ranking: string } {
+  getStatistics(): { completedExams: number, averageScore: number, studyHours: number, ranking: string } {
     return {
       completedExams: 12,
       averageScore: 85,
       studyHours: 120,
-      ranking: 'Top 10%'
+      ranking: 'Top 10%',
     }
   }
 }

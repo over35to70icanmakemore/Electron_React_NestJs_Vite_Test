@@ -28,7 +28,7 @@ export class ExamService implements OnModuleInit {
       end_time: new Date('2026-03-01 11:00:00'),
       status: 'upcoming',
       pass_score: 60,
-      created_by: 'admin'
+      created_by: 'admin',
     },
     {
       id: '2',
@@ -39,8 +39,8 @@ export class ExamService implements OnModuleInit {
       end_time: new Date('2026-03-05 15:30:00'),
       status: 'upcoming',
       pass_score: 70,
-      created_by: 'admin'
-    }
+      created_by: 'admin',
+    },
   ]
 
   constructor(
@@ -54,7 +54,8 @@ export class ExamService implements OnModuleInit {
       if (count === 0) {
         await this.seedExams()
       }
-    } catch {
+    }
+    catch {
       this.useDatabase = false
     }
   }
@@ -69,7 +70,7 @@ export class ExamService implements OnModuleInit {
         end_time: new Date('2026-03-01 11:00:00'),
         status: 'upcoming',
         pass_score: 60,
-        created_by: 'admin'
+        created_by: 'admin',
       },
       {
         title: 'Python编程测试',
@@ -79,8 +80,8 @@ export class ExamService implements OnModuleInit {
         end_time: new Date('2026-03-05 15:30:00'),
         status: 'upcoming',
         pass_score: 70,
-        created_by: 'admin'
-      }
+        created_by: 'admin',
+      },
     ]
 
     for (const data of examData) {
@@ -90,19 +91,23 @@ export class ExamService implements OnModuleInit {
   }
 
   async getAllExams(): Promise<ExamData[]> {
-    if (!this.useDatabase) return this.mockExamData
+    if (!this.useDatabase)
+      return this.mockExamData
     try {
       return await this.examRepository.find()
-    } catch {
+    }
+    catch {
       return this.mockExamData
     }
   }
 
   async getExamById(id: string): Promise<ExamData | null> {
-    if (!this.useDatabase) return this.mockExamData.find(item => item.id === id) || null
+    if (!this.useDatabase)
+      return this.mockExamData.find(item => item.id === id) || null
     try {
       return await this.examRepository.findOne({ where: { id } })
-    } catch {
+    }
+    catch {
       return this.mockExamData.find(item => item.id === id) || null
     }
   }
@@ -117,7 +122,7 @@ export class ExamService implements OnModuleInit {
       end_time: examData.end_time || new Date(),
       status: examData.status || 'upcoming',
       pass_score: examData.pass_score || 60,
-      created_by: examData.created_by || 'admin'
+      created_by: examData.created_by || 'admin',
     }
 
     if (!this.useDatabase) {
@@ -128,7 +133,8 @@ export class ExamService implements OnModuleInit {
     try {
       const exam = this.examRepository.create(examData)
       return await this.examRepository.save(exam)
-    } catch {
+    }
+    catch {
       this.mockExamData.push(newExam)
       return newExam
     }
@@ -137,7 +143,8 @@ export class ExamService implements OnModuleInit {
   async updateExam(id: string, examData: Partial<ExamData>): Promise<ExamData | null> {
     if (!this.useDatabase) {
       const index = this.mockExamData.findIndex(item => item.id === id)
-      if (index === -1) return null
+      if (index === -1)
+        return null
       this.mockExamData[index] = { ...this.mockExamData[index], ...examData }
       return this.mockExamData[index]
     }
@@ -145,9 +152,11 @@ export class ExamService implements OnModuleInit {
     try {
       await this.examRepository.update(id, examData)
       return await this.examRepository.findOne({ where: { id } })
-    } catch {
+    }
+    catch {
       const index = this.mockExamData.findIndex(item => item.id === id)
-      if (index === -1) return null
+      if (index === -1)
+        return null
       this.mockExamData[index] = { ...this.mockExamData[index], ...examData }
       return this.mockExamData[index]
     }
@@ -156,7 +165,8 @@ export class ExamService implements OnModuleInit {
   async deleteExam(id: string): Promise<boolean> {
     if (!this.useDatabase) {
       const index = this.mockExamData.findIndex(item => item.id === id)
-      if (index === -1) return false
+      if (index === -1)
+        return false
       this.mockExamData.splice(index, 1)
       return true
     }
@@ -164,9 +174,11 @@ export class ExamService implements OnModuleInit {
     try {
       const result = await this.examRepository.delete(id)
       return result.affected > 0
-    } catch {
+    }
+    catch {
       const index = this.mockExamData.findIndex(item => item.id === id)
-      if (index === -1) return false
+      if (index === -1)
+        return false
       this.mockExamData.splice(index, 1)
       return true
     }

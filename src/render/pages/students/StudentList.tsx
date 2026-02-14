@@ -1,5 +1,6 @@
-import React, { useState } from 'react'
-import { EyeOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons'
+import { DeleteOutlined, EditOutlined, EyeOutlined } from '@ant-design/icons'
+import * as React from 'react'
+import { useState } from 'react'
 
 interface Student {
   id: string
@@ -25,7 +26,7 @@ const mockStudents: Student[] = [
     phone: '13800138001',
     class: '高一(1)班',
     created_at: '2026-01-01T00:00:00',
-    updated_at: '2026-01-01T00:00:00'
+    updated_at: '2026-01-01T00:00:00',
   },
   {
     id: '2',
@@ -37,7 +38,7 @@ const mockStudents: Student[] = [
     phone: '13800138002',
     class: '高一(1)班',
     created_at: '2026-01-01T00:00:00',
-    updated_at: '2026-01-01T00:00:00'
+    updated_at: '2026-01-01T00:00:00',
   },
   {
     id: '3',
@@ -49,8 +50,8 @@ const mockStudents: Student[] = [
     phone: '13800138003',
     class: '高一(2)班',
     created_at: '2026-01-01T00:00:00',
-    updated_at: '2026-01-01T00:00:00'
-  }
+    updated_at: '2026-01-01T00:00:00',
+  },
 ]
 
 interface StudentListProps {
@@ -74,10 +75,10 @@ const StudentList: React.FC<StudentListProps> = ({ onEdit, onDelete, onView }) =
 
   const classOptions = ['all', ...Array.from(new Set(students.map(student => student.class)))]
 
-  const filteredStudents = students.filter(student => {
-    const matchesSearch = student.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         student.student_id.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         student.email.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredStudents = students.filter((student) => {
+    const matchesSearch = student.name.toLowerCase().includes(searchTerm.toLowerCase())
+      || student.student_id.toLowerCase().includes(searchTerm.toLowerCase())
+      || student.email.toLowerCase().includes(searchTerm.toLowerCase())
     const matchesClass = classFilter === 'all' || student.class === classFilter
     return matchesSearch && matchesClass
   })
@@ -90,14 +91,14 @@ const StudentList: React.FC<StudentListProps> = ({ onEdit, onDelete, onView }) =
             type="text"
             placeholder="搜索考生..."
             value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
+            onChange={e => setSearchTerm(e.target.value)}
             className="search-input"
           />
         </div>
         <div className="filter-box">
           <select
             value={classFilter}
-            onChange={(e) => setClassFilter(e.target.value)}
+            onChange={e => setClassFilter(e.target.value)}
             className="class-filter"
           >
             {classOptions.map(classOption => (
@@ -124,50 +125,52 @@ const StudentList: React.FC<StudentListProps> = ({ onEdit, onDelete, onView }) =
             </tr>
           </thead>
           <tbody>
-            {filteredStudents.length > 0 ? (
-              filteredStudents.map(student => (
-                <tr key={student.id}>
-                  <td>{student.student_id}</td>
-                  <td>{student.name}</td>
-                  <td>{getGenderText(student.gender)}</td>
-                  <td>{new Date(student.birthdate).toLocaleDateString()}</td>
-                  <td>{student.email}</td>
-                  <td>{student.phone}</td>
-                  <td>{student.class}</td>
-                  <td>
-                    <div className="action-buttons">
-                      <button 
-                        className="btn-action btn-view"
-                        onClick={() => onView(student.id)}
-                        title="查看"
-                      >
-                        <EyeOutlined />
-                      </button>
-                      <button 
-                        className="btn-action btn-edit"
-                        onClick={() => onEdit(student)}
-                        title="编辑"
-                      >
-                        <EditOutlined />
-                      </button>
-                      <button 
-                        className="btn-action btn-delete"
-                        onClick={() => onDelete(student.id)}
-                        title="删除"
-                      >
-                        <DeleteOutlined />
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              ))
-            ) : (
-              <tr>
-                <td colSpan={8} className="no-data">
-                  暂无考生数据
-                </td>
-              </tr>
-            )}
+            {filteredStudents.length > 0
+              ? (
+                  filteredStudents.map(student => (
+                    <tr key={student.id}>
+                      <td>{student.student_id}</td>
+                      <td>{student.name}</td>
+                      <td>{getGenderText(student.gender)}</td>
+                      <td>{new Date(student.birthdate).toLocaleDateString()}</td>
+                      <td>{student.email}</td>
+                      <td>{student.phone}</td>
+                      <td>{student.class}</td>
+                      <td>
+                        <div className="action-buttons">
+                          <button
+                            className="btn-action btn-view"
+                            onClick={() => onView(student.id)}
+                            title="查看"
+                          >
+                            <EyeOutlined />
+                          </button>
+                          <button
+                            className="btn-action btn-edit"
+                            onClick={() => onEdit(student)}
+                            title="编辑"
+                          >
+                            <EditOutlined />
+                          </button>
+                          <button
+                            className="btn-action btn-delete"
+                            onClick={() => onDelete(student.id)}
+                            title="删除"
+                          >
+                            <DeleteOutlined />
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))
+                )
+              : (
+                  <tr>
+                    <td colSpan={8} className="no-data">
+                      暂无考生数据
+                    </td>
+                  </tr>
+                )}
           </tbody>
         </table>
       </div>

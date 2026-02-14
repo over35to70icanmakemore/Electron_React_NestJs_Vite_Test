@@ -1,6 +1,7 @@
-import React, { useState } from 'react'
-import { Card, Checkbox, Input, Select, Button, Typography, Space, Row, Col } from 'antd'
 import { SaveOutlined } from '@ant-design/icons'
+import { Button, Card, Checkbox, Col, Input, Row, Select, Space, Typography } from 'antd'
+import * as React from 'react'
+import { useState } from 'react'
 
 const Settings: React.FC = () => {
   // 考试设置状态
@@ -10,7 +11,7 @@ const Settings: React.FC = () => {
     randomQuestions: false,
     passScore: 60,
     examDuration: 120, // 分钟
-    maxAttempts: 1
+    maxAttempts: 1,
   })
 
   // 系统设置状态
@@ -19,26 +20,26 @@ const Settings: React.FC = () => {
     theme: 'light',
     autoSave: true,
     backupInterval: 24, // 小时
-    notificationEnabled: true
+    notificationEnabled: true,
   })
 
   // 处理考试设置变化
   const handleExamSettingChange = (e: any) => {
-    const { name, value, type, checked } = e.target;
+    const { name, value, type, checked } = e.target
     setExamSettings(prev => ({
       ...prev,
-      [name]: type === 'checkbox' ? checked : Number(value)
-    }));
-  };
+      [name]: type === 'checkbox' ? checked : Number(value),
+    }))
+  }
 
   // 处理系统设置变化
   const handleSystemSettingChange = (e: any) => {
-    const { name, value, type, checked } = e.target;
+    const { name, value, type, checked } = e.target
     setSystemSettings(prev => ({
       ...prev,
-      [name]: type === 'checkbox' ? checked : value
-    }));
-  };
+      [name]: type === 'checkbox' ? checked : value,
+    }))
+  }
 
   // 保存设置
   const handleSaveSettings = () => {
@@ -60,14 +61,14 @@ const Settings: React.FC = () => {
       </div>
 
       {/* 考试设置 */}
-      <Card 
-        title="考试设置" 
+      <Card
+        title="考试设置"
         style={{ marginBottom: '24px' }}
         bordered={true}
       >
         <Space direction="vertical" style={{ width: '100%' }} size="large">
           <div>
-            <Checkbox 
+            <Checkbox
               name="autoSubmit"
               checked={examSettings.autoSubmit}
               onChange={handleExamSettingChange}
@@ -80,7 +81,7 @@ const Settings: React.FC = () => {
           </div>
 
           <div>
-            <Checkbox 
+            <Checkbox
               name="showTimer"
               checked={examSettings.showTimer}
               onChange={handleExamSettingChange}
@@ -93,7 +94,7 @@ const Settings: React.FC = () => {
           </div>
 
           <div>
-            <Checkbox 
+            <Checkbox
               name="randomQuestions"
               checked={examSettings.randomQuestions}
               onChange={handleExamSettingChange}
@@ -108,7 +109,7 @@ const Settings: React.FC = () => {
           <Row gutter={[16, 16]}>
             <Col span={8}>
               <Text strong>及格分数：</Text>
-              <Input 
+              <Input
                 type="number"
                 name="passScore"
                 min={0}
@@ -121,7 +122,7 @@ const Settings: React.FC = () => {
 
             <Col span={8}>
               <Text strong>考试时长（分钟）：</Text>
-              <Input 
+              <Input
                 type="number"
                 name="examDuration"
                 min={1}
@@ -134,7 +135,7 @@ const Settings: React.FC = () => {
 
             <Col span={8}>
               <Text strong>最大尝试次数：</Text>
-              <Input 
+              <Input
                 type="number"
                 name="maxAttempts"
                 min={1}
@@ -149,8 +150,8 @@ const Settings: React.FC = () => {
       </Card>
 
       {/* 系统设置 */}
-      <Card 
-        title="系统设置" 
+      <Card
+        title="系统设置"
         style={{ marginBottom: '24px' }}
         bordered={true}
       >
@@ -158,9 +159,9 @@ const Settings: React.FC = () => {
           <Row gutter={[16, 16]}>
             <Col span={8}>
               <Text strong>语言：</Text>
-              <Select 
+              <Select
                 value={systemSettings.language}
-                onChange={(value) => handleSystemSettingChange({ target: { name: 'language', value } })}
+                onChange={value => handleSystemSettingChange({ target: { name: 'language', value } })}
                 style={{ width: '100%', marginTop: '8px' }}
               >
                 <Select.Option value="zh-CN">中文</Select.Option>
@@ -170,9 +171,9 @@ const Settings: React.FC = () => {
 
             <Col span={8}>
               <Text strong>主题：</Text>
-              <Select 
+              <Select
                 value={systemSettings.theme}
-                onChange={(value) => handleSystemSettingChange({ target: { name: 'theme', value } })}
+                onChange={value => handleSystemSettingChange({ target: { name: 'theme', value } })}
                 style={{ width: '100%', marginTop: '8px' }}
               >
                 <Select.Option value="light">浅色</Select.Option>
@@ -182,7 +183,7 @@ const Settings: React.FC = () => {
           </Row>
 
           <div>
-            <Checkbox 
+            <Checkbox
               name="autoSave"
               checked={systemSettings.autoSave}
               onChange={handleSystemSettingChange}
@@ -196,7 +197,7 @@ const Settings: React.FC = () => {
 
           <div>
             <Text strong>备份间隔（小时）：</Text>
-            <Input 
+            <Input
               type="number"
               name="backupInterval"
               min={1}
@@ -208,7 +209,7 @@ const Settings: React.FC = () => {
           </div>
 
           <div>
-            <Checkbox 
+            <Checkbox
               name="notificationEnabled"
               checked={systemSettings.notificationEnabled}
               onChange={handleSystemSettingChange}
@@ -224,8 +225,8 @@ const Settings: React.FC = () => {
 
       {/* 保存按钮 */}
       <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-        <Button 
-          type="primary" 
+        <Button
+          type="primary"
           onClick={handleSaveSettings}
           icon={<SaveOutlined />}
           size="large"

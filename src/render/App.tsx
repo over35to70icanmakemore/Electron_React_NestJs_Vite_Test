@@ -1,32 +1,32 @@
+import { ArrowLeftOutlined, BarChartOutlined, BookOutlined, CalendarOutlined, CheckSquareOutlined, CloudOutlined, FileOutlined, FileTextOutlined, IdcardOutlined, QuestionCircleOutlined, RobotOutlined, ScheduleOutlined, SettingOutlined, TeamOutlined, ThunderboltOutlined, UserOutlined } from '@ant-design/icons'
+import { ConfigProvider, Layout } from 'antd'
 import { useEffect } from 'react'
-import { BrowserRouter as Router, Routes, Route, useLocation, useNavigate } from 'react-router-dom'
-import { Layout, ConfigProvider } from 'antd'
-import { CalendarOutlined, FileTextOutlined, UserOutlined, FileOutlined, BarChartOutlined, SettingOutlined, TeamOutlined, ArrowLeftOutlined, RobotOutlined, ThunderboltOutlined, QuestionCircleOutlined, CloudOutlined, ScheduleOutlined, CheckSquareOutlined, IdcardOutlined, BookOutlined } from '@ant-design/icons'
-import { industrialTheme } from './theme'
-import './App.css'
-
-// 导入页面组件
-import Login from './pages/auth/Login'
-import ExamManagement from './pages/exams/ExamManagement'
-import StudentManagement from './pages/students/StudentManagement'
-import QuestionManagement from './pages/questions/QuestionManagement'
-import ScoreAnalysis from './pages/scores/ScoreAnalysis'
-import Settings from './pages/settings/Settings'
-import UserManagement from './pages/users/UserManagement'
-import MyExamPage from './pages/user-exams/MyExamPage'
+import { Route, BrowserRouter as Router, Routes, useLocation, useNavigate } from 'react-router-dom'
+// 导入组件
+import AuthGuard from './components/AuthGuard'
+import AIBot from './pages/ai-bot/AIBot'
 
 // 导入新的页面组件
 import AIKnowledge from './pages/ai-knowledge/AIKnowledge'
-import AIBot from './pages/ai-bot/AIBot'
+// 导入页面组件
+import Login from './pages/auth/Login'
+import ExamManagement from './pages/exams/ExamManagement'
 import MockExam from './pages/mock-exam/MockExam'
-import Quiz from './pages/quiz/Quiz'
-import Weather from './pages/weather/Weather'
-import Schedule from './pages/schedule/Schedule'
-import TodoList from './pages/todo/TodoList'
 import Profile from './pages/profile/Profile'
+import QuestionManagement from './pages/questions/QuestionManagement'
+import Quiz from './pages/quiz/Quiz'
+import Schedule from './pages/schedule/Schedule'
 
-// 导入组件
-import AuthGuard from './components/AuthGuard'
+import ScoreAnalysis from './pages/scores/ScoreAnalysis'
+import Settings from './pages/settings/Settings'
+import StudentManagement from './pages/students/StudentManagement'
+import TodoList from './pages/todo/TodoList'
+import MyExamPage from './pages/user-exams/MyExamPage'
+import UserManagement from './pages/users/UserManagement'
+import Weather from './pages/weather/Weather'
+import { industrialTheme } from './theme'
+
+import './App.css'
 
 const { Content } = Layout
 
@@ -67,7 +67,7 @@ const DesktopHome: React.FC = () => {
       title: '我的考试',
       description: '查看考试信息和预约情况',
       color: '#4a90e2',
-      path: '/user-exams'
+      path: '/user-exams',
     },
     {
       id: 'exams',
@@ -75,7 +75,7 @@ const DesktopHome: React.FC = () => {
       title: '考试管理',
       description: '创建和管理考试项目',
       color: '#52c41a',
-      path: '/exams'
+      path: '/exams',
     },
     {
       id: 'students',
@@ -83,7 +83,7 @@ const DesktopHome: React.FC = () => {
       title: '考生管理',
       description: '管理考生信息和数据',
       color: '#fa8c16',
-      path: '/students'
+      path: '/students',
     },
     {
       id: 'questions',
@@ -91,15 +91,15 @@ const DesktopHome: React.FC = () => {
       title: '试题库',
       description: '维护试题资源库',
       color: '#13c2c2',
-      path: '/questions'
+      path: '/questions',
     },
     {
       id: 'scores',
       icon: <BarChartOutlined />,
       title: '成绩分析',
       description: '统计和分析考试成绩',
-      color: '#722ed1',
-      path: '/scores'
+      color: '#2a5298',
+      path: '/scores',
     },
     {
       id: 'ai-knowledge',
@@ -107,7 +107,7 @@ const DesktopHome: React.FC = () => {
       title: 'AI知识库',
       description: '智能知识检索与学习',
       color: '#1890ff',
-      path: '/ai-knowledge'
+      path: '/ai-knowledge',
     },
     {
       id: 'ai-bot',
@@ -115,7 +115,7 @@ const DesktopHome: React.FC = () => {
       title: '智能机器人',
       description: 'AI智能问答助手',
       color: '#13c2c2',
-      path: '/ai-bot'
+      path: '/ai-bot',
     },
     {
       id: 'mock-exam',
@@ -123,7 +123,7 @@ const DesktopHome: React.FC = () => {
       title: '模拟练习',
       description: '在线模拟考试练习',
       color: '#faad14',
-      path: '/mock-exam'
+      path: '/mock-exam',
     },
     {
       id: 'quiz',
@@ -131,7 +131,7 @@ const DesktopHome: React.FC = () => {
       title: '趣味问答',
       description: '趣味知识问答挑战',
       color: '#eb2f96',
-      path: '/quiz'
+      path: '/quiz',
     },
     {
       id: 'weather',
@@ -139,15 +139,15 @@ const DesktopHome: React.FC = () => {
       title: '天气预报',
       description: '查看实时天气信息',
       color: '#36cfc9',
-      path: '/weather'
+      path: '/weather',
     },
     {
       id: 'schedule',
       icon: <ScheduleOutlined />,
       title: '行程日历',
       description: '管理日程和安排',
-      color: '#722ed1',
-      path: '/schedule'
+      color: '#1890ff',
+      path: '/schedule',
     },
     {
       id: 'todo',
@@ -155,7 +155,7 @@ const DesktopHome: React.FC = () => {
       title: '我的待办',
       description: '管理待办事项清单',
       color: '#52c41a',
-      path: '/todo'
+      path: '/todo',
     },
     {
       id: 'profile',
@@ -163,7 +163,7 @@ const DesktopHome: React.FC = () => {
       title: '个人资料',
       description: '查看和编辑个人信息',
       color: '#fa8c16',
-      path: '/profile'
+      path: '/profile',
     },
     {
       id: 'users',
@@ -171,7 +171,7 @@ const DesktopHome: React.FC = () => {
       title: '用户管理',
       description: '管理系统用户权限',
       color: '#eb2f96',
-      path: '/users'
+      path: '/users',
     },
     {
       id: 'settings',
@@ -179,8 +179,8 @@ const DesktopHome: React.FC = () => {
       title: '系统设置',
       description: '配置系统参数选项',
       color: '#595959',
-      path: '/settings'
-    }
+      path: '/settings',
+    },
   ]
 
   return (
@@ -243,7 +243,7 @@ const PageWrapper: React.FC<PageWrapperProps> = ({ title, children }) => {
 }
 
 // 主应用内容组件
-const AppContent = () => {
+function AppContent() {
   const location = useLocation()
   const navigate = useNavigate()
 
@@ -261,87 +261,89 @@ const AppContent = () => {
     <Layout className="desktop-app-container">
       {/* 主内容区域 */}
       <Content className="main-content">
-        {isDesktop ? (
-          <DesktopHome />
-        ) : (
-          <>
-            {location.pathname === '/user-exams' && (
-              <PageWrapper title="我的考试">
-                <MyExamPage />
-              </PageWrapper>
+        {isDesktop
+          ? (
+              <DesktopHome />
+            )
+          : (
+              <>
+                {location.pathname === '/user-exams' && (
+                  <PageWrapper title="我的考试">
+                    <MyExamPage />
+                  </PageWrapper>
+                )}
+                {location.pathname === '/exams' && (
+                  <PageWrapper title="考试管理">
+                    <ExamManagement />
+                  </PageWrapper>
+                )}
+                {location.pathname === '/students' && (
+                  <PageWrapper title="考生管理">
+                    <StudentManagement />
+                  </PageWrapper>
+                )}
+                {location.pathname === '/questions' && (
+                  <PageWrapper title="试题库">
+                    <QuestionManagement />
+                  </PageWrapper>
+                )}
+                {location.pathname === '/scores' && (
+                  <PageWrapper title="成绩分析">
+                    <ScoreAnalysis />
+                  </PageWrapper>
+                )}
+                {location.pathname === '/ai-knowledge' && (
+                  <PageWrapper title="AI知识库">
+                    <AIKnowledge />
+                  </PageWrapper>
+                )}
+                {location.pathname === '/ai-bot' && (
+                  <PageWrapper title="智能机器人">
+                    <AIBot />
+                  </PageWrapper>
+                )}
+                {location.pathname === '/mock-exam' && (
+                  <PageWrapper title="模拟练习">
+                    <MockExam />
+                  </PageWrapper>
+                )}
+                {location.pathname === '/quiz' && (
+                  <PageWrapper title="趣味问答">
+                    <Quiz />
+                  </PageWrapper>
+                )}
+                {location.pathname === '/weather' && (
+                  <PageWrapper title="天气预报">
+                    <Weather />
+                  </PageWrapper>
+                )}
+                {location.pathname === '/schedule' && (
+                  <PageWrapper title="行程日历">
+                    <Schedule />
+                  </PageWrapper>
+                )}
+                {location.pathname === '/todo' && (
+                  <PageWrapper title="我的待办">
+                    <TodoList />
+                  </PageWrapper>
+                )}
+                {location.pathname === '/profile' && (
+                  <PageWrapper title="个人资料">
+                    <Profile />
+                  </PageWrapper>
+                )}
+                {location.pathname === '/users' && (
+                  <PageWrapper title="用户管理">
+                    <UserManagement />
+                  </PageWrapper>
+                )}
+                {location.pathname === '/settings' && (
+                  <PageWrapper title="系统设置">
+                    <Settings />
+                  </PageWrapper>
+                )}
+              </>
             )}
-            {location.pathname === '/exams' && (
-              <PageWrapper title="考试管理">
-                <ExamManagement />
-              </PageWrapper>
-            )}
-            {location.pathname === '/students' && (
-              <PageWrapper title="考生管理">
-                <StudentManagement />
-              </PageWrapper>
-            )}
-            {location.pathname === '/questions' && (
-              <PageWrapper title="试题库">
-                <QuestionManagement />
-              </PageWrapper>
-            )}
-            {location.pathname === '/scores' && (
-              <PageWrapper title="成绩分析">
-                <ScoreAnalysis />
-              </PageWrapper>
-            )}
-            {location.pathname === '/ai-knowledge' && (
-              <PageWrapper title="AI知识库">
-                <AIKnowledge />
-              </PageWrapper>
-            )}
-            {location.pathname === '/ai-bot' && (
-              <PageWrapper title="智能机器人">
-                <AIBot />
-              </PageWrapper>
-            )}
-            {location.pathname === '/mock-exam' && (
-              <PageWrapper title="模拟练习">
-                <MockExam />
-              </PageWrapper>
-            )}
-            {location.pathname === '/quiz' && (
-              <PageWrapper title="趣味问答">
-                <Quiz />
-              </PageWrapper>
-            )}
-            {location.pathname === '/weather' && (
-              <PageWrapper title="天气预报">
-                <Weather />
-              </PageWrapper>
-            )}
-            {location.pathname === '/schedule' && (
-              <PageWrapper title="行程日历">
-                <Schedule />
-              </PageWrapper>
-            )}
-            {location.pathname === '/todo' && (
-              <PageWrapper title="我的待办">
-                <TodoList />
-              </PageWrapper>
-            )}
-            {location.pathname === '/profile' && (
-              <PageWrapper title="个人资料">
-                <Profile />
-              </PageWrapper>
-            )}
-            {location.pathname === '/users' && (
-              <PageWrapper title="用户管理">
-                <UserManagement />
-              </PageWrapper>
-            )}
-            {location.pathname === '/settings' && (
-              <PageWrapper title="系统设置">
-                <Settings />
-              </PageWrapper>
-            )}
-          </>
-        )}
       </Content>
     </Layout>
   )
@@ -352,7 +354,8 @@ function App() {
   // 在应用启动时，确保清除本地存储中的用户信息
   try {
     localStorage.removeItem('user')
-  } catch (error) {
+  }
+  catch (error) {
     console.error('Failed to clear user info from localStorage:', error)
   }
 

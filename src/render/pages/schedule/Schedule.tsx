@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react'
-import { Calendar, Card, Typography, Tag, List, Button, Modal, Form, Input, DatePicker, Select, message } from 'antd'
-import { ScheduleOutlined, PlusOutlined, DeleteOutlined } from '@ant-design/icons'
 import type { Dayjs } from 'dayjs'
+import { DeleteOutlined, PlusOutlined, ScheduleOutlined } from '@ant-design/icons'
+import { Button, Calendar, Card, DatePicker, Form, Input, List, message, Modal, Select, Space, Tag, Typography } from 'antd'
 import dayjs from 'dayjs'
+import * as React from 'react'
+import { useEffect, useState } from 'react'
 import './Schedule.css'
 
 const { Title, Text } = Typography
@@ -33,10 +34,12 @@ const Schedule: React.FC = () => {
       setLoading(true)
       const data = await window.electron.getAllSchedules()
       setSchedules(data)
-    } catch (error) {
+    }
+    catch (error) {
       console.error('获取行程数据失败:', error)
       message.error('获取行程数据失败')
-    } finally {
+    }
+    finally {
       setLoading(false)
     }
   }
@@ -46,7 +49,7 @@ const Schedule: React.FC = () => {
       exam: 'red',
       meeting: 'blue',
       study: 'green',
-      other: 'orange'
+      other: 'orange',
     }
     return colors[type as keyof typeof colors] || 'default'
   }
@@ -56,7 +59,7 @@ const Schedule: React.FC = () => {
       exam: '考试',
       meeting: '会议',
       study: '学习',
-      other: '其他'
+      other: '其他',
     }
     return texts[type as keyof typeof texts] || type
   }
@@ -64,7 +67,7 @@ const Schedule: React.FC = () => {
   const dateCellRender = (value: Dayjs) => {
     const dateStr = value.format('YYYY-MM-DD')
     const daySchedules = schedules.filter(s => s.date === dateStr)
-    
+
     return (
       <div className="date-cell">
         {daySchedules.map(schedule => (
@@ -87,7 +90,7 @@ const Schedule: React.FC = () => {
   const handleAddSchedule = () => {
     setIsModalVisible(true)
     form.setFieldsValue({
-      date: selectedDate
+      date: selectedDate,
     })
   }
 
@@ -99,14 +102,15 @@ const Schedule: React.FC = () => {
         date: values.date.format('YYYY-MM-DD'),
         time: values.time,
         type: values.type,
-        description: values.description || ''
+        description: values.description || '',
       }
       await window.electron.createSchedule(newSchedule)
       setIsModalVisible(false)
       form.resetFields()
       fetchSchedules()
       message.success('行程添加成功')
-    } catch (error) {
+    }
+    catch (error) {
       console.error('添加行程失败:', error)
       message.error('添加行程失败')
     }
@@ -117,21 +121,24 @@ const Schedule: React.FC = () => {
       await window.electron.deleteSchedule(id)
       fetchSchedules()
       message.success('行程已删除')
-    } catch (error) {
+    }
+    catch (error) {
       console.error('删除行程失败:', error)
       message.error('删除行程失败')
     }
   }
 
   const selectedDateSchedules = schedules.filter(
-    s => s.date === selectedDate.format('YYYY-MM-DD')
+    s => s.date === selectedDate.format('YYYY-MM-DD'),
   )
 
   return (
     <div className="schedule-container">
       <div className="schedule-header">
         <Title level={4}>
-          <ScheduleOutlined /> 行程日历
+          <ScheduleOutlined />
+          {' '}
+          行程日历
         </Title>
         <Text type="secondary">管理日程和安排，合理规划时间</Text>
       </div>
@@ -142,7 +149,8 @@ const Schedule: React.FC = () => {
             fullscreen={false}
             onSelect={handleDateSelect}
             cellRender={(current, info) => {
-              if (info.type === 'date') return dateCellRender(current)
+              if (info.type === 'date')
+                return dateCellRender(current)
               return info.originNode
             }}
           />
@@ -151,7 +159,9 @@ const Schedule: React.FC = () => {
         <Card className="schedule-list-card">
           <div className="list-header">
             <Title level={5}>
-              {selectedDate.format('YYYY年MM月DD日')} 的行程
+              {selectedDate.format('YYYY年MM月DD日')}
+              {' '}
+              的行程
             </Title>
             <Button
               type="primary"
@@ -175,26 +185,29 @@ const Schedule: React.FC = () => {
                     danger
                     icon={<DeleteOutlined />}
                     onClick={() => handleDelete(item.id)}
-                  />
+                  />,
                 ]}
               >
                 <List.Item.Meta
-                  title={
+                  title={(
                     <Space>
                       <Text strong>{item.title}</Text>
                       <Tag color={getTypeColor(item.type)}>
                         {getTypeText(item.type)}
                       </Tag>
                     </Space>
-                  }
-                  description={
+                  )}
+                  description={(
                     <Space direction="vertical" size={0}>
-                      <Text type="secondary">时间: {item.time}</Text>
+                      <Text type="secondary">
+                        时间:
+                        {item.time}
+                      </Text>
                       {item.description && (
                         <Text type="secondary">{item.description}</Text>
                       )}
                     </Space>
-                  }
+                  )}
                 />
               </List.Item>
             )}

@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react'
-import { Card, Typography, Tag, Space, Input, Button, message, Spin } from 'antd'
-import { CloudOutlined, SunOutlined, CloudFilled, ThunderboltOutlined, SearchOutlined, ReloadOutlined } from '@ant-design/icons'
+import { CloudFilled, CloudOutlined, ReloadOutlined, SearchOutlined, SunOutlined, ThunderboltOutlined } from '@ant-design/icons'
+import { Button, Card, Input, message, Space, Spin, Tag, Typography } from 'antd'
+import * as React from 'react'
+import { useEffect, useState } from 'react'
 import './Weather.css'
 
 const { Title, Text } = Typography
@@ -35,10 +36,12 @@ const Weather: React.FC = () => {
       setLoading(true)
       const data = await window.electron.getWeatherByCity(city)
       setWeatherData(data)
-    } catch (error) {
+    }
+    catch (error) {
       console.error('获取天气数据失败:', error)
       message.error('获取天气数据失败')
-    } finally {
+    }
+    finally {
       setLoading(false)
     }
   }
@@ -60,10 +63,14 @@ const Weather: React.FC = () => {
   }
 
   const getAqiLevel = (aqi: number) => {
-    if (aqi <= 50) return { text: '优', color: 'green' }
-    if (aqi <= 100) return { text: '良', color: 'blue' }
-    if (aqi <= 150) return { text: '轻度污染', color: 'orange' }
-    if (aqi <= 200) return { text: '中度污染', color: 'red' }
+    if (aqi <= 50)
+      return { text: '优', color: 'green' }
+    if (aqi <= 100)
+      return { text: '良', color: 'blue' }
+    if (aqi <= 150)
+      return { text: '轻度污染', color: 'orange' }
+    if (aqi <= 200)
+      return { text: '中度污染', color: 'red' }
     return { text: '重度污染', color: 'purple' }
   }
 
@@ -80,7 +87,8 @@ const Weather: React.FC = () => {
     message.success('天气数据已刷新')
   }
 
-  if (!weatherData) return null
+  if (!weatherData)
+    return null
 
   const aqiLevel = getAqiLevel(weatherData.aqi)
 
@@ -88,7 +96,9 @@ const Weather: React.FC = () => {
     <div className="weather-container">
       <div className="weather-header">
         <Title level={4}>
-          <CloudOutlined /> 天气预报
+          <CloudOutlined />
+          {' '}
+          天气预报
         </Title>
         <Text type="secondary">查看实时天气信息，合理安排出行</Text>
       </div>
@@ -98,7 +108,7 @@ const Weather: React.FC = () => {
           <Input
             placeholder="输入城市名称"
             value={searchCity}
-            onChange={(e) => setSearchCity(e.target.value)}
+            onChange={e => setSearchCity(e.target.value)}
             onPressEnter={handleSearch}
           />
           <Button type="primary" icon={<SearchOutlined />} onClick={handleSearch}>
@@ -113,7 +123,8 @@ const Weather: React.FC = () => {
             <div className="weather-info">
               <Title level={2}>{weatherData.city}</Title>
               <div className="temperature">
-                {weatherData.temperature}°C
+                {weatherData.temperature}
+                °C
               </div>
               <div className="weather-desc">
                 {getWeatherIcon(weatherData.weather)}
@@ -123,7 +134,10 @@ const Weather: React.FC = () => {
             <div className="weather-details">
               <div className="detail-item">
                 <Text type="secondary">湿度</Text>
-                <Text strong>{weatherData.humidity}%</Text>
+                <Text strong>
+                  {weatherData.humidity}
+                  %
+                </Text>
               </div>
               <div className="detail-item">
                 <Text type="secondary">风力</Text>
@@ -131,7 +145,11 @@ const Weather: React.FC = () => {
               </div>
               <div className="detail-item">
                 <Text type="secondary">空气质量</Text>
-                <Tag color={aqiLevel.color}>{aqiLevel.text} {weatherData.aqi}</Tag>
+                <Tag color={aqiLevel.color}>
+                  {aqiLevel.text}
+                  {' '}
+                  {weatherData.aqi}
+                </Tag>
               </div>
             </div>
           </div>
@@ -159,7 +177,10 @@ const Weather: React.FC = () => {
         <Title level={5}>生活小贴士</Title>
         <Space direction="vertical" style={{ width: '100%' }}>
           {weatherData.tips.map((tip, index) => (
-            <Text key={index}>• {tip}</Text>
+            <Text key={index}>
+              •
+              {tip}
+            </Text>
           ))}
         </Space>
       </Card>

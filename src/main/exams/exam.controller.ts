@@ -1,7 +1,7 @@
-import { Controller } from '@nestjs/common'
 import { IpcHandle } from '@doubleshot/nest-electron'
-import { ExamService } from './exam.service'
+import { Controller } from '@nestjs/common'
 import { Exam } from './exam.entity'
+import { ExamService } from './exam.service'
 
 @Controller()
 export class ExamController {

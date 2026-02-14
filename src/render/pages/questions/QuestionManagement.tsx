@@ -1,6 +1,7 @@
-import React, { useState } from 'react'
-import QuestionList from './QuestionList'
+import * as React from 'react'
+import { useState } from 'react'
 import QuestionForm from './QuestionForm'
+import QuestionList from './QuestionList'
 import './QuestionManagement.css'
 
 // 试题数据类型定义
@@ -27,7 +28,7 @@ const QuestionManagement: React.FC = () => {
       difficulty: 'easy',
       created_by: 'admin',
       created_at: '2026-01-01T00:00:00',
-      updated_at: '2026-01-01T00:00:00'
+      updated_at: '2026-01-01T00:00:00',
     },
     {
       id: '2',
@@ -37,7 +38,7 @@ const QuestionManagement: React.FC = () => {
       difficulty: 'medium',
       created_by: 'admin',
       created_at: '2026-01-02T00:00:00',
-      updated_at: '2026-01-02T00:00:00'
+      updated_at: '2026-01-02T00:00:00',
     },
     {
       id: '3',
@@ -47,7 +48,7 @@ const QuestionManagement: React.FC = () => {
       difficulty: 'easy',
       created_by: 'admin',
       created_at: '2026-01-03T00:00:00',
-      updated_at: '2026-01-03T00:00:00'
+      updated_at: '2026-01-03T00:00:00',
     },
     {
       id: '4',
@@ -57,8 +58,8 @@ const QuestionManagement: React.FC = () => {
       difficulty: 'hard',
       created_by: 'admin',
       created_at: '2026-01-04T00:00:00',
-      updated_at: '2026-01-04T00:00:00'
-    }
+      updated_at: '2026-01-04T00:00:00',
+    },
   ])
 
   // 打开添加试题表单
@@ -96,19 +97,20 @@ const QuestionManagement: React.FC = () => {
             ? {
                 ...question,
                 ...questionData,
-                updated_at: new Date().toISOString()
+                updated_at: new Date().toISOString(),
               }
-            : question
-        )
+            : question,
+        ),
       )
-    } else {
+    }
+    else {
       // 创建新试题
       const newQuestion: Question = {
         id: Math.random().toString(36).substr(2, 9),
         ...questionData,
         created_by: 'admin',
         created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString()
+        updated_at: new Date().toISOString(),
       }
       setQuestions(prevQuestions => [...prevQuestions, newQuestion])
     }
@@ -130,19 +132,21 @@ const QuestionManagement: React.FC = () => {
         </button>
       </div>
 
-      {isFormOpen ? (
-        <QuestionForm
-          question={editingQuestion}
-          onSubmit={handleSubmitQuestion}
-          onCancel={handleCancelForm}
-        />
-      ) : (
-        <QuestionList
-          onEdit={handleEditQuestion}
-          onDelete={handleDeleteQuestion}
-          onView={handleViewQuestion}
-        />
-      )}
+      {isFormOpen
+        ? (
+            <QuestionForm
+              question={editingQuestion}
+              onSubmit={handleSubmitQuestion}
+              onCancel={handleCancelForm}
+            />
+          )
+        : (
+            <QuestionList
+              onEdit={handleEditQuestion}
+              onDelete={handleDeleteQuestion}
+              onView={handleViewQuestion}
+            />
+          )}
     </div>
   )
 }

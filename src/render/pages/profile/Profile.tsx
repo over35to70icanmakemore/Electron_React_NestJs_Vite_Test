@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react'
-import { Card, Avatar, Typography, Descriptions, Button, Form, Input, Modal, Upload, message, Tag, Space } from 'antd'
-import { IdcardOutlined, UserOutlined, EditOutlined, MailOutlined, PhoneOutlined, EnvironmentOutlined, TrophyOutlined, BookOutlined } from '@ant-design/icons'
 import type { UploadProps } from 'antd'
+import { BookOutlined, EditOutlined, EnvironmentOutlined, IdcardOutlined, MailOutlined, PhoneOutlined, TrophyOutlined, UserOutlined } from '@ant-design/icons'
+import { Avatar, Button, Card, Descriptions, Form, Input, message, Modal, Space, Tag, Typography, Upload } from 'antd'
+import * as React from 'react'
+import { useEffect, useState } from 'react'
 import './Profile.css'
 
 const { Title, Text } = Typography
@@ -44,10 +45,12 @@ const Profile: React.FC = () => {
       setLoading(true)
       const data = await window.electron.getProfile()
       setProfile(data)
-    } catch (error) {
+    }
+    catch (error) {
       console.error('获取个人资料失败:', error)
       message.error('获取个人资料失败')
-    } finally {
+    }
+    finally {
       setLoading(false)
     }
   }
@@ -56,7 +59,8 @@ const Profile: React.FC = () => {
     try {
       const data = await window.electron.getUserStatistics()
       setStatistics(data)
-    } catch (error) {
+    }
+    catch (error) {
       console.error('获取统计数据失败:', error)
     }
   }
@@ -75,7 +79,8 @@ const Profile: React.FC = () => {
       setIsModalVisible(false)
       fetchProfile()
       message.success('个人资料更新成功')
-    } catch (error) {
+    }
+    catch (error) {
       console.error('更新个人资料失败:', error)
       message.error('更新个人资料失败')
     }
@@ -94,16 +99,19 @@ const Profile: React.FC = () => {
         message.error('图片大小不能超过 2MB!')
       }
       return false
-    }
+    },
   }
 
-  if (!profile) return null
+  if (!profile)
+    return null
 
   return (
     <div className="profile-container">
       <div className="profile-header">
         <Title level={4}>
-          <IdcardOutlined /> 个人资料
+          <IdcardOutlined />
+          {' '}
+          个人资料
         </Title>
         <Text type="secondary">查看和编辑个人信息</Text>
       </div>
@@ -119,7 +127,13 @@ const Profile: React.FC = () => {
               />
             </Upload>
             <Title level={4} style={{ marginTop: 16 }}>{profile.name}</Title>
-            <Text type="secondary">{profile.school} · {profile.major}</Text>
+            <Text type="secondary">
+              {profile.school}
+              {' '}
+              ·
+              {' '}
+              {profile.major}
+            </Text>
             <div className="profile-tags">
               {profile.achievements.map((achievement, index) => (
                 <Tag key={index} color="blue">{achievement}</Tag>
@@ -136,28 +150,84 @@ const Profile: React.FC = () => {
             </Button>
           </div>
           <Descriptions column={{ xs: 1, sm: 2 }} bordered>
-            <Descriptions.Item label={<><UserOutlined /> 姓名</>}>
+            <Descriptions.Item label={(
+              <>
+                <UserOutlined />
+                {' '}
+                姓名
+              </>
+            )}
+            >
               {profile.name}
             </Descriptions.Item>
-            <Descriptions.Item label={<><MailOutlined /> 邮箱</>}>
+            <Descriptions.Item label={(
+              <>
+                <MailOutlined />
+                {' '}
+                邮箱
+              </>
+            )}
+            >
               {profile.email}
             </Descriptions.Item>
-            <Descriptions.Item label={<><PhoneOutlined /> 电话</>}>
+            <Descriptions.Item label={(
+              <>
+                <PhoneOutlined />
+                {' '}
+                电话
+              </>
+            )}
+            >
               {profile.phone}
             </Descriptions.Item>
-            <Descriptions.Item label={<><EnvironmentOutlined /> 地址</>}>
+            <Descriptions.Item label={(
+              <>
+                <EnvironmentOutlined />
+                {' '}
+                地址
+              </>
+            )}
+            >
               {profile.location}
             </Descriptions.Item>
-            <Descriptions.Item label={<><BookOutlined /> 学校</>}>
+            <Descriptions.Item label={(
+              <>
+                <BookOutlined />
+                {' '}
+                学校
+              </>
+            )}
+            >
               {profile.school}
             </Descriptions.Item>
-            <Descriptions.Item label={<><BookOutlined /> 专业</>}>
+            <Descriptions.Item label={(
+              <>
+                <BookOutlined />
+                {' '}
+                专业
+              </>
+            )}
+            >
               {profile.major}
             </Descriptions.Item>
-            <Descriptions.Item label={<><BookOutlined /> 年级</>}>
+            <Descriptions.Item label={(
+              <>
+                <BookOutlined />
+                {' '}
+                年级
+              </>
+            )}
+            >
               {profile.grade}
             </Descriptions.Item>
-            <Descriptions.Item label={<><TrophyOutlined /> 成就</>}>
+            <Descriptions.Item label={(
+              <>
+                <TrophyOutlined />
+                {' '}
+                成就
+              </>
+            )}
+            >
               <Space wrap>
                 {profile.achievements.map((achievement, index) => (
                   <Tag key={index} color="gold">{achievement}</Tag>
@@ -184,7 +254,10 @@ const Profile: React.FC = () => {
               </div>
               <div className="stat-item">
                 <Text type="secondary">学习时长</Text>
-                <Title level={3}>{statistics.studyHours}h</Title>
+                <Title level={3}>
+                  {statistics.studyHours}
+                  h
+                </Title>
               </div>
               <div className="stat-item">
                 <Text type="secondary">排名</Text>

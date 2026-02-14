@@ -22,6 +22,7 @@ export default defineConfig({
           entry: 'src/preload/index.ts',
           outDir: 'dist/preload',
         },
+        waitTimeout: 120000,
       },
     }),
   ],
@@ -33,7 +34,7 @@ export default defineConfig({
   },
   base: './',
   server: {
-    host: '127.0.0.1',
+    host: 'localhost',
     port: 5173,
     strictPort: true,
   },

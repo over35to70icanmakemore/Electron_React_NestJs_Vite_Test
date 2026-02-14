@@ -27,7 +27,7 @@ export class QuizService {
       { id: 7, question: '水的化学式是？', options: ['H2O', 'CO2', 'O2', 'N2'], correctAnswer: 0, category: '化学' },
       { id: 8, question: '《西游记》中孙悟空的武器是？', options: ['方天画戟', '金箍棒', '青龙偃月刀', '倚天剑'], correctAnswer: 1, category: '文学' },
       { id: 9, question: '地球上最深的海沟是？', options: ['日本海沟', '马里亚纳海沟', '菲律宾海沟', '波多黎各海沟'], correctAnswer: 1, category: '地理' },
-      { id: 10, question: '一年有多少天？', options: ['364天', '365天', '366天', '360天'], correctAnswer: 1, category: '常识' }
+      { id: 10, question: '一年有多少天？', options: ['364天', '365天', '366天', '360天'], correctAnswer: 1, category: '常识' },
     ]
   }
 
@@ -36,13 +36,14 @@ export class QuizService {
     return shuffled.slice(0, count)
   }
 
-  submitAnswer(questionId: number, answerIndex: number): { correct: boolean; correctAnswer: number } {
+  submitAnswer(questionId: number, answerIndex: number): { correct: boolean, correctAnswer: number } {
     const question = this.questions.find(q => q.id === questionId)
-    if (!question) return { correct: false, correctAnswer: -1 }
-    
+    if (!question)
+      return { correct: false, correctAnswer: -1 }
+
     return {
       correct: question.correctAnswer === answerIndex,
-      correctAnswer: question.correctAnswer
+      correctAnswer: question.correctAnswer,
     }
   }
 
