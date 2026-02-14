@@ -1,7 +1,7 @@
 import { Controller } from '@nestjs/common'
 import { IpcHandle } from '@doubleshot/nest-electron'
-import type { IpcMainEvent } from 'electron'
-import { ScheduleService, ScheduleItem } from './schedule.service'
+import { ScheduleService } from './schedule.service'
+import { Schedule } from './schedule.entity'
 
 @Controller()
 export class ScheduleController {
@@ -13,27 +13,27 @@ export class ScheduleController {
   }
 
   @IpcHandle('getSchedulesByDate')
-  public getSchedulesByDate(event: IpcMainEvent, date: string) {
+  public getSchedulesByDate(_event: unknown, date: string) {
     return this.scheduleService.getSchedulesByDate(date)
   }
 
   @IpcHandle('getSchedulesByMonth')
-  public getSchedulesByMonth(event: IpcMainEvent, year: number, month: number) {
+  public getSchedulesByMonth(_event: unknown, year: number, month: number) {
     return this.scheduleService.getSchedulesByMonth(year, month)
   }
 
   @IpcHandle('createSchedule')
-  public createSchedule(event: IpcMainEvent, schedule: Omit<ScheduleItem, 'id'>) {
+  public createSchedule(_event: unknown, schedule: Omit<Schedule, 'id'>) {
     return this.scheduleService.createSchedule(schedule)
   }
 
   @IpcHandle('updateSchedule')
-  public updateSchedule(event: IpcMainEvent, id: string, schedule: Partial<ScheduleItem>) {
+  public updateSchedule(_event: unknown, id: string, schedule: Partial<Schedule>) {
     return this.scheduleService.updateSchedule(id, schedule)
   }
 
   @IpcHandle('deleteSchedule')
-  public deleteSchedule(event: IpcMainEvent, id: string) {
+  public deleteSchedule(_event: unknown, id: string) {
     return this.scheduleService.deleteSchedule(id)
   }
 }

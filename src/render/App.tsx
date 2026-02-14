@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react'
-import { BrowserRouter as Router, Routes, Route, Navigate, useLocation, useNavigate } from 'react-router-dom'
+import { useEffect } from 'react'
+import { BrowserRouter as Router, Routes, Route, useLocation, useNavigate } from 'react-router-dom'
 import { Layout, ConfigProvider } from 'antd'
 import { CalendarOutlined, FileTextOutlined, UserOutlined, FileOutlined, BarChartOutlined, SettingOutlined, TeamOutlined, ArrowLeftOutlined, RobotOutlined, ThunderboltOutlined, QuestionCircleOutlined, CloudOutlined, ScheduleOutlined, CheckSquareOutlined, IdcardOutlined, BookOutlined } from '@ant-design/icons'
 import { industrialTheme } from './theme'

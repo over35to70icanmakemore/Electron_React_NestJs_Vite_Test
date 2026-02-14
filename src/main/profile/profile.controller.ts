@@ -1,6 +1,5 @@
 import { Controller } from '@nestjs/common'
 import { IpcHandle } from '@doubleshot/nest-electron'
-import type { IpcMainEvent } from 'electron'
 import { ProfileService } from './profile.service'
 import { Profile } from './profile.entity'
 
@@ -14,7 +13,7 @@ export class ProfileController {
   }
 
   @IpcHandle('updateProfile')
-  public async updateProfile(event: IpcMainEvent, profile: Partial<Profile>) {
+  public async updateProfile(_event: unknown, profile: Partial<Profile>) {
     return this.profileService.updateProfile(profile)
   }
 
@@ -24,7 +23,7 @@ export class ProfileController {
   }
 
   @IpcHandle('updateAvatar')
-  public async updateAvatar(event: IpcMainEvent, avatar: string) {
+  public async updateAvatar(_event: unknown, avatar: string) {
     return this.profileService.updateAvatar(avatar)
   }
 }
