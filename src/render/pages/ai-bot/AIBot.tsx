@@ -1,5 +1,5 @@
-import React, { useState, useRef, useEffect } from 'react'
-import { Input, Button, Card, Avatar, Typography, Space, Tag } from 'antd'
+import React, { useState, useEffect, useRef } from 'react'
+import { Input, Button, Card, Avatar, Typography, Space, Tag, Spin } from 'antd'
 import { SendOutlined, RobotOutlined, UserOutlined, ReloadOutlined } from '@ant-design/icons'
 import './AIBot.css'
 
@@ -14,16 +14,10 @@ interface Message {
 }
 
 const AIBot: React.FC = () => {
-  const [messages, setMessages] = useState<Message[]>([
-    {
-      id: '1',
-      role: 'assistant',
-      content: '您好！我是AI智能助手，可以帮助您解答各种问题。请问有什么可以帮助您的吗？',
-      timestamp: new Date()
-    }
-  ])
+  const [messages, setMessages] = useState<Message[]>([])
   const [inputValue, setInputValue] = useState('')
   const [isLoading, setIsLoading] = useState(false)
+  const [quickQuestions, setQuickQuestions] = useState<string[]>([])
   const messagesEndRef = useRef<HTMLDivElement>(null)
 
   const scrollToBottom = () => {
@@ -31,10 +25,36 @@ const AIBot: React.FC = () => {
   }
 
   useEffect(() => {
+    fetchChatHistory()
+    fetchQuickQuestions()
+  }, [])
+
+  useEffect(() => {
     scrollToBottom()
   }, [messages])
 
-  const handleSend = () => {
+  const fetchChatHistory = async () => {
+    try {
+      const history = await window.electron.getChatHistory()
+      setMessages(history.map((msg: any) => ({
+        ...msg,
+        timestamp: new Date(msg.timestamp)
+      })))
+    } catch (error) {
+      console.error('获取聊天记录失败:', error)
+    }
+  }
+
+  const fetchQuickQuestions = async () => {
+    try {
+      const questions = await window.electron.getQuickQuestions()
+      setQuickQuestions(questions)
+    } catch (error) {
+      console.error('获取快捷问题失败:', error)
+    }
+  }
+
+  const handleSend = async () => {
     if (!inputValue.trim()) return
 
     const userMessage: Message = {
@@ -48,49 +68,33 @@ const AIBot: React.FC = () => {
     setInputValue('')
     setIsLoading(true)
 
-    setTimeout(() => {
-      const responses = [
-        '这是一个很好的问题！让我来为您详细解答...',
-        '根据我的理解，这个问题的答案是这样的...',
-        '我理解您的疑问，让我为您提供一些参考信息...',
-        '这是一个有趣的话题，我来为您分析一下...',
-        '感谢您的提问，我来为您详细说明...'
-      ]
-
+    try {
+      const response = await window.electron.sendMessage(inputValue)
       const assistantMessage: Message = {
-        id: (Date.now() + 1).toString(),
+        id: response.id,
         role: 'assistant',
-        content: responses[Math.floor(Math.random() * responses.length)] + 
-                 '\n\n这是模拟的AI回复内容。在实际应用中，这里会接入真实的AI接口来生成智能回复。',
-        timestamp: new Date()
+        content: response.content,
+        timestamp: new Date(response.timestamp)
       }
-
       setMessages(prev => [...prev, assistantMessage])
+    } catch (error) {
+      console.error('发送消息失败:', error)
+    } finally {
       setIsLoading(false)
-    }, 1000)
+    }
   }
 
-  const handleClear = () => {
-    setMessages([
-      {
-        id: Date.now().toString(),
-        role: 'assistant',
-        content: '对话已清空。请问有什么新的问题需要我帮助您解答吗？',
-        timestamp: new Date()
-      }
-    ])
+  const handleClear = async () => {
+    try {
+      await window.electron.clearChatHistory()
+      fetchChatHistory()
+    } catch (error) {
+      console.error('清空对话失败:', error)
+    }
   }
-
-  const quickQuestions = [
-    '如何提高学习效率？',
-    'Python和Java的区别是什么？',
-    '如何准备考试？',
-    '什么是机器学习？'
-  ]
 
   return (
     <div className="ai-bot-container">
-      {/* 头部信息 */}
       <div className="bot-header">
         <Title level={4}>
           <RobotOutlined /> 智能机器人
@@ -98,7 +102,6 @@ const AIBot: React.FC = () => {
         <Text type="secondary">AI智能问答助手，随时为您解答疑惑</Text>
       </div>
 
-      {/* 对话区域 */}
       <Card className="chat-card">
         <div className="messages-container">
           {messages.map((msg) => (
@@ -134,7 +137,6 @@ const AIBot: React.FC = () => {
         </div>
       </Card>
 
-      {/* 快捷问题 */}
       <div className="quick-questions">
         <Text type="secondary">快捷问题：</Text>
         <Space wrap>
@@ -150,7 +152,6 @@ const AIBot: React.FC = () => {
         </Space>
       </div>
 
-      {/* 输入区域 */}
       <div className="input-area">
         <TextArea
           value={inputValue}

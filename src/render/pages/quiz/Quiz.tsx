@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import { Card, Button, Progress, Tag, Typography, Space, Result, Statistic } from 'antd'
+import React, { useState, useEffect } from 'react'
+import { Card, Button, Progress, Tag, Typography, Space, Result, Statistic, message, Spin } from 'antd'
 import { QuestionCircleOutlined, TrophyOutlined, HeartOutlined, FireOutlined } from '@ant-design/icons'
 import './Quiz.css'
 
@@ -14,60 +14,46 @@ interface Question {
 }
 
 const Quiz: React.FC = () => {
+  const [questions, setQuestions] = useState<Question[]>([])
   const [currentQuestion, setCurrentQuestion] = useState(0)
   const [score, setScore] = useState(0)
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null)
   const [showResult, setShowResult] = useState(false)
   const [isAnswered, setIsAnswered] = useState(false)
   const [correctCount, setCorrectCount] = useState(0)
+  const [loading, setLoading] = useState(true)
 
-  const questions: Question[] = [
-    {
-      id: 1,
-      question: '世界上最大的海洋是？',
-      options: ['大西洋', '太平洋', '印度洋', '北冰洋'],
-      correctAnswer: 1,
-      category: '地理'
-    },
-    {
-      id: 2,
-      question: '光年是什么单位？',
-      options: ['时间单位', '距离单位', '速度单位', '质量单位'],
-      correctAnswer: 1,
-      category: '物理'
-    },
-    {
-      id: 3,
-      question: '《红楼梦》的作者是谁？',
-      options: ['罗贯中', '施耐庵', '曹雪芹', '吴承恩'],
-      correctAnswer: 2,
-      category: '文学'
-    },
-    {
-      id: 4,
-      question: '人体最大的器官是？',
-      options: ['心脏', '肝脏', '皮肤', '大脑'],
-      correctAnswer: 2,
-      category: '生物'
-    },
-    {
-      id: 5,
-      question: '地球的卫星是？',
-      options: ['太阳', '月亮', '火星', '金星'],
-      correctAnswer: 1,
-      category: '天文'
+  useEffect(() => {
+    fetchQuestions()
+  }, [])
+
+  const fetchQuestions = async () => {
+    try {
+      setLoading(true)
+      const data = await window.electron.getQuizQuestions(5)
+      setQuestions(data)
+    } catch (error) {
+      console.error('获取问答题目失败:', error)
+      message.error('获取问答题目失败')
+    } finally {
+      setLoading(false)
     }
-  ]
+  }
 
-  const handleAnswer = (answerIndex: number) => {
+  const handleAnswer = async (answerIndex: number) => {
     if (isAnswered) return
 
     setSelectedAnswer(answerIndex)
     setIsAnswered(true)
 
-    if (answerIndex === questions[currentQuestion].correctAnswer) {
-      setScore(prev => prev + 20)
-      setCorrectCount(prev => prev + 1)
+    try {
+      const result = await window.electron.submitQuizAnswer(questions[currentQuestion].id, answerIndex)
+      if (result.correct) {
+        setScore(prev => prev + 20)
+        setCorrectCount(prev => prev + 1)
+      }
+    } catch (error) {
+      console.error('提交答案失败:', error)
     }
   }
 
@@ -88,6 +74,7 @@ const Quiz: React.FC = () => {
     setShowResult(false)
     setIsAnswered(false)
     setCorrectCount(0)
+    fetchQuestions()
   }
 
   const getOptionClass = (index: number) => {
@@ -107,7 +94,7 @@ const Quiz: React.FC = () => {
         <Result
           icon={<TrophyOutlined style={{ color: '#faad14' }} />}
           title="答题完成！"
-          subTitle={`恭喜你完成了本次趣味问答`}
+          subTitle="恭喜你完成了本次趣味问答"
           extra={[
             <div key="stats" className="result-stats">
               <Statistic title="最终得分" value={score} suffix="分" />
@@ -136,57 +123,63 @@ const Quiz: React.FC = () => {
         <Text type="secondary">趣味知识问答挑战，测试你的知识储备</Text>
       </div>
 
-      <div className="quiz-stats">
-        <Space size="large">
-          <div className="stat-item">
-            <FireOutlined style={{ color: '#ff4d4f' }} />
-            <Text>第 {currentQuestion + 1} / {questions.length} 题</Text>
-          </div>
-          <div className="stat-item">
-            <TrophyOutlined style={{ color: '#faad14' }} />
-            <Text>得分: {score}</Text>
-          </div>
-          <div className="stat-item">
-            <HeartOutlined style={{ color: '#eb2f96' }} />
-            <Text>正确: {correctCount}</Text>
-          </div>
-        </Space>
-      </div>
-
-      <Progress 
-        percent={((currentQuestion + 1) / questions.length) * 100} 
-        showInfo={false}
-        strokeColor="#1890ff"
-      />
-
-      <Card className="question-card">
-        <div className="question-category">
-          <Tag color="blue">{questions[currentQuestion].category}</Tag>
-        </div>
-        <Title level={4} className="question-text">
-          {questions[currentQuestion].question}
-        </Title>
-        <div className="options-list">
-          {questions[currentQuestion].options.map((option, index) => (
-            <div
-              key={index}
-              className={getOptionClass(index)}
-              onClick={() => handleAnswer(index)}
-            >
-              <span className="option-letter">{String.fromCharCode(65 + index)}</span>
-              <span className="option-text">{option}</span>
+      <Spin spinning={loading}>
+        {questions.length > 0 && (
+          <>
+            <div className="quiz-stats">
+              <Space size="large">
+                <div className="stat-item">
+                  <FireOutlined style={{ color: '#ff4d4f' }} />
+                  <Text>第 {currentQuestion + 1} / {questions.length} 题</Text>
+                </div>
+                <div className="stat-item">
+                  <TrophyOutlined style={{ color: '#faad14' }} />
+                  <Text>得分: {score}</Text>
+                </div>
+                <div className="stat-item">
+                  <HeartOutlined style={{ color: '#eb2f96' }} />
+                  <Text>正确: {correctCount}</Text>
+                </div>
+              </Space>
             </div>
-          ))}
-        </div>
-      </Card>
 
-      {isAnswered && (
-        <div className="quiz-actions">
-          <Button type="primary" size="large" onClick={handleNextQuestion}>
-            {currentQuestion < questions.length - 1 ? '下一题' : '查看结果'}
-          </Button>
-        </div>
-      )}
+            <Progress 
+              percent={((currentQuestion + 1) / questions.length) * 100} 
+              showInfo={false}
+              strokeColor="#1890ff"
+            />
+
+            <Card className="question-card">
+              <div className="question-category">
+                <Tag color="blue">{questions[currentQuestion].category}</Tag>
+              </div>
+              <Title level={4} className="question-text">
+                {questions[currentQuestion].question}
+              </Title>
+              <div className="options-list">
+                {questions[currentQuestion].options.map((option, index) => (
+                  <div
+                    key={index}
+                    className={getOptionClass(index)}
+                    onClick={() => handleAnswer(index)}
+                  >
+                    <span className="option-letter">{String.fromCharCode(65 + index)}</span>
+                    <span className="option-text">{option}</span>
+                  </div>
+                ))}
+              </div>
+            </Card>
+
+            {isAnswered && (
+              <div className="quiz-actions">
+                <Button type="primary" size="large" onClick={handleNextQuestion}>
+                  {currentQuestion < questions.length - 1 ? '下一题' : '查看结果'}
+                </Button>
+              </div>
+            )}
+          </>
+        )}
+      </Spin>
     </div>
   )
 }

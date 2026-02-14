@@ -1,6 +1,6 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Calendar, Card, Typography, Tag, List, Button, Modal, Form, Input, DatePicker, Select, message } from 'antd'
-import { ScheduleOutlined, PlusOutlined, DeleteOutlined, EditOutlined } from '@ant-design/icons'
+import { ScheduleOutlined, PlusOutlined, DeleteOutlined } from '@ant-design/icons'
 import type { Dayjs } from 'dayjs'
 import dayjs from 'dayjs'
 import './Schedule.css'
@@ -19,42 +19,27 @@ interface ScheduleItem {
 
 const Schedule: React.FC = () => {
   const [selectedDate, setSelectedDate] = useState<Dayjs>(dayjs())
+  const [schedules, setSchedules] = useState<ScheduleItem[]>([])
   const [isModalVisible, setIsModalVisible] = useState(false)
   const [form] = Form.useForm()
-  const [schedules, setSchedules] = useState<ScheduleItem[]>([
-    {
-      id: '1',
-      title: '数学期中考试',
-      date: '2026-02-15',
-      time: '09:00',
-      type: 'exam',
-      description: '高等数学第三章至第五章'
-    },
-    {
-      id: '2',
-      title: '英语学习小组',
-      date: '2026-02-15',
-      time: '14:00',
-      type: 'study',
-      description: '口语练习和阅读理解'
-    },
-    {
-      id: '3',
-      title: '项目进度会议',
-      date: '2026-02-16',
-      time: '10:00',
-      type: 'meeting',
-      description: '讨论项目开发进度'
-    },
-    {
-      id: '4',
-      title: 'Python编程练习',
-      date: '2026-02-17',
-      time: '19:00',
-      type: 'study',
-      description: '完成课后习题'
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    fetchSchedules()
+  }, [])
+
+  const fetchSchedules = async () => {
+    try {
+      setLoading(true)
+      const data = await window.electron.getAllSchedules()
+      setSchedules(data)
+    } catch (error) {
+      console.error('获取行程数据失败:', error)
+      message.error('获取行程数据失败')
+    } finally {
+      setLoading(false)
     }
-  ])
+  }
 
   const getTypeColor = (type: string) => {
     const colors = {
@@ -106,26 +91,36 @@ const Schedule: React.FC = () => {
     })
   }
 
-  const handleModalOk = () => {
-    form.validateFields().then(values => {
-      const newSchedule: ScheduleItem = {
-        id: Date.now().toString(),
+  const handleModalOk = async () => {
+    try {
+      const values = await form.validateFields()
+      const newSchedule = {
         title: values.title,
         date: values.date.format('YYYY-MM-DD'),
         time: values.time,
         type: values.type,
         description: values.description || ''
       }
-      setSchedules([...schedules, newSchedule])
+      await window.electron.createSchedule(newSchedule)
       setIsModalVisible(false)
       form.resetFields()
+      fetchSchedules()
       message.success('行程添加成功')
-    })
+    } catch (error) {
+      console.error('添加行程失败:', error)
+      message.error('添加行程失败')
+    }
   }
 
-  const handleDelete = (id: string) => {
-    setSchedules(schedules.filter(s => s.id !== id))
-    message.success('行程已删除')
+  const handleDelete = async (id: string) => {
+    try {
+      await window.electron.deleteSchedule(id)
+      fetchSchedules()
+      message.success('行程已删除')
+    } catch (error) {
+      console.error('删除行程失败:', error)
+      message.error('删除行程失败')
+    }
   }
 
   const selectedDateSchedules = schedules.filter(
@@ -168,6 +163,7 @@ const Schedule: React.FC = () => {
           </div>
 
           <List
+            loading={loading}
             dataSource={selectedDateSchedules}
             locale={{ emptyText: '暂无行程安排' }}
             renderItem={item => (

@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import { Card, Typography, Tag, Space, Input, Button, message } from 'antd'
+import React, { useState, useEffect } from 'react'
+import { Card, Typography, Tag, Space, Input, Button, message, Spin } from 'antd'
 import { CloudOutlined, SunOutlined, CloudFilled, ThunderboltOutlined, SearchOutlined, ReloadOutlined } from '@ant-design/icons'
 import './Weather.css'
 
@@ -17,26 +17,30 @@ interface WeatherData {
     weather: string
     temp: string
   }[]
+  tips: string[]
 }
 
 const Weather: React.FC = () => {
   const [city, setCity] = useState('北京')
   const [searchCity, setSearchCity] = useState('')
+  const [weatherData, setWeatherData] = useState<WeatherData | null>(null)
+  const [loading, setLoading] = useState(true)
 
-  const weatherData: WeatherData = {
-    city: city,
-    temperature: 22,
-    weather: '晴',
-    humidity: 45,
-    wind: '东南风 3级',
-    aqi: 68,
-    forecast: [
-      { day: '今天', weather: '晴', temp: '22°/15°' },
-      { day: '明天', weather: '多云', temp: '20°/14°' },
-      { day: '后天', weather: '小雨', temp: '18°/12°' },
-      { day: '周六', weather: '晴', temp: '21°/13°' },
-      { day: '周日', weather: '多云', temp: '23°/15°' }
-    ]
+  useEffect(() => {
+    fetchWeather()
+  }, [city])
+
+  const fetchWeather = async () => {
+    try {
+      setLoading(true)
+      const data = await window.electron.getWeatherByCity(city)
+      setWeatherData(data)
+    } catch (error) {
+      console.error('获取天气数据失败:', error)
+      message.error('获取天气数据失败')
+    } finally {
+      setLoading(false)
+    }
   }
 
   const getWeatherIcon = (weather: string) => {
@@ -72,8 +76,11 @@ const Weather: React.FC = () => {
   }
 
   const handleRefresh = () => {
+    fetchWeather()
     message.success('天气数据已刷新')
   }
+
+  if (!weatherData) return null
 
   const aqiLevel = getAqiLevel(weatherData.aqi)
 
@@ -100,37 +107,39 @@ const Weather: React.FC = () => {
         </Space.Compact>
       </div>
 
-      <Card className="current-weather">
-        <div className="weather-main">
-          <div className="weather-info">
-            <Title level={2}>{weatherData.city}</Title>
-            <div className="temperature">
-              {weatherData.temperature}°C
+      <Spin spinning={loading}>
+        <Card className="current-weather">
+          <div className="weather-main">
+            <div className="weather-info">
+              <Title level={2}>{weatherData.city}</Title>
+              <div className="temperature">
+                {weatherData.temperature}°C
+              </div>
+              <div className="weather-desc">
+                {getWeatherIcon(weatherData.weather)}
+                <Text style={{ fontSize: 24, marginLeft: 12 }}>{weatherData.weather}</Text>
+              </div>
             </div>
-            <div className="weather-desc">
-              {getWeatherIcon(weatherData.weather)}
-              <Text style={{ fontSize: 24, marginLeft: 12 }}>{weatherData.weather}</Text>
+            <div className="weather-details">
+              <div className="detail-item">
+                <Text type="secondary">湿度</Text>
+                <Text strong>{weatherData.humidity}%</Text>
+              </div>
+              <div className="detail-item">
+                <Text type="secondary">风力</Text>
+                <Text strong>{weatherData.wind}</Text>
+              </div>
+              <div className="detail-item">
+                <Text type="secondary">空气质量</Text>
+                <Tag color={aqiLevel.color}>{aqiLevel.text} {weatherData.aqi}</Tag>
+              </div>
             </div>
           </div>
-          <div className="weather-details">
-            <div className="detail-item">
-              <Text type="secondary">湿度</Text>
-              <Text strong>{weatherData.humidity}%</Text>
-            </div>
-            <div className="detail-item">
-              <Text type="secondary">风力</Text>
-              <Text strong>{weatherData.wind}</Text>
-            </div>
-            <div className="detail-item">
-              <Text type="secondary">空气质量</Text>
-              <Tag color={aqiLevel.color}>{aqiLevel.text} {weatherData.aqi}</Tag>
-            </div>
-          </div>
-        </div>
-        <Button icon={<ReloadOutlined />} onClick={handleRefresh} style={{ marginTop: 16 }}>
-          刷新数据
-        </Button>
-      </Card>
+          <Button icon={<ReloadOutlined />} onClick={handleRefresh} style={{ marginTop: 16 }}>
+            刷新数据
+          </Button>
+        </Card>
+      </Spin>
 
       <Title level={5} style={{ marginTop: 24, marginBottom: 16 }}>未来5天预报</Title>
       <div className="forecast-list">
@@ -149,10 +158,9 @@ const Weather: React.FC = () => {
       <Card className="tips-card" style={{ marginTop: 24 }}>
         <Title level={5}>生活小贴士</Title>
         <Space direction="vertical" style={{ width: '100%' }}>
-          <Text>• 今日天气晴朗，适合户外活动</Text>
-          <Text>• 空气质量良好，可以开窗通风</Text>
-          <Text>• 紫外线较强，外出注意防晒</Text>
-          <Text>• 昼夜温差较大，注意增减衣物</Text>
+          {weatherData.tips.map((tip, index) => (
+            <Text key={index}>• {tip}</Text>
+          ))}
         </Space>
       </Card>
     </div>

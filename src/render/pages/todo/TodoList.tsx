@@ -1,6 +1,6 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Card, List, Checkbox, Button, Input, Tag, Typography, Space, Modal, Form, DatePicker, Select, message, Progress } from 'antd'
-import { CheckSquareOutlined, PlusOutlined, DeleteOutlined, EditOutlined, StarOutlined } from '@ant-design/icons'
+import { CheckSquareOutlined, PlusOutlined, DeleteOutlined } from '@ant-design/icons'
 import './TodoList.css'
 
 const { Title, Text } = Typography
@@ -16,43 +16,39 @@ interface TodoItem {
 }
 
 const TodoList: React.FC = () => {
-  const [todos, setTodos] = useState<TodoItem[]>([
-    {
-      id: '1',
-      title: '完成数学作业',
-      completed: false,
-      priority: 'high',
-      dueDate: '2026-02-15',
-      category: '学习'
-    },
-    {
-      id: '2',
-      title: '复习英语单词',
-      completed: true,
-      priority: 'medium',
-      dueDate: '2026-02-14',
-      category: '学习'
-    },
-    {
-      id: '3',
-      title: '准备项目报告',
-      completed: false,
-      priority: 'high',
-      dueDate: '2026-02-16',
-      category: '工作'
-    },
-    {
-      id: '4',
-      title: '阅读技术文档',
-      completed: false,
-      priority: 'low',
-      dueDate: '2026-02-17',
-      category: '学习'
-    }
-  ])
+  const [todos, setTodos] = useState<TodoItem[]>([])
   const [isModalVisible, setIsModalVisible] = useState(false)
   const [filter, setFilter] = useState<'all' | 'active' | 'completed'>('all')
   const [form] = Form.useForm()
+  const [loading, setLoading] = useState(true)
+  const [statistics, setStatistics] = useState({ total: 0, completed: 0, active: 0 })
+
+  useEffect(() => {
+    fetchTodos()
+    fetchStatistics()
+  }, [])
+
+  const fetchTodos = async () => {
+    try {
+      setLoading(true)
+      const data = await window.electron.getAllTodos()
+      setTodos(data)
+    } catch (error) {
+      console.error('获取待办数据失败:', error)
+      message.error('获取待办数据失败')
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const fetchStatistics = async () => {
+    try {
+      const data = await window.electron.getTodoStatistics()
+      setStatistics(data)
+    } catch (error) {
+      console.error('获取统计数据失败:', error)
+    }
+  }
 
   const getPriorityColor = (priority: string) => {
     const colors = {
@@ -72,36 +68,52 @@ const TodoList: React.FC = () => {
     return texts[priority as keyof typeof texts] || priority
   }
 
-  const handleToggle = (id: string) => {
-    setTodos(todos.map(todo =>
-      todo.id === id ? { ...todo, completed: !todo.completed } : todo
-    ))
+  const handleToggle = async (id: string) => {
+    try {
+      await window.electron.toggleTodo(id)
+      fetchTodos()
+      fetchStatistics()
+    } catch (error) {
+      console.error('切换待办状态失败:', error)
+      message.error('切换待办状态失败')
+    }
   }
 
-  const handleDelete = (id: string) => {
-    setTodos(todos.filter(todo => todo.id !== id))
-    message.success('待办已删除')
+  const handleDelete = async (id: string) => {
+    try {
+      await window.electron.deleteTodo(id)
+      fetchTodos()
+      fetchStatistics()
+      message.success('待办已删除')
+    } catch (error) {
+      console.error('删除待办失败:', error)
+      message.error('删除待办失败')
+    }
   }
 
   const handleAddTodo = () => {
     setIsModalVisible(true)
   }
 
-  const handleModalOk = () => {
-    form.validateFields().then(values => {
-      const newTodo: TodoItem = {
-        id: Date.now().toString(),
+  const handleModalOk = async () => {
+    try {
+      const values = await form.validateFields()
+      const newTodo = {
         title: values.title,
-        completed: false,
         priority: values.priority,
         dueDate: values.dueDate ? values.dueDate.format('YYYY-MM-DD') : '',
         category: values.category || '其他'
       }
-      setTodos([...todos, newTodo])
+      await window.electron.createTodo(newTodo)
       setIsModalVisible(false)
       form.resetFields()
+      fetchTodos()
+      fetchStatistics()
       message.success('待办添加成功')
-    })
+    } catch (error) {
+      console.error('添加待办失败:', error)
+      message.error('添加待办失败')
+    }
   }
 
   const filteredTodos = todos.filter(todo => {
@@ -110,9 +122,7 @@ const TodoList: React.FC = () => {
     return true
   })
 
-  const completedCount = todos.filter(t => t.completed).length
-  const totalCount = todos.length
-  const progressPercent = totalCount > 0 ? (completedCount / totalCount) * 100 : 0
+  const progressPercent = statistics.total > 0 ? (statistics.completed / statistics.total) * 100 : 0
 
   return (
     <div className="todo-container">
@@ -133,19 +143,19 @@ const TodoList: React.FC = () => {
         <Card className="stat-card">
           <div className="stat-content">
             <Text type="secondary">总任务</Text>
-            <Title level={3}>{totalCount}</Title>
+            <Title level={3}>{statistics.total}</Title>
           </div>
         </Card>
         <Card className="stat-card">
           <div className="stat-content">
             <Text type="secondary">已完成</Text>
-            <Title level={3} style={{ color: '#52c41a' }}>{completedCount}</Title>
+            <Title level={3} style={{ color: '#52c41a' }}>{statistics.completed}</Title>
           </div>
         </Card>
         <Card className="stat-card">
           <div className="stat-content">
             <Text type="secondary">待完成</Text>
-            <Title level={3} style={{ color: '#faad14' }}>{totalCount - completedCount}</Title>
+            <Title level={3} style={{ color: '#faad14' }}>{statistics.active}</Title>
           </div>
         </Card>
       </div>
@@ -182,6 +192,7 @@ const TodoList: React.FC = () => {
         </div>
 
         <List
+          loading={loading}
           dataSource={filteredTodos}
           locale={{ emptyText: '暂无待办事项' }}
           renderItem={item => (

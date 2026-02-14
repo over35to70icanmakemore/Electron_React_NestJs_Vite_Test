@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Card, Avatar, Typography, Descriptions, Button, Form, Input, Modal, Upload, message, Tag, Space } from 'antd'
 import { IdcardOutlined, UserOutlined, EditOutlined, MailOutlined, PhoneOutlined, EnvironmentOutlined, TrophyOutlined, BookOutlined } from '@ant-design/icons'
 import type { UploadProps } from 'antd'
@@ -7,6 +7,7 @@ import './Profile.css'
 const { Title, Text } = Typography
 
 interface UserProfile {
+  id: string
   name: string
   avatar: string
   email: string
@@ -19,33 +20,65 @@ interface UserProfile {
   achievements: string[]
 }
 
+interface UserStatistics {
+  completedExams: number
+  averageScore: number
+  studyHours: number
+  ranking: string
+}
+
 const Profile: React.FC = () => {
   const [isModalVisible, setIsModalVisible] = useState(false)
   const [form] = Form.useForm()
-  const [profile, setProfile] = useState<UserProfile>({
-    name: '张三',
-    avatar: '',
-    email: 'zhangsan@example.com',
-    phone: '138****8888',
-    location: '北京市海淀区',
-    school: '清华大学',
-    major: '计算机科学与技术',
-    grade: '大三',
-    bio: '热爱学习，追求卓越。对编程和技术充满热情，希望成为一名优秀的软件工程师。',
-    achievements: ['学习之星', '编程达人', '优秀学生', '竞赛获奖者']
-  })
+  const [profile, setProfile] = useState<UserProfile | null>(null)
+  const [statistics, setStatistics] = useState<UserStatistics | null>(null)
+  const [loading, setLoading] = useState(true)
 
-  const handleEdit = () => {
-    setIsModalVisible(true)
-    form.setFieldsValue(profile)
+  useEffect(() => {
+    fetchProfile()
+    fetchStatistics()
+  }, [])
+
+  const fetchProfile = async () => {
+    try {
+      setLoading(true)
+      const data = await window.electron.getProfile()
+      setProfile(data)
+    } catch (error) {
+      console.error('获取个人资料失败:', error)
+      message.error('获取个人资料失败')
+    } finally {
+      setLoading(false)
+    }
   }
 
-  const handleModalOk = () => {
-    form.validateFields().then(values => {
-      setProfile({ ...profile, ...values })
+  const fetchStatistics = async () => {
+    try {
+      const data = await window.electron.getUserStatistics()
+      setStatistics(data)
+    } catch (error) {
+      console.error('获取统计数据失败:', error)
+    }
+  }
+
+  const handleEdit = () => {
+    if (profile) {
+      setIsModalVisible(true)
+      form.setFieldsValue(profile)
+    }
+  }
+
+  const handleModalOk = async () => {
+    try {
+      const values = await form.validateFields()
+      await window.electron.updateProfile(values)
       setIsModalVisible(false)
+      fetchProfile()
       message.success('个人资料更新成功')
-    })
+    } catch (error) {
+      console.error('更新个人资料失败:', error)
+      message.error('更新个人资料失败')
+    }
   }
 
   const uploadProps: UploadProps = {
@@ -63,6 +96,8 @@ const Profile: React.FC = () => {
       return false
     }
   }
+
+  if (!profile) return null
 
   return (
     <div className="profile-container">
@@ -135,27 +170,29 @@ const Profile: React.FC = () => {
           </Descriptions>
         </Card>
 
-        <Card className="stats-card">
-          <Title level={5}>学习统计</Title>
-          <div className="stats-grid">
-            <div className="stat-item">
-              <Text type="secondary">已完成考试</Text>
-              <Title level={3}>12</Title>
+        {statistics && (
+          <Card className="stats-card">
+            <Title level={5}>学习统计</Title>
+            <div className="stats-grid">
+              <div className="stat-item">
+                <Text type="secondary">已完成考试</Text>
+                <Title level={3}>{statistics.completedExams}</Title>
+              </div>
+              <div className="stat-item">
+                <Text type="secondary">平均分数</Text>
+                <Title level={3}>{statistics.averageScore}</Title>
+              </div>
+              <div className="stat-item">
+                <Text type="secondary">学习时长</Text>
+                <Title level={3}>{statistics.studyHours}h</Title>
+              </div>
+              <div className="stat-item">
+                <Text type="secondary">排名</Text>
+                <Title level={3}>{statistics.ranking}</Title>
+              </div>
             </div>
-            <div className="stat-item">
-              <Text type="secondary">平均分数</Text>
-              <Title level={3}>85</Title>
-            </div>
-            <div className="stat-item">
-              <Text type="secondary">学习时长</Text>
-              <Title level={3}>120h</Title>
-            </div>
-            <div className="stat-item">
-              <Text type="secondary">排名</Text>
-              <Title level={3}>Top 10%</Title>
-            </div>
-          </div>
-        </Card>
+          </Card>
+        )}
       </div>
 
       <Modal
